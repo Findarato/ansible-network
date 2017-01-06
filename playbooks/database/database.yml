@@ -1,0 +1,14 @@
+---
+- hosts: database
+  sudo: yes
+
+  vars_files:
+    - ../vars.yml
+    - vars.yml
+
+  roles:
+    - { role: geerlingguy.firewall, tags: ['firewall'] }
+    - { role: geerlingguy.security, tags: ['security'] }
+    - { role: geerlingguy.mysql, tags: ['mysql'] }
+    - { role: geerlingguy.munin-node, tags: ['munin-node'] }
+    - { role: ../roles/leds, tags: ['leds'] }

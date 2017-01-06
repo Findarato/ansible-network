@@ -1,0 +1,18 @@
+---
+firewall_allowed_tcp_ports:
+  - 22
+  - 80
+  # For NFS.
+  - 111
+  - 2049
+firewall_allowed_udp_ports:
+  - 111
+  - 2049
+
+#firewall_additional_rules:
+
+
+# NFS configuration.
+nfs_share_dir: /srv/nfs
+nfs_exports: { "/srv/nfs *(rw,sync,no_root_squash)" }
+# nfs_mount_dir: /mnt/nfs # defined in global vars file.

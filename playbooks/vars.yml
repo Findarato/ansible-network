@@ -1,0 +1,15 @@
+---
+site_name: Dramble
+site_url: pidramble.com # Without the www.
+drupal_docroot: /var/www/drupal
+
+# Set nginx_access_log to "off" to conserve disk I/O for maximum performance.
+# Set it to a file inside /var/log/nginx if you want to enable the monitoring of
+# requests via GPIO LEDs.
+nginx_access_log: "/var/log/nginx/access.log"
+
+# Drupal filesystem configuration.
+nfs_mount_dir: /mnt/nfs
+
+security_sudoers_passwordless:
+  - pi
