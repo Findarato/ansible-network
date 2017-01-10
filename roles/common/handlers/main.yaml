@@ -4,5 +4,8 @@
 - name: restart ntp
   service: name=ntpd state=restarted
 
-- name: restart iptables
-  service: name=iptables state=restarted
+- name: restart firewalld
+  service: name=firewalld state=restarted
+
+- name: restart snmpd
+  service: name=snmpd state=restarted

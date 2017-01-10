@@ -5,14 +5,36 @@
     - wget
     - yum-cron
     - git
+    - firewalld
+    - epel-release
+    - net-snmp
+
+- name: Copy snmp config
+  copy:
+    src: snmpd.conf
+    dest: /etc/snmp/snmpd.conf
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart snmpd
+
+
+- name: Start SNMPD
+  systemd:
+      name: snmpd
+      state: started
+      enabled: yes
+      daemon_reload: yes
+  tags: snmpd, service
 
 - name: Start Yum Cron
-  service: name=yum-cron state=started enabled=yes
+  systemd:
+      name: yum-cron
+      state: started
+      enabled: yes
+      daemon_reload: yes
   tags: yum, service
 
-- name: Start nrpe
-  service: name=nrpe state=started enabled=yes
-  tags: nagios, service
 
 - name: Install python bindings for SE Linux
   yum: name={{ item }} state=present
@@ -30,8 +52,19 @@
     - nagios-plugins-load
     - nagios-plugins-disk
 
+- name: Start nrpe
+  systemd:
+      name: nrpe
+      state: started
+      enabled: yes
+      daemon_reload: yes
+  tags: nagios, service
+
+
 - name: Install ntp
-  yum: name=ntp state=present
+  yum:
+      name: ntp
+      state: present
   tags: ntp, service
 
 - name: Configure ntp file
@@ -40,10 +73,43 @@
   notify: restart ntp
 
 - name: Start the ntp service
-  service: name=ntpd state=started enabled=yes
+  systemd:
+      name: ntpd
+      state: started
+      enabled: yes
+      daemon_reload: yes
   tags: ntp
 
 - name: test to see if selinux is running
   command: getenforce
   register: sestatus
   changed_when: false
+
+- name: Start the firewalld service
+  systemd:
+      name: firewalld
+      state: started
+      enabled: yes
+      daemon_reload: yes
+  tags: service
+
+- name: Firewalld Allow SSH
+  firewalld:
+    service: ssh
+    permanent: true
+    state: enabled
+  notify: restart firewalld
+
+- name: Firewalld Allow NRPE
+  firewalld:
+    port: 5666/tcp
+    permanent: true
+    state: enabled
+  notify: restart firewalld
+
+- name: Firewalld Allow snmp
+  firewalld:
+    port: 161/udp
+    permanent: true
+    state: enabled
+  notify: restart firewalld

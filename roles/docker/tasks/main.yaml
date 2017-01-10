@@ -10,7 +10,16 @@
   yum: name={{ item }} state=present
   with_items:
     - docker-engine
+    - python-pip
 
 - name: Start Docker
-  service: name=yum-cron state=started enabled=yes
+  service:
+      name: yum-cron
+      state: started
+      enabled: yes
+      daemon_reload: yes
   tags: yum, service
+
+- name: Install Docker Compose
+  pip:
+    name: docker-compose
