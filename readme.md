@@ -9,7 +9,7 @@ To remove the monitoring from installing just comment out or remove it from site
   remote_user: root
   roles:
   - common
-  - moinitoring
+  - monitoring
   - docker
 ```
 
