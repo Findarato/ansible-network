@@ -1,5 +1,7 @@
 - name: Install useful commandline programs
-  yum: name={{ item }} state=present
+  yum:
+      name: "{{ item }}"
+      state: present
   with_items:
     - firewalld
     - epel-release

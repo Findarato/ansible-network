@@ -1,5 +1,7 @@
 - name: Install useful commandline programs
-  yum: name={{ item }} state=present
+  yum:
+    name: "{{ item }}"
+    state: present
   with_items:
     - nano
     - wget
@@ -7,7 +9,6 @@
     - git
     - firewalld
     - epel-release
-
 
 - name: Start Yum Cron
   systemd:
@@ -17,9 +18,10 @@
       daemon_reload: yes
   tags: yum, service
 
-
 - name: Install python bindings for SE Linux
-  yum: name={{ item }} state=present
+  yum:
+    name: "{{ item }}"
+    state: present
   with_items:
     - libselinux-python
     - libsemanage-python
@@ -31,7 +33,9 @@
   tags: ntp, service
 
 - name: Configure ntp file
-  template: src=ntp.conf.j2 dest=/etc/ntp.conf
+  template:
+    src: ntp.conf.j2
+    dest: /etc/ntp.conf
   tags: ntp, service
   notify: restart ntp
 
