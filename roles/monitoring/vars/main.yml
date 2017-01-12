@@ -1,0 +1,8 @@
+nagiosPlugins:
+    - nagios-nrpe
+    - nagios-plugins-swap
+    - nagios-plugins-users
+    - nagios-plugins-procs
+    - nagios-plugins-load
+    - nagios-plugins-disk
+    - nagios-plugins-ntp

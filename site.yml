@@ -6,5 +6,5 @@
   remote_user: root
   roles:
   - common
-  - moinitoring
+  - monitoring
   - docker

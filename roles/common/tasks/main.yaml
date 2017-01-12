@@ -7,25 +7,7 @@
     - git
     - firewalld
     - epel-release
-    - net-snmp
 
-- name: Copy snmp config
-  copy:
-    src: snmpd.conf
-    dest: /etc/snmp/snmpd.conf
-    owner: root
-    group: root
-    mode: 0600
-  notify: restart snmpd
-
-
-- name: Start SNMPD
-  systemd:
-      name: snmpd
-      state: started
-      enabled: yes
-      daemon_reload: yes
-  tags: snmpd, service
 
 - name: Start Yum Cron
   systemd:
@@ -41,25 +23,6 @@
   with_items:
     - libselinux-python
     - libsemanage-python
-
-- name: install some useful nagios plugins
-  yum: name={{ item }} state=present
-  with_items:
-    - nagios-nrpe
-    - nagios-plugins-swap
-    - nagios-plugins-users
-    - nagios-plugins-procs
-    - nagios-plugins-load
-    - nagios-plugins-disk
-
-- name: Start nrpe
-  systemd:
-      name: nrpe
-      state: started
-      enabled: yes
-      daemon_reload: yes
-  tags: nagios, service
-
 
 - name: Install ntp
   yum:
@@ -96,20 +59,6 @@
 - name: Firewalld Allow SSH
   firewalld:
     service: ssh
-    permanent: true
-    state: enabled
-  notify: restart firewalld
-
-- name: Firewalld Allow NRPE
-  firewalld:
-    port: 5666/tcp
-    permanent: true
-    state: enabled
-  notify: restart firewalld
-
-- name: Firewalld Allow snmp
-  firewalld:
-    port: 161/udp
     permanent: true
     state: enabled
   notify: restart firewalld
