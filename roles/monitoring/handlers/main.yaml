@@ -1,17 +1,17 @@
 ---
 # Handlers for common notifications
 
-- name: restart firewalld
+- name: Restart firewalld
   service:
       name: firewalld
       state: restarted
 
-- name: restart snmpd
+- name: Restart snmpd
   systemd:
       name: snmpd
       state: restarted
 
-- name: restart nrpe
+- name: Restart nrpe
   systemd:
-      name: nrpe 
+      name: nrpe
       state: restarted

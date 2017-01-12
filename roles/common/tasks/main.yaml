@@ -32,14 +32,14 @@
       state: present
   tags: ntp, service
 
-- name: Configure ntp file
+- name: Ntp Copy configuration file
   template:
     src: ntp.conf.j2
     dest: /etc/ntp.conf
   tags: ntp, service
-  notify: restart ntp
+  notify: Restart ntp
 
-- name: Start the ntp service
+- name: Ntp start service
   systemd:
       name: ntpd
       state: started
@@ -52,7 +52,7 @@
   register: sestatus
   changed_when: false
 
-- name: Start the firewalld service
+- name: Firewalld start service
   systemd:
       name: firewalld
       state: started
@@ -65,4 +65,4 @@
     service: ssh
     permanent: true
     state: enabled
-  notify: restart firewalld
+  notify: Restart firewalld
