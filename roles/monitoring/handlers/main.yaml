@@ -3,15 +3,15 @@
 
 - name: restart firewalld
   service:
-      name: firewalld 
+      name: firewalld
       state: restarted
 
 - name: restart snmpd
   systemd:
-      name: snmpd 
+      name: snmpd
       state: restarted
 
-- name: restart nagios-nrpe
+- name: restart nrpe
   systemd:
-      name: nagios-nrpe-service 
+      name: nrpe 
       state: restarted
