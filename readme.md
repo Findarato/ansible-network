@@ -2,7 +2,13 @@
 
 This ansible role will setup docker and docker-compose on CentOS 7 along with SNMP and NRPE.
 
-To remove the monitoring from installing just comment out or remove it from site.yml
+To remove the monitoring from installing just comment out or remove it from site.yml [![Build Status](https://travis-ci.org/WestchesterPublicLibrary/ansible-CentOS7-Docker.svg?branch=master)](https://travis-ci.org/WestchesterPublicLibrary/ansible-CentOS7-Docker)
+
+[![Code Climate](https://codeclimate.com/github/WestchesterPublicLibrary/ansible-CentOS7-Docker/badges/gpa.svg)](https://codeclimate.com/github/WestchesterPublicLibrary/ansible-CentOS7-Docker)
+
+[![Test Coverage](https://codeclimate.com/github/WestchesterPublicLibrary/ansible-CentOS7-Docker/badges/coverage.svg)](https://codeclimate.com/github/WestchesterPublicLibrary/ansible-CentOS7-Docker/coverage)
+
+[![Issue Count](https://codeclimate.com/github/WestchesterPublicLibrary/ansible-CentOS7-Docker/badges/issue_count.svg)](https://codeclimate.com/github/WestchesterPublicLibrary/ansible-CentOS7-Docker)
 
 ```yaml
 - hosts: all
