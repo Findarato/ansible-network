@@ -47,11 +47,6 @@
       daemon_reload: yes
   tags: ntp
 
-- name: test to see if selinux is running
-  command: getenforce
-  register: sestatus
-  changed_when: false
-
 - name: Firewalld start service
   systemd:
       name: firewalld
