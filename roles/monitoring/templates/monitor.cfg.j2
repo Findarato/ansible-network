@@ -15,7 +15,3 @@ command[check_ntp_time]=/usr/lib64/nagios/plugins/check_procs -w 150 -c 200
 {% for dm in nrpeDriveMounts %}
 command[check_{{ dm.name }}]=/usr/lib64/nagios/plugins/check_disk -w 20% -c 10% -p {{ dm.path }}
 {% endfor %}
-
-# sda1=> {{ansible_devices.sda.partitions.sda1.size}}
-# sda2=> {{ansible_devices.sda.partitions.sda2.size}}
-# sda3=> {{ansible_devices.sda.partitions.sda3.size}}

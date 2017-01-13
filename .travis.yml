@@ -1,22 +1,40 @@
-sudo: required
+---
+services: docker
+
+env:
+  - distro: centos7
+    init: /usr/lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    playbook: test.yml
+  # - distro: ubuntu1604
+  #   init: /lib/systemd/systemd
+  #   run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  #   playbook: test.yml
+  # - distro: ubuntu1404
+  #   init: /sbin/init
+  #   run_opts: ""
+  #   playbook: test.yml
 
 services:
   - docker
 
 before_install:
-  # Fetch base image and build new container
-  - sudo docker pull centos:7
-  - sudo docker build --rm=true --tag=travispoc .
+  # Pull container
+  - 'docker pull geerlingguy/docker-${distro}-ansible:latest'
 
 script:
-  # Run container in detached state
-  - sudo docker run --detach --privileged --volume="${PWD}":/etc/ansible/roles/role_under_test:ro --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro travispoc /usr/lib/systemd/systemd > /tmp/container_id
-  # Check syntax of ansible playbook
-  - sudo docker exec "$(cat /tmp/container_id)" ansible-playbook /etc/ansible/roles/role_under_test/test.yml --syntax-check
-  # Run ansible playbook
-  - sudo docker exec "$(cat /tmp/container_id)" ansible-playbook /etc/ansible/roles/role_under_test/test.yml
-  # Clean up
-  - sudo docker stop "$(cat /tmp/container_id)"
+  - container_id=$(mktemp)
+  # Run container in detached state.
+  - 'docker run --detach --volume="${PWD}":/etc/ansible/roles/role_under_test:ro ${run_opts} geerlingguy/docker-${distro}-ansible:latest "${init}" > "${container_id}"'
+
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible all -m setup'
+
+  # Ansible syntax check.
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/role_under_test/${playbook} --syntax-check'
+
+  # Test role.
+  - 'docker exec "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/role_under_test/${playbook}'
 
 notifications:
   email: false
+  slack: westchesterpublib:saU5CP0lYF7mHCkvRFNBwkrX
