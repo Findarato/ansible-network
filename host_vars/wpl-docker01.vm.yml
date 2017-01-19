@@ -5,3 +5,8 @@ nrpeDriveMounts:
     path: /dev/sda2
   - name: home
     path: /dev/mapper/centos_wpl--docker01-home
+
+filebeat_prospectors:
+  - input_type: log
+    paths:
+      - "/var/log/*.log"
