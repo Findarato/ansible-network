@@ -15,7 +15,7 @@
     owner: root
     group: root
     mode: 0600
-  notify: restart snmpd
+  notify: Restart snmpd
 
 - name: Snmp Start service
   systemd:

@@ -1,5 +1,2 @@
 [docker-cluster]
-wpl-docker01.vm
-wpl-docker02.vm
-wpl-docker03.vm
-wpl-docker04.vm
+stats
