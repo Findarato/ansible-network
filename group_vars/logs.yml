@@ -1,17 +1,14 @@
-filebeat_prospectors:
-    - input_type: log
-      paths:
-        - "/var/log/*.log"
-
 filebeat_output_elasticsearch_enabled: false
 filebeat_output_elasticsearch_hosts:
     - "localhost:9200"
 
 filebeat_output_logstash_enabled: true
 filebeat_output_logstash_hosts:
-    - "192.168.1.9:4156"
+    - "192.168.1.9:5044"
 
 filebeat_prospectors:
     - input_type: log
+      document_type: syslog
       paths:
-        - "/var/log/*.log"
+        - "/var/log/syslog"
+        - "/var/log/secure"

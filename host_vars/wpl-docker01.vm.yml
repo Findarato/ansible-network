@@ -8,5 +8,8 @@ nrpeDriveMounts:
 
 filebeat_prospectors:
   - input_type: log
+    document_type: syslog
     paths:
-      - "/var/log/*.log"
+      - "/var/log/syslog"
+      - "/var/log/secure"
+      - "/var/log/docker/named/queries.log"

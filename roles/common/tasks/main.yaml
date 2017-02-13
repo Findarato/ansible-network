@@ -9,6 +9,16 @@
     - git
     - firewalld
     - epel-release
+    - fail2ban-all
+
+- name: Start fail2ban
+  systemd:
+      name: fail2ban
+      state: started
+      enabled: yes
+      daemon_reload: yes
+  tags: fail2ban, service
+
 
 - name: Start Yum Cron
   systemd:

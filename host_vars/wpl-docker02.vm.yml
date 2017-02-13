@@ -5,3 +5,11 @@ nrpeDriveMounts:
     path: /dev/sda2
   - name: home
     path: /dev/mapper/centos_wpl--docker02-home
+
+filebeat_prospectors:
+  - input_type: log
+    document_type: syslog
+    paths:
+      - "/var/log/syslog"
+      - "/var/log/secure"
+      - "/var/log/docker/named/queries.log"
