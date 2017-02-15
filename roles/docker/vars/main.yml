@@ -1,0 +1,10 @@
+docker_users:
+ - name: it
+   groups: [ it,docker ]
+   shell: /bin/bash
+
+docker_ports:
+  - 8083/tcp
+  - 8086/tcp
+  - 9200/tcp
+  - 9300/tcp

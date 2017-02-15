@@ -71,3 +71,10 @@
     permanent: true
     state: enabled
   notify: Restart firewalld
+
+- name: Firewalld Allow portainer
+  firewalld:
+    port: 2375/tcp
+    permanent: true
+    state: enabled
+  notify: Restart firewalld
