@@ -1,0 +1,41 @@
+---
+# tasks file for docker-influxDB
+
+- name: Create Docker paths
+  file:
+    path: "/docker/containers/influxdb/{{ item }}"
+    state: directory
+    mode: 0775
+  with_items:
+    - data
+    - config
+
+- name: Recreate influxDB container
+  docker_container:
+    name: influxdb
+    image: influxdb
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    exposed_ports:
+      - 8083
+      - 8086
+      - 2003
+    published_ports:
+      - 8083:8083
+      - 8086:8086
+      - 2003:2003
+      - 25826:25826/udp
+    volumes:
+      - /docker/containers/influxdb/data:/var/lib/influxdb/
+      - /docker/containers/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+    env:
+
+- name: Open Ports for influxdb
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items:
+    - "{{ docker_ports }}"
+  notify: Restart firewalld

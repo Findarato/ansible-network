@@ -10,6 +10,11 @@
     - firewalld
     - epel-release
     - fail2ban-all
+    - NetworkManager-glib
+    # - libnm-qt-devel.x86_64
+    # - nm-connection-editor.x86_64
+    # - libsemanage-python
+    # - policycoreutils-python
 
 - name: Start fail2ban
   systemd:

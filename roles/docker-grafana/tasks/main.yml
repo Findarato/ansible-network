@@ -1,0 +1,38 @@
+---
+# tasks file for docker-grafana
+
+- name: Create Docker paths
+  file:
+    path: "/docker/containers/grafana/{{ item }}"
+    state: directory
+    mode: 0775
+  with_items:
+    - data
+    - config
+
+- name: Recreate Grafana container
+  docker_container:
+    name: grafana
+    image: grafana/grafana
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    exposed_ports:
+      - 3000
+    published_ports:
+      - 3000:3000
+    volumes:
+      - /docker/containers/grafana/data:/var/lib/grafana/
+      - /docker/containers/grafana/config:/etc/grafana/
+    env:
+      GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-clock-panel,savantly-heatmap-panel,grafana-worldmap-panel,stagemonitor-elasticsearch-app,raintank-worldping-app,jdbranham-diagram-panel,grafana-simple-json-datasource,vonage-status-panel
+      GF_SECURITY_ADMIN_PASSWORD: secret
+
+- name: Open Ports for Grafana
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items:
+    - "{{ docker_ports }}"
+  notify: Restart firewalld

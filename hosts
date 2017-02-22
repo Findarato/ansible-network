@@ -11,3 +11,11 @@ wpl-docker01.vm
 wpl-docker02.vm
 wpl-docker03.vm
 wpl-docker04.vm
+
+
+[grafana]
+wpl-docker01.vm
+
+[influxdb]
+wpl-docker02.vm
+wpl-docker03.vm

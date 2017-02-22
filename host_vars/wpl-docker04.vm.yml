@@ -1,7 +1,29 @@
 nrpeDriveMounts:
-  - name: root
-    path: /dev/mapper/centos_wpl--docker04-root
-  - name: boot
-    path: /dev/sda2
-  - name: home
-    path: /dev/mapper/centos_wpl--docker04-home
+  - name:              root
+    path:              /dev/mapper/centos_wpl--docker04-root
+  - name:              boot
+    path:              /dev/sda2
+  - name:              home
+    path:              /dev/mapper/centos_wpl--docker04-home
+
+filebeat_prospectors:
+  - input_type:        log
+    document_type:     syslog
+    paths:
+      - "/var/log/syslog"
+      - "/var/log/secure"
+      - "/var/log/docker/named/queries.log"
+
+docker_networkInfo:
+- name:                "eth0.{{inventory_hostname}}"
+  ifname:              'eth0'
+  ip4:                 192.168.5.4/16
+  gw4:                 192.168.1.1
+  dns4:                [8.8.8.8,8.8.4.4]
+  autoconnect:         yes
+- name:                "secondary"
+  ifname:              'eth0'
+  ip4:                 192.168.5.80/16
+  gw4:                 192.168.1.1
+  dns4:                []
+  autoconnect:         no

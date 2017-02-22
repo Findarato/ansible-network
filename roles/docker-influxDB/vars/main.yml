@@ -1,0 +1,7 @@
+---
+# vars file for docker-influxDB
+docker_ports:
+  - 8086
+  - 8083
+  - 2003
+  - 25826/udp

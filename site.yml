@@ -6,6 +6,15 @@
   remote_user: root
   roles:
     - common
-    #- monitoring
     - docker
     - geerlingguy.filebeat
+
+- hosts: grafana
+  remote_user: root
+  roles:
+    - docker-grafana
+
+- hosts: influxdb
+  remote_user: root
+  roles:
+    - docker-influxDB
