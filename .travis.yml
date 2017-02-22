@@ -1,38 +1,30 @@
 ---
-services: docker
+language: python
+python: "2.7"
 
-env:
-  - distro: centos7
-    init: /usr/lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    playbook: test.yml
-  # - distro: ubuntu1604
-  #   init: /lib/systemd/systemd
-  #   run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-  #   playbook: test.yml
-  # - distro: ubuntu1404
-  #   init: /sbin/init
-  #   run_opts: ""
-  #   playbook: test.yml
+# Use the new container infrastructure
+sudo: false
 
-services:
-  - docker
+# Install ansible
+addons:
+  apt:
+    packages:
+    - python-pip
 
-before_install:
-  # Pull container
-  - 'docker pull geerlingguy/docker-${distro}-ansible:latest'
+install:
+  # Install ansible
+  - pip install ansible
+
+  # Check ansible version
+  - ansible --version
+
+  # Create ansible.cfg with correct roles_path
+  - printf '[defaults]\nroles_path=../' >ansible.cfg
 
 script:
-  - container_id=$(mktemp)
-  # Run container in detached state.
-  - 'docker run --detach --volume="${PWD}":/etc/ansible/roles/role_under_test:ro ${run_opts} geerlingguy/docker-${distro}-ansible:latest "${init}" > "${container_id}"'
-
-  # Ansible syntax check.
-  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/role_under_test/${playbook} --syntax-check'
-
-  # Test role.
-  - 'docker exec "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/role_under_test/${playbook}'
-
+  # Basic role syntax check
+  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
 notifications:
   email: false
   slack: westchesterpublib:saU5CP0lYF7mHCkvRFNBwkrX
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
