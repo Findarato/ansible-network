@@ -22,7 +22,45 @@
       daemon_reload: yes
   tags: yum, service
 
-- name: Install Docker Compose
-  pip:
+- name: Ensure that Docker Group exsists
+  group:
+    name: docker
     state: present
-    name: docker-compose
+
+- name: Add User to Docker Group
+  user:
+    name: "{{ item.name }}"
+    shell: "{{ item.shell }}"
+    group: "docker"
+    append: yes
+  with_items:
+    - "{{ docker_users }}"
+
+- name: Open Ports for Docker Containers
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items:
+    - "{{ docker_ports }}"
+  notify: Restart firewalld
+
+- name: Create Docker paths
+  file:
+    path: /docker/containers/
+    state: directory
+    mode: 0755
+
+
+
+# - name: Setup Network Connections
+#   nmcli:
+#     conn_name: "{{ item.name }}"
+#     ifname: "{{ item.ifname }}"
+#     type: ethernet
+#     ip4: "{{ item.ip4 }}"
+#     gw4: "{{ item.gw4 }}"
+#     # domain: "vm.library.wpl.lib.in.us"
+#     state: present
+#   with_items:
+#     - "{{ docker_networkInfo }}"
