@@ -22,9 +22,12 @@
       daemon_reload: yes
   tags: yum, service
 
-- name: Firewalld Allow Docker API
-  firewalld:
-    port: 4243/tcp
-    permanent: true
-    state: enabled
-  notify: Restart firewalld
+- name: Install Docker Compose
+  pip:
+    state: present
+    name: docker-compose
+
+- name: Install Docker Compose
+  pip:
+    state: present
+    name: docker-py>=1.7.0
