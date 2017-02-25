@@ -18,4 +18,4 @@ wpl-docker01.vm
 
 [influxdb]
 wpl-docker02.vm
-wpl-docker03.vm
+#wpl-docker03.vm
