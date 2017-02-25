@@ -11,10 +11,12 @@
     - epel-release
     - fail2ban-all
     - NetworkManager-glib
-    # - libnm-qt-devel.x86_64
-    # - nm-connection-editor.x86_64
-    # - libsemanage-python
-    # - policycoreutils-python
+
+- name: Ensure fail2ban pid directory exsists
+  file:
+    path: /var/run/fail2ban
+    state: directory
+    mode: 0755
 
 - name: Start fail2ban
   systemd:

@@ -1,5 +1,5 @@
 [docker-cluster]
-#stats
+stats
 wpl-docker01.vm
 wpl-docker02.vm
 wpl-docker03.vm
@@ -11,11 +11,14 @@ wpl-docker01.vm
 wpl-docker02.vm
 wpl-docker03.vm
 wpl-docker04.vm
+stats
 
 
 [grafana]
 wpl-docker01.vm
+stats
 
 [influxdb]
 wpl-docker02.vm
 wpl-docker03.vm
+stats
