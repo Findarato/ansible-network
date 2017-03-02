@@ -2,7 +2,7 @@
 # tasks file for roles/docker-telegraf
 - name: Create paths
   file:
-    path: "/docker/containers/telegraf/
+    path: "/docker/containers/telegraf/"
     state: directory
     mode: 0775
 
@@ -18,8 +18,8 @@
     name: telegraf
     image: telegraf
     state: started
+    restart: true
     restart_policy: unless-stopped
-    recreate: yes
     exposed_ports:
       - 8125
       - 8092

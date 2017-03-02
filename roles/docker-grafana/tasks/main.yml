@@ -16,7 +16,7 @@
     image: grafana/grafana
     state: started
     restart_policy: unless-stopped
-    recreate: yes
+    recreate: no
     exposed_ports:
       - 3000
     published_ports:
