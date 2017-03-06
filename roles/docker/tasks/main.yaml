@@ -16,11 +16,11 @@
 
 - name: Start Docker
   service:
-      name: yum-cron
+      name: docker
       state: started
       enabled: yes
       daemon_reload: yes
-  tags: yum, service
+  tags: docker, service
 
 - name: Ensure that Docker Group exsists
   group:

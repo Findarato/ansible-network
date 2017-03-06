@@ -1,7 +1,7 @@
 ---
 # tasks file for docker-influxDB
 
-- name: Create Docker paths
+- name: Create paths
   file:
     path: "/docker/containers/influxdb/{{ item }}"
     state: directory
@@ -10,27 +10,28 @@
     - data
     - config
 
-- name: Copy configuration file
+- name: Copy influxdb config file
   copy:
     src: influxdb.conf
     dest: /docker/containers/influxdb/influxdb.conf
     mode: 0644
 
-
-- name: Recreate influxDB container
+- name: Start influxDB container
   docker_container:
     name: influxdb
     image: influxdb
     state: started
     restart_policy: unless-stopped
-    recreate: yes
+    recreate: no
     exposed_ports:
       - 8083
       - 8086
+      - 8089
       - 2003
     published_ports:
       - 8083:8083
       - 8086:8086
+      - 8089:8089
       - 2003:2003
       - 25826:25826/udp
     volumes:

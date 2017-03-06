@@ -4,6 +4,7 @@ wpl-docker01.vm
 wpl-docker02.vm
 wpl-docker03.vm
 wpl-docker04.vm
+wpl-monitor.vm
 
 
 [logs]
@@ -13,6 +14,14 @@ wpl-docker03.vm
 wpl-docker04.vm
 stats
 
+
+[telegraf]
+wpl-docker01.vm
+wpl-docker02.vm
+wpl-docker03.vm
+wpl-docker04.vm
+stats
+wpl-monitor.vm
 
 [grafana]
 wpl-docker01.vm

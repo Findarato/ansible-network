@@ -18,3 +18,8 @@
   remote_user: root
   roles:
     - docker-influxDB
+
+- hosts: telegraf
+  remote_user: root
+  roles:
+    - docker-telegraf
