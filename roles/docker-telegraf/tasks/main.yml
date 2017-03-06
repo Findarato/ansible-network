@@ -1,0 +1,40 @@
+---
+# tasks file for docker-telegraf
+- name: Create Docker paths
+  file:
+    path: "/docker/containers/telegraf/{{ item }}"
+    state: directory
+    mode: 0775
+  with_items:
+    - data
+    - config
+    - plugins
+
+- name: Copy configuration file
+  copy:
+    src: telegraf.conf
+    dest: /docker/containers/telegraf/config/telegraf.conf
+    mode: 0644
+
+- name: Recreate Telegraf container
+  docker_container:
+    name: telegraf
+    image: telegraf
+    state: started
+    restart_policy: always
+    recreate: yes
+    exposed_ports:
+      - 3000
+    published_ports:
+      - 3000:3000
+    volumes:
+      - /docker/containers/telegraf/conf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+
+# - name: Open Ports for Telegraf
+#   firewalld:
+#     port: "{{ item }}"
+#     permanent: true
+#     state: enabled
+#   with_items:
+#     - "{{ docker_ports }}"
+#   notify: Restart firewalld

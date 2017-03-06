@@ -5,3 +5,6 @@ nrpeDriveMounts:
     path: /dev/sda2
   - name: home
     path: /dev/mapper/cl-home
+
+
+ntpserver: 132.163.4.101

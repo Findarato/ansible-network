@@ -14,8 +14,6 @@
   copy:
     src: influxdb.conf
     dest: /docker/containers/influxdb/influxdb.conf
-    owner: foo
-    group: foo
     mode: 0644
 
 

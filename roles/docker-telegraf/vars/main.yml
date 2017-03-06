@@ -1,0 +1,9 @@
+---
+# vars file for docker-telegraf
+
+influx:
+    address: 10.1.1.5
+    port: 8086
+    database: telegraf
+    user: telegraf
+    password: metricsmetricsmetricsmetrics

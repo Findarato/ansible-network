@@ -36,15 +36,6 @@
   with_items:
     - "{{ docker_users }}"
 
-- name: Open Ports for Docker Containers
-  firewalld:
-    port: "{{ item }}"
-    permanent: true
-    state: enabled
-  with_items:
-    - "{{ docker_ports }}"
-  notify: Restart firewalld
-
 - name: Create Docker paths
   file:
     path: /docker/containers/
