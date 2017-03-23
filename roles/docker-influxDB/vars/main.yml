@@ -4,6 +4,4 @@ docker_ports:
   - 8086/tcp
   - 8083/tcp
   - 2003/tcp
-  - 8089/udp
-  - 8089/tcp
   - 25826/udp

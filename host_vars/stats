@@ -1,7 +1,3 @@
 nrpeDriveMounts:
-  - name: root
-    path: /dev/mapper/cl-root
   - name: boot
     path: /dev/sda2
-  - name: home
-    path: /dev/mapper/cl-home

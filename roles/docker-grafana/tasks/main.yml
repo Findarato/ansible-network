@@ -9,6 +9,14 @@
   with_items:
     - data
     - config
+    - plugins
+    - dashboards
+
+- name: Copy configuration file
+  copy:
+    src: defaults.ini
+    dest: /docker/containers/grafana/config/grafana.ini
+    mode: 0644
 
 - name: Recreate Grafana container
   docker_container:
