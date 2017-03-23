@@ -1,6 +1,0 @@
----
-# vars file for roles/docker-telegraf
-docker_ports:
-  - 8125/tcp
-  - 8092/udp
-  - 8094/tcp

@@ -1,6 +1,7 @@
 docker_users:
- - name: it
-   groups: [ it,docker ]
-   shell: /bin/bash
+  - name: it
+    groups: [ it,docker ]
+    shell: /bin/bash
 
-# docker_ports:
+docker_ports:
+  - 7946/tcp
