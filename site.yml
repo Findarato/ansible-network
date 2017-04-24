@@ -3,7 +3,7 @@
 
 # Apply common configuration to all hosts
 - hosts: all
-  remote_user: root
+  remote_user: it
   roles:
     - common
     - docker

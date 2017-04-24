@@ -1,33 +1,8 @@
 [docker-cluster]
-stats
-wpl-docker01.vm
-wpl-docker02.vm
-wpl-docker03.vm
-wpl-docker04.vm
-wpl-monitor.vm
-
-
-[logs]
-wpl-docker01.vm
-wpl-docker02.vm
-wpl-docker03.vm
-wpl-docker04.vm
-stats
-
-
-[telegraf]
-wpl-docker01.vm
-wpl-docker02.vm
-wpl-docker03.vm
-wpl-docker04.vm
-stats
-wpl-monitor.vm
-
-[grafana]
-wpl-docker01.vm
-stats
-
-[influxdb]
-wpl-docker02.vm
-wpl-docker03.vm
-stats
+#stats
+wpl-monitor02
+# wpl-docker01.vm
+# wpl-docker02.vm
+# wpl-docker03.vm
+# wpl-docker04.vm
+# wpl-monitor.vm
