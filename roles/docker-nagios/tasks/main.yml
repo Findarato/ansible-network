@@ -1,0 +1,39 @@
+---
+# tasks file for docker-grafana
+
+- name: Create Docker paths
+  file:
+    path: "/docker/containers/nagios/{{ item }}"
+    state: directory
+    mode: 0775
+  with_items:
+    - data
+    - config
+    - plugins
+
+- name: Recreate Nagios container
+  docker_container:
+    name: Nagios
+    image: quantumobject/docker-nagios
+    state: started
+    restart_policy: unless-stopped
+    recreate: no
+    exposed_ports:
+      - 25
+      - 80
+    published_ports:
+      - 25/tcp:25/tcp
+      - 88/tcp:80/tcp
+    volumes:
+      - /docker/containers/nagios/config:/usr/local/nagios/etc
+    env:
+      VIRTUAL_HOST: nagios.library.wpl.lib.in.us
+
+- name: Open Ports for Nagios
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items:
+    - "{{ docker_ports }}"
+  notify: Restart firewalld

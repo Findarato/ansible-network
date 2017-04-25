@@ -19,7 +19,6 @@
       name: docker
       state: started
       enabled: yes
-      daemon_reload: yes
   tags: docker, service
 
 - name: Ensure that Docker Group exsists
@@ -51,6 +50,9 @@
     state: directory
     mode: 0755
 
+- name: Install python bindings for docker
+  pip:
+    name: docker-py
 
 
 # - name: Setup Network Connections

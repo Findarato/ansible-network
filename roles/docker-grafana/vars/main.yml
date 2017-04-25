@@ -3,7 +3,6 @@
 
 docker_ports:
   - 3000/tcp
-  - 3000/udp
 
 grafanaVolumes:
   - /docker/containers/grafana/data:/var/lib/grafana/

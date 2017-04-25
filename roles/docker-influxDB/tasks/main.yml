@@ -16,13 +16,13 @@
     dest: /docker/containers/influxdb/influxdb.conf
     mode: 0644
 
-- name: Start influxDB container
+- name: Start influxDB container {{inventory_hostname}}
   docker_container:
     name: influxdb
     image: influxdb
     state: started
     restart_policy: unless-stopped
-    recreate: no
+    recreate: false
     exposed_ports:
       - 8083
       - 8086
@@ -38,6 +38,7 @@
       - /docker/containers/influxdb/data:/var/lib/influxdb/
       - /docker/containers/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
     env:
+      VIRTUAL_HOST: "{{inventory_hostname}}influx.library.wpl.lib.in.us"
 
 - name: Open Ports for influxdb
   firewalld:

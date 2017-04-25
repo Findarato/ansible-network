@@ -14,22 +14,22 @@ filebeat_prospectors:
       - "/var/log/secure"
       - "/var/log/docker/named/queries.log"
 
-docker_networkInfo:
-- name:                "eth0.{{inventory_hostname}}"
-  ifname:              'eth0'
-  ip4:                 192.168.5.1/16
-  gw4:                 192.168.1.1
-  dns4:                [192.168.1.201,192.168.1.200]
-  autoconnect:         yes
-- name:                "piHole01"
-  ifname:              'eth0'
-  ip4:                 192.168.99.200/16
-  gw4:                 192.168.1.1
-  dns4:                [8.8.8.8,8.8.4.4]
-  autoconnect:         no
-- name:                "secondary"
-  ifname:              'eth0'
-  ip4:                 192.168.5.50/16
-  gw4:                 192.168.1.1
-  dns4:                []
-  autoconnect:         no
+# docker_networkInfo:
+# - name:                "eth0.{{inventory_hostname}}"
+#   ifname:              'eth0'
+#   ip4:                 192.168.5.1/16
+#   gw4:                 192.168.1.1
+#   dns4:                [192.168.1.201,192.168.1.200]
+#   autoconnect:         yes
+# - name:                "piHole01"
+#   ifname:              'eth0'
+#   ip4:                 192.168.99.200/16
+#   gw4:                 192.168.1.1
+#   dns4:                [8.8.8.8,8.8.4.4]
+#   autoconnect:         no
+# - name:                "secondary"
+#   ifname:              'eth0'
+#   ip4:                 192.168.5.50/16
+#   gw4:                 192.168.1.1
+#   dns4:                []
+#   autoconnect:         no
