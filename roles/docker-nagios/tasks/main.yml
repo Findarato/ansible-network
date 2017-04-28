@@ -3,26 +3,29 @@
 
 - name: Create Docker paths
   file:
-    path: "/docker/containers/nagios/{{ item }}"
+    path: "{{docker_storage_path}}{{ item }}"
     state: directory
     mode: 0775
     group: docker
-    owner: it
+    owner: systemd-bus-proxy
   with_items:
-    - data
-    - config
+    - var
+    - etc
     - plugins
+    # - logs
+    # - var/rw/nagios/cmd/
 
 - name: Clone nagios config from git
   git:
     repo: "{{nagios_git}}"
-    dest: /docker/containers/nagios/config/
+    dest: "{{docker_storage_path}}etc/"
     update: yes
     key_file: /home/it/.ssh/id_rsa
+    version: docker
 
 - name: Recreate Nagios container
   docker_container:
-    name: Nagios
+    name: nagios
     image: quantumobject/docker-nagios
     state: started
     restart_policy: unless-stopped
@@ -32,9 +35,10 @@
       - 80
     published_ports:
       - 25:25
-      - 88:80
+      - 8080:80
     volumes:
-      - /docker/containers/nagios/config:/usr/local/nagios/etc
+      - "{{docker_storage_path}}etc/:/usr/local/nagios/etc"
+      - "{{docker_storage_path}}plugins/:/opt/Custom-Nagios-Plugins/"
     env:
       VIRTUAL_HOST: nagios.library.wpl.lib.in.us
 
