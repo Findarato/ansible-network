@@ -10,11 +10,11 @@
 #     - docker
 #     - geerlingguy.filebeat
 
-- hosts: grafana
-  remote_user: it
-  become: true
-  roles:
-    - docker-grafana
+# - hosts: grafana
+#   remote_user: it
+#   become: true
+#   roles:
+#     - docker-grafana
 
 - hosts: nagios-server
   become: true
@@ -22,11 +22,11 @@
   roles:
     - docker-nagios
 
-- hosts: influxdb
-  remote_user: it
-  become: true
-  roles:
-    - docker-influxDB
+# - hosts: influxdb
+#   remote_user: it
+#   become: true
+#   roles:
+#     - docker-influxDB
 
 # - hosts: telegraf
 #   remote_user: root

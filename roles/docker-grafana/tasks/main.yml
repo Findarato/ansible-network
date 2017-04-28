@@ -24,7 +24,7 @@
     image: grafana/grafana
     state: started
     restart_policy: unless-stopped
-    recreate: yes
+    recreate: no
     exposed_ports:
       - 3000
     published_ports:
@@ -36,6 +36,7 @@
       GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-clock-panel,savantly-heatmap-panel,grafana-worldmap-panel,stagemonitor-elasticsearch-app,raintank-worldping-app,jdbranham-diagram-panel,neocat-cal-heatmap-panel
       GF_SECURITY_ADMIN_PASSWORD: secret
       VIRTUAL_HOST: nagios.library.wpl.lib.in.us
+
 - name: Open Ports for Grafana
   firewalld:
     port: "{{ item }}"

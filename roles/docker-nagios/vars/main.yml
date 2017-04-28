@@ -4,3 +4,6 @@
 docker_ports:
   - 88/tcp
   - 25/tcp
+
+nagios_git: ssh://git@gitlab.bitsandbytes.academy/Network/Nagios.git
+#nagios_git: https://gitlab.bitsandbytes.academy/Network/Nagios.git

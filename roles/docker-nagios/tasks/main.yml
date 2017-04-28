@@ -6,10 +6,19 @@
     path: "/docker/containers/nagios/{{ item }}"
     state: directory
     mode: 0775
+    group: docker
+    owner: it
   with_items:
     - data
     - config
     - plugins
+
+- name: Clone nagios config from git
+  git:
+    repo: "{{nagios_git}}"
+    dest: /docker/containers/nagios/config/
+    update: yes
+    key_file: /home/it/.ssh/id_rsa
 
 - name: Recreate Nagios container
   docker_container:
@@ -17,13 +26,13 @@
     image: quantumobject/docker-nagios
     state: started
     restart_policy: unless-stopped
-    recreate: no
+    recreate: yes
     exposed_ports:
       - 25
       - 80
     published_ports:
-      - 25/tcp:25/tcp
-      - 88/tcp:80/tcp
+      - 25:25
+      - 88:80
     volumes:
       - /docker/containers/nagios/config:/usr/local/nagios/etc
     env:

@@ -6,6 +6,8 @@
     path: "/docker/containers/influxdb/{{ item }}"
     state: directory
     mode: 0775
+    group: docker
+    owner: it
   with_items:
     - data
     - config
