@@ -6,8 +6,8 @@
     path: "{{docker_storage_path}}{{ item }}"
     state: directory
     mode: 0775
-    group: docker
-    owner: systemd-bus-proxy
+    group: it
+    owner: it
   with_items:
     - var
     - etc
@@ -38,7 +38,7 @@
       - 8080:80
     volumes:
       - "{{docker_storage_path}}etc/:/usr/local/nagios/etc"
-      - "{{docker_storage_path}}plugins/:/opt/Custom-Nagios-Plugins/"
+      - "{{docker_storage_path}}plugins/:/usr/local/nagios/libexec/custom_plugins"
     env:
       VIRTUAL_HOST: nagios.library.wpl.lib.in.us
 
