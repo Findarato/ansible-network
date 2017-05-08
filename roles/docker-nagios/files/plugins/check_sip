@@ -1,0 +1,19 @@
+#!/bin/bash
+
+IP=$1
+PORT=$2
+CARD=$3
+USER=$4
+PASS=$5
+
+RES="$(./sip2talk.py $IP $PORT $CARD $USER $PASS | grep 'AG - Patron status is ok.' | wc -l)"
+OUT="$(./sip2talk.py $IP $PORT $CARD $USER $PASS | grep 'AG - Patron status is ok.' | tail -1)"
+
+#sip2talk.py <HOST> <PORT> <CARDNUMBER> [optional:username] [optional:password]
+
+if [ $RES -gt 0 ]
+then
+    echo "OK- $OUT"
+else
+    echo "CRITICAL- $OUT"
+fi

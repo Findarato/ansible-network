@@ -4,3 +4,9 @@
   service:
       name: firewalld
       state: restarted
+
+- name: Restart Nagios
+  docker_container:
+    name: nagios
+    state: started
+    restart: true

@@ -15,6 +15,35 @@
     # - logs
     # - var/rw/nagios/cmd/
 
+# - name: Copy plugins
+#   synchronize:
+#     src: files/plugins/
+#     dest: /tmp/nagios/plugins
+#
+# - name: Copy plugins
+#   synchronize:
+#     src: files/plugins/
+#     dest: "{{docker_storage_path}}/plugins/"
+
+- name: "Copying nagios plugins"
+  copy:
+    src: "files/plugins/{{item}}"
+    dest: "{{docker_storage_path}}/plugins/{{item}}"
+    owner: root
+    group: it
+    mode: 0755
+    # backup: yes
+  with_items:
+    - check_snmp
+    - check_nrpe
+    - check_sip
+    - sip2info.py
+    - sip2talk.py
+    - slack_nagios.pl
+  notify: Restart Nagios
+
+
+
 - name: Clone nagios config from git
   git:
     repo: "{{nagios_git}}"
@@ -22,6 +51,7 @@
     update: yes
     key_file: /home/it/.ssh/id_rsa
     version: docker
+  notify: Restart Nagios
 
 - name: Recreate Nagios container
   docker_container:
@@ -29,7 +59,7 @@
     image: quantumobject/docker-nagios
     state: started
     restart_policy: unless-stopped
-    recreate: yes
+    recreate: no
     exposed_ports:
       - 25
       - 80
@@ -38,7 +68,7 @@
       - 8080:80
     volumes:
       - "{{docker_storage_path}}etc/:/usr/local/nagios/etc"
-      - "{{docker_storage_path}}plugins/:/usr/local/nagios/libexec/custom_plugins"
+      - "{{docker_storage_path}}plugins/:/usr/local/nagios/libexec/plugins"
     env:
       VIRTUAL_HOST: nagios.library.wpl.lib.in.us
 
