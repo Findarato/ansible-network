@@ -12,18 +12,32 @@
     - var
     - etc
     - plugins
-    # - logs
-    # - var/rw/nagios/cmd/
+    - root
 
-# - name: Copy plugins
-#   synchronize:
-#     src: files/plugins/
-#     dest: /tmp/nagios/plugins
-#
-# - name: Copy plugins
-#   synchronize:
-#     src: files/plugins/
-#     dest: "{{docker_storage_path}}/plugins/"
+- name: Create SNMP Paths
+  file:
+    path: "{{docker_storage_path}}/root/{{ item }}"
+    state: directory
+    mode: 0775
+    owner: root
+    group: root
+  with_items:
+    - .snmp/
+    - .snmp/mibs/
+
+- name: "Copying SNMP files"
+  copy:
+    src: "files/{{item}}"
+    dest: "{{docker_storage_path}}/root/{{item}}"
+    owner: root
+    group: root
+    mode: 0755
+    # backup: yes
+  with_items:
+    - .snmp/snmp.conf
+    - .snmp/mibs/powernet403.mib
+    - .snmp/mibs/.index
+
 
 - name: "Copying nagios plugins"
   copy:
@@ -35,6 +49,8 @@
     # backup: yes
   with_items:
     - check_snmp
+    - check_smtp
+    - check_dns
     - check_nrpe
     - check_sip
     - sip2info.py
@@ -56,10 +72,10 @@
 - name: Recreate Nagios container
   docker_container:
     name: nagios
-    image: quantumobject/docker-nagios
+    image: findarato/docker-nagios
     state: started
     restart_policy: unless-stopped
-    recreate: no
+    recreate: yes
     exposed_ports:
       - 25
       - 80
@@ -69,6 +85,7 @@
     volumes:
       - "{{docker_storage_path}}etc/:/usr/local/nagios/etc"
       - "{{docker_storage_path}}plugins/:/usr/local/nagios/libexec/plugins"
+      - "{{docker_storage_path}}root/:/root/"
     env:
       VIRTUAL_HOST: nagios.library.wpl.lib.in.us
 
