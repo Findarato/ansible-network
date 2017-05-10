@@ -13,6 +13,7 @@
     - etc
     - plugins
     - root
+    - share/images/logos
 
 - name: Create SNMP Paths
   file:
@@ -48,15 +49,23 @@
     mode: 0755
     # backup: yes
   with_items:
-    - check_snmp
-    - check_smtp
     - check_dns
-    - check_nrpe
     - check_sip
     - sip2info.py
     - sip2talk.py
     - slack_nagios.pl
   notify: Restart Nagios
+
+- name: sync source from local directory
+  synchronize:
+      src: "files/images/logos/"
+      dest: "{{docker_storage_path}}/share/images/logos/"
+      delete: yes
+      recursive: true
+    #   rsync_opts:
+    #     - "--exclude=.git"
+    #     - "--exclude=*.pyc"
+  become: no  # stops synchronize trying to sudo locally
 
 
 
@@ -67,7 +76,7 @@
     update: yes
     key_file: /home/it/.ssh/id_rsa
     version: docker
-  notify: Restart Nagios
+  #notify: Restart Nagios
 
 - name: Recreate Nagios container
   docker_container:
@@ -75,7 +84,8 @@
     image: findarato/docker-nagios
     state: started
     restart_policy: unless-stopped
-    recreate: yes
+    recreate: true
+    pull: true
     exposed_ports:
       - 25
       - 80
@@ -86,6 +96,7 @@
       - "{{docker_storage_path}}etc/:/usr/local/nagios/etc"
       - "{{docker_storage_path}}plugins/:/usr/local/nagios/libexec/plugins"
       - "{{docker_storage_path}}root/:/root/"
+      - "{{docker_storage_path}}logos/:/usr/local/nagios/share/images/logos"
     env:
       VIRTUAL_HOST: nagios.library.wpl.lib.in.us
 
