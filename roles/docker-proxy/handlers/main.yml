@@ -1,12 +1,6 @@
 ---
-# handlers file for docker-grafana
-- name: Restart firewalld
-  service:
-      name: firewalld
-      state: restarted
-
-- name: Restart Nagios
+- name: Restart Nginx
   docker_container:
-    name: nagios
+    name: nginx-proxy
     state: started
     restart: true
