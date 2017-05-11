@@ -9,7 +9,6 @@
     group: it
     owner: it
   with_items:
-    - var
     - etc
     - plugins
     - root
@@ -85,20 +84,21 @@
     state: started
     restart_policy: unless-stopped
     recreate: true
-    pull: true
+    # pull: true
     exposed_ports:
-      - 25
-      - 80
+       - 25
+       - 80
     published_ports:
-      - 25:25
-      - 8080:80
+      - 192.168.1.33:25:25
+      - 192.168.1.33:8080:80
+      - 192.168.1.33:1525:1525
     volumes:
       - "{{docker_storage_path}}etc/:/usr/local/nagios/etc"
       - "{{docker_storage_path}}plugins/:/usr/local/nagios/libexec/plugins"
       - "{{docker_storage_path}}root/:/root/"
       - "{{docker_storage_path}}share/images/logos/:/usr/local/nagios/share/images/logos"
-    env:
-      VIRTUAL_HOST: nagios.library.wpl.lib.in.us
+    # env:
+    #   VIRTUAL_HOST: nagios.library.wpl.lib.in.us
 
 - name: Open Ports for Nagios
   firewalld:
