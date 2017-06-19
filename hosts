@@ -1,35 +1,29 @@
 [docker-cluster-test]
 wpl-monitor02
 
-[nagios-server]
-wpl-monitor02
-
 [docker-cluster]
-wpl-monitor02
-wpl-docker01.vm
-wpl-docker02.vm
-wpl-docker03.vm
-wpl-docker04.vm
-
-[logs]
-wpl-docker01.vm
-wpl-docker02.vm
-wpl-docker03.vm
-wpl-docker04.vm
-
-#[telegraf]
+#wpl-monitor02
 #wpl-docker01.vm
 #wpl-docker02.vm
 #wpl-docker03.vm
 #wpl-docker04.vm
-#wpl-monitor.vm
+dev-seed
+
+[logs]
+#wpl-docker01.vm
+#wpl-docker02.vm
+#wpl-docker03.vm
+#wpl-docker04.vm
 
 [grafana]
-wpl-docker01.vm
+#wpl-docker01.vm
 
 [influxdb]
-wpl-docker02.vm
-wpl-docker03.vm
+#wpl-docker02.vm
+#wpl-docker03.vm
 
 #[home]
 #stats
+
+[transmission]
+dev-seed

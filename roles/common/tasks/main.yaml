@@ -1,16 +1,4 @@
-- name: Install useful commandline programs
-  yum:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - nano
-    - wget
-    - yum-cron
-    - git
-    - firewalld
-    - epel-release
-    - fail2ban-all
-    - NetworkManager-glib
+- include: "{{ansible_os_family}}.yml"
 
 - name: Ensure fail2ban pid directory exsists
   file:
@@ -25,58 +13,16 @@
       enabled: yes
   tags: fail2ban, service
 
-- name: Start Yum Cron
-  systemd:
-      name: yum-cron
-      state: started
-      enabled: yes
-  tags: yum, service
-
-- name: Install python bindings for SE Linux
-  yum:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - libselinux-python
-    - libsemanage-python
-
-- name: Install ntp
-  yum:
-      name: ntp
-      state: present
+- name: Ntp Copy configuration file
+  template:
+    src: ntp.conf.j2
+    dest: /etc/ntp.conf
   tags: ntp, service
-
-# - name: Ntp Copy configuration file
-#   template:
-#     src: ntp.conf.j2
-#     dest: /etc/ntp.conf
-#   tags: ntp, service
-#   notify: Restart ntp
+  notify: Restart ntp
 
 - name: Ntp start service
   systemd:
-      name: ntpd
+      name: ntp
       state: started
       enabled: yes
   tags: ntp
-
-- name: Firewalld start service
-  systemd:
-      name: firewalld
-      state: started
-      enabled: yes
-  tags: service
-
-- name: Firewalld Allow SSH
-  firewalld:
-    service: ssh
-    permanent: true
-    state: enabled
-  notify: Restart firewalld
-
-- name: Firewalld Allow portainer
-  firewalld:
-    port: 2375/tcp
-    permanent: true
-    state: enabled
-  notify: Restart firewalld

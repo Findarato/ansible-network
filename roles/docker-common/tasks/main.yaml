@@ -1,0 +1,11 @@
+- include: "{{ansible_os_family}}.yml"
+
+- name: Create Docker paths
+  file:
+    path: /docker/containers/
+    state: directory
+    mode: 0755
+
+- name: Install python bindings for docker
+  pip:
+    name: docker-py

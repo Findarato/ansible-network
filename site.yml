@@ -1,38 +1,35 @@
 ---
 # This playbook deploys the whole application stack in this site.
-- hosts: all
-  become: true
-  remote_user: it
-  roles:
-    - docker-proxy
-# Apply common configuration to all hosts
-# - hosts: docker-cluster
+# - hosts: all
 #   become: true
 #   remote_user: it
 #   roles:
-#     - common
-#     - docker
-#     - geerlingguy.filebeat
+#     - docker-proxy
 
+# Apply common configuration to all hosts
+- hosts: docker-cluster
+  become: true
+  remote_user: it
+  roles:
+    - common
+    - docker-common
+    - mongrelion.docker
+    - geerlingguy.filebeat
+#
 # - hosts: grafana
 #   remote_user: it
 #   become: true
 #   roles:
 #     - docker-grafana
-
-- hosts: nagios-server
-  become: true
-  remote_user: it
-  roles:
-    - docker-nagios
-
+#
 # - hosts: influxdb
 #   remote_user: it
 #   become: true
 #   roles:
 #     - docker-influxDB
 
-# - hosts: telegraf
-#   remote_user: root
-#   roles:
-#     - docker-telegraf
+- hosts: transmission
+  remote_user: it
+  become: true
+  roles:
+    - docker-transmission

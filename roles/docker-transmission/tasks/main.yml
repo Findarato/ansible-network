@@ -1,0 +1,57 @@
+---
+# tasks file for docker-transmission
+
+- name: Create Docker paths
+  file:
+    path: "/tank/docker/containers/transmission/{{ item }}"
+    state: directory
+    mode: 0775
+  with_items:
+    - data
+    - config
+    - data/watch
+    - data/downloads
+
+- name: Create and Update Transmission Container
+  docker_container:
+    name: transmission
+    image: linuxserver/transmission
+    state: started
+    restart_policy: unless-stopped
+    recreate: no
+    restart: yes
+    pull: true
+    exposed_ports:
+        - 9091
+        - 51413
+    published_ports:
+        - 9091:9091
+        - 51413:51413
+        - 51413:51413/udp
+    volumes:
+        - /tank/docker/containers/transmission/data/downloads:/downloads
+        - /tank/docker/containers/transmission/config:/config
+        - /tank/docker/containers/transmission/data/watch:/watch
+    env:
+      PGID: 1000
+      PUID: 1000
+      TZ: "America/Chicago"
+
+- name: Open Ports for transmission firewallD
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items:
+    - "{{ docker_ports }}"
+  notify: Restart firewalld
+  when: ansible_distribution == "CentOS"
+
+- name: Open Ports for transmission UFW
+  ufw:
+    port: "{{ item }}"
+    rule: allow
+  with_items:
+    - "{{ docker_portsUFW }}"
+  notify: Restart UFW
+  when: ansible_distribution == "Ubuntu"

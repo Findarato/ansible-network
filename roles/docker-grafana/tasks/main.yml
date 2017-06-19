@@ -25,6 +25,8 @@
     state: started
     restart_policy: unless-stopped
     recreate: no
+    restart: yes
+    pull: true
     exposed_ports:
       - 3000
     published_ports:

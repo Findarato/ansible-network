@@ -1,0 +1,13 @@
+---
+# vars file for docker-grafana
+
+docker_ports:
+    - 3000/tcp
+    - 9091/tcp
+    - 51413/tcp
+    - 51413/udp
+docker_portsUFW:
+    - 3000
+    - 9091
+    - 51413
+    - 51413
