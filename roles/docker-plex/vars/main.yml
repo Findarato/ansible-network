@@ -1,0 +1,10 @@
+---
+# vars file for docker-grafana
+
+docker_ports:
+  - 3000/tcp
+  - 32400/tcp
+  - 32400/udp
+  - 32469/tcp
+  - 5353/udp
+  - 1900/udp

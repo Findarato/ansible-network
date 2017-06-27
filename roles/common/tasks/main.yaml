@@ -22,7 +22,7 @@
 
 - name: Ntp start service
   systemd:
-      name: ntp
+      name: ntpd
       state: started
       enabled: yes
   tags: ntp

@@ -14,13 +14,19 @@
     - common
     - docker-common
     - mongrelion.docker
-    - geerlingguy.filebeat
+    # - geerlingguy.filebeat
 #
-# - hosts: grafana
-#   remote_user: it
-#   become: true
-#   roles:
-#     - docker-grafana
+- hosts: grafana
+  remote_user: it
+  become: true
+  roles:
+    - docker-grafana
+
+- hosts: plex
+  remote_user: it
+  become: true
+  roles:
+    - docker-plex
 #
 # - hosts: influxdb
 #   remote_user: it
@@ -28,8 +34,8 @@
 #   roles:
 #     - docker-influxDB
 
-- hosts: transmission
-  remote_user: it
-  become: true
-  roles:
-    - docker-transmission
+# - hosts: transmission
+#   remote_user: it
+#   become: true
+#   roles:
+#     - docker-transmission

@@ -1,3 +1,5 @@
+---
+
 - name:       "Install useful commandline programs {{ansible_os_family}}"
   yum:
     name:     "{{ item }}"
@@ -34,22 +36,22 @@
   tags:       ntp, service
 
 - name: Firewalld start service
-systemd:
+  systemd:
     name: firewalld
     state: started
     enabled: yes
-tags: service
+  tags: service
 
 - name: Firewalld Allow SSH
-firewalld:
-  service: ssh
-  permanent: true
-  state: enabled
-notify: Restart firewalld
+  firewalld:
+    service: ssh
+    permanent: true
+    state: enabled
+  notify: Restart firewalld
 
 - name: Firewalld Allow portainer
-firewalld:
-  port: 2375/tcp
-  permanent: true
-  state: enabled
-notify: Restart firewalld
+  firewalld:
+    port: 2375/tcp
+    permanent: true
+    state: enabled
+  notify: Restart firewalld

@@ -1,0 +1,52 @@
+---
+# tasks file for docker-grafana
+
+- name: Create Docker paths
+  file:
+    path: "/docker/containers/plex/{{ item }}"
+    state: directory
+    mode: 0775
+  with_items:
+    - data
+    - config
+    - transcode
+
+- name: Recreate Plex container
+  docker_container:
+    name: plex
+    image: linuxserver/plex
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    network_mode: host
+    exposed_ports:
+      - 32400
+      - 32469
+      - 5353
+      - 1900
+    published_ports:
+      - 32400:32400
+      - 32400:32400/udp
+      - 32469:32469
+      - 5353:5353/udp
+      - 1900:1900/udp
+    volumes:
+      - /docker/containers/plex/data:/data/
+      - /docker/containers/plex/config:/config
+      - /docker/containers/plex/transcode:/transcode
+    env:
+      TZ: America/Chicago
+      PUID: 0
+      PGID: 0
+      VERSION: latest
+
+- name: Open Ports for Plex
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items:
+    - "{{ docker_ports }}"
+  notify: Restart firewalld
