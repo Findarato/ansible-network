@@ -11,7 +11,7 @@
   become: true
   remote_user: it
   roles:
-    - common
+    - basic-server
     - docker-common
     - mongrelion.docker
     # - geerlingguy.filebeat
@@ -28,14 +28,14 @@
   roles:
     - docker-plex
 #
-# - hosts: influxdb
-#   remote_user: it
-#   become: true
-#   roles:
-#     - docker-influxDB
+- hosts: influxdb
+  remote_user: it
+  become: true
+  roles:
+    - docker-influxDB
 
-# - hosts: transmission
-#   remote_user: it
-#   become: true
-#   roles:
-#     - docker-transmission
+- hosts: transmission
+  remote_user: it
+  become: true
+  roles:
+    - docker-transmission

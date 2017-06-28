@@ -1,6 +1,0 @@
----
-# handlers file for docker-collectd
-- name: Restart firewalld
-  service:
-      name: firewalld
-      state: restarted
