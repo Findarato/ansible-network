@@ -3,12 +3,12 @@ wpl-monitor02
 
 [docker-cluster]
 #wpl-monitor02
-#wpl-docker01.vm
-#wpl-docker02.vm
-#wpl-docker03.vm
-#wpl-docker04.vm
-#dev-seed
-stats
+wpl-docker01.vm
+wpl-docker02.vm
+wpl-docker03.vm
+wpl-docker04.vm
+dev-seed
+#stats
 
 [logs]
 #wpl-docker01.vm
@@ -18,15 +18,15 @@ stats
 
 [grafana]
 #wpl-docker01.vm
-stats
+#stats
 
 [influxdb]
 #wpl-docker02.vm
 #wpl-docker03.vm
-stats
+#stats
 
 [plex]
-stats
+#stats
 
 #[home]
 #stats
