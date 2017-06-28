@@ -1,16 +1,6 @@
-- name:       "Install useful commandline programs {{ansible_os_family}}"
+- name: "Install Docker helpers {{ansible_os_family}}"
   apt:
-    name:     "{{ item }}"
-    state:    present
+    name: "{{ item }}"
+    state: present
   with_items:
-    - nano
-    - wget
-    - git
-    - fail2ban
-
-
-- name:       Install ntp
-  apt:
-    name:     ntp
-    state:    present
-  tags:       ntp, service
+    - python-pip

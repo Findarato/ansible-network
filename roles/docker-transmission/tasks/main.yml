@@ -1,5 +1,11 @@
 ---
 # tasks file for docker-transmission
+- include: "{{ansible_os_family}}.yml"
+
+- name: Install python bindings for docker
+  pip:
+    name: docker-py
+
 
 - name: Create Docker paths
   file:
