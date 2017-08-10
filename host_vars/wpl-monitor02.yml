@@ -12,4 +12,3 @@ filebeat_prospectors:
     paths:
       - "/var/log/syslog"
       - "/var/log/secure"
-      - "/var/log/docker/named/queries.log"

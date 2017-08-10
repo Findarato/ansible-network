@@ -1,0 +1,6 @@
+- name:       "Install useful commandline programs {{ansible_os_family}}"
+  apt:
+    name:     "{{ item }}"
+    state:    present
+  with_items:
+    - python-pip

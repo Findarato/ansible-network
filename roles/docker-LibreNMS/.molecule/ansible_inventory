@@ -1,0 +1,6 @@
+docker-transmission-ubuntu-1604 ansible_connection=docker
+docker-transmission-centos-7 ansible_connection=docker
+
+[group1]
+docker-transmission-ubuntu-1604
+docker-transmission-centos-7

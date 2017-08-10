@@ -11,3 +11,8 @@ docker_portsUFW:
     - 9091
     - 51413
     - 51413
+docker_transmission_storage: "/tank/docker/containers/transmission"
+docker_transmission_blacklist: "http://john.bitsurge.net/public/biglist.p2p.gz"
+docker_transmission_blocklist_enabled: true
+docker_transmission_folders:
+    - download_dir: "/downloads/complete"

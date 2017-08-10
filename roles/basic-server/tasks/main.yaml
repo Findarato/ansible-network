@@ -12,17 +12,3 @@
       state: started
       enabled: yes
   tags: fail2ban, service
-
-- name: Ntp Copy configuration file
-  template:
-    src: ntp.conf.j2
-    dest: /etc/ntp.conf
-  tags: ntp, service
-  notify: Restart ntp
-
-- name: Ntp start service
-  systemd:
-      name: ntpd
-      state: started
-      enabled: yes
-  tags: ntp

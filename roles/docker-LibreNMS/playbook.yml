@@ -1,0 +1,5 @@
+---
+- hosts: all
+  roles:
+    - role: mongrelion.docker
+    - role: docker-transmission

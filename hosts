@@ -1,10 +1,10 @@
 [docker-cluster]
 #wpl-monitor02
-wpl-docker01.vm
-wpl-docker02.vm
-wpl-docker03.vm
-wpl-docker04.vm
-dev-seed
+#wpl-docker01.vm
+#wpl-docker02.vm
+#wpl-docker03.vm
+#wpl-docker04.vm
+#dev-seed
 
 [logs]
 #wpl-docker01.vm
@@ -15,6 +15,9 @@ dev-seed
 [grafana]
 wpl-docker01.vm
 
+[LibreNMS]
+wpl-monitor02
+
 [influxdb]
 wpl-docker02.vm
 #wpl-docker03.vm
@@ -23,4 +26,4 @@ wpl-docker02.vm
 stats
 
 [transmission]
-dev-seed
+#dev-seed

@@ -1,0 +1,9 @@
+---
+# vars file for docker-grafana
+
+docker_ports:
+    - 8668/tcp
+docker_portsUFW:
+    - 8668
+docker_libreNMS_storage: "/docker/containers/libreNMS/"
+

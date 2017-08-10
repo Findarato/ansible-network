@@ -23,7 +23,7 @@
     name: grafana
     image: grafana/grafana
     state: started
-    restart_policy: unless-stopped
+    restart_policy: on-failure
     recreate: no
     restart: yes
     pull: true
@@ -35,9 +35,8 @@
       - /docker/containers/grafana/data:/var/lib/grafana/
       - /docker/containers/grafana/config:/etc/grafana/
     env:
-      GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-clock-panel,savantly-heatmap-panel,grafana-worldmap-panel,stagemonitor-elasticsearch-app,raintank-worldping-app,jdbranham-diagram-panel,neocat-cal-heatmap-panel
+      GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-clock-panel,grafana-worldmap-panel,stagemonitor-elasticsearch-app,raintank-worldping-app,jdbranham-diagram-panel,neocat-cal-heatmap-panel
       GF_SECURITY_ADMIN_PASSWORD: secret
-      VIRTUAL_HOST: nagios.library.wpl.lib.in.us
 
 - name: Open Ports for Grafana
   firewalld:

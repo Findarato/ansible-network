@@ -9,42 +9,39 @@
 
 - name: Create Docker paths
   file:
-    path: "{{ docker_transmission_storage }}/{{ item }}"
+    path: "{{ docker_libreNMS_storage }}/{{ item }}"
     state: directory
     mode: 0775
   with_items:
-    - data
-    - config
-    - data/watch
-    - data/downloads
-    - data/downloads/complete
-    - data/downloads/incomplete
-    
+    - logs
+    - rrd
 
-- name: Create and Update Transmission Container
+- name: Create and Update LibreNMS Container
   docker_container:
-    name: transmission
-    image: linuxserver/transmission
+    name: LibreNMS
+    image: jarischaefer/docker-librenms
     state: started
     restart_policy: unless-stopped
     recreate: no
     restart: yes
     pull: true
     exposed_ports:
-        - 9091
-        - 51413
+        - 80
     published_ports:
-        - 9091:9091
-        - 51413:51413
-        - 51413:51413/udp
+        - 8668:80
     volumes:
-        - "{{ docker_transmission_storage }}/data/downloads:/downloads"
-        - "{{ docker_transmission_storage }}/config:/config"
-        - "{{ docker_transmission_storage }}/data/watch:/watch"
+        - "{{ docker_libreNMS_storage }}/logs:/opt/librenms/logs"
+        - "{{ docker_libreNMS_storage }}/rrd:/opt/librenms/rrd"
     env:
-      PGID: 1000
-      PUID: 1000
+      DB_HOST: 192.168.1.97
+      DB_NAME: librenms
+      DB_USER: librenms
+      DB_PASS: librenms
+      PUID: 0
+      PGID: 101
       TZ: "America/Chicago"
+      BASE_URL: "http://192.168.1.97:8668"
+      POLLERS: 16
 
 - name: Open Ports for transmission firewallD
   firewalld:

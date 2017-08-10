@@ -34,6 +34,12 @@
   roles:
     - docker-influxDB
 
+- hosts: LibreNMS
+  remote_user: it
+  become: true
+  roles:
+    - docker-LibreNMS
+
 - hosts: transmission
   remote_user: it
   become: true
