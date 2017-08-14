@@ -1,0 +1,41 @@
+---
+# tasks file for docker-sonarr
+
+- name: Create Docker paths
+  file:
+    path: "/docker/containers/sonarr/{{ item }}"
+    state: directory
+    mode: 0775
+  with_items:
+    - downloads
+
+- name: Recreate sonarr container
+  docker_container:
+    name: sonarr
+    image: linuxserver/sonarr
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    exposed_ports:
+      - 8989
+    published_ports:
+      - 8989:8989
+    volumes:
+      - /docker/containers/sonarr/downloads:/downloads
+      - /mnt/tarvalon/storage/TV:/tv
+    env:
+      TZ: "America/Chicago"
+      PUID: 1000
+      PGID: 1000
+      VERSION: latest
+
+- name: Open Ports for sonarr
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items:
+    - "{{ docker_ports }}"
+  notify: Restart firewalld

@@ -1,6 +1,3 @@
----
-# tasks file for docker-grafana
-
 - name: Create Docker paths
   file:
     path: "/docker/containers/plex/{{ item }}"

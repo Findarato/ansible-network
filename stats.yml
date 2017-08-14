@@ -1,0 +1,23 @@
+---
+# This playbook deploys the whole application stack in this site.
+# - hosts: all
+#   become: true
+#   remote_user: it
+#   roles:
+#     - docker-proxy
+
+# Apply common configuration to all hosts
+- hosts: home
+  become: true
+  remote_user: it
+  roles:
+    - basic-server
+    # - docker-common
+    # - mongrelion.docker
+    # - docker-grafana
+    # - docker-plex
+    # - docker-influxDB
+    # - docker-transmission
+    # - docker-plexpy
+    # - docker-sonarr
+    - docker-nzbget

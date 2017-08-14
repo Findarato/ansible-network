@@ -1,0 +1,43 @@
+---
+# tasks file for docker-sonarr
+
+- name: Create Docker paths
+  file:
+    path: "/docker/containers/nzbget/{{ item }}"
+    state: directory
+    mode: 0775
+  with_items:
+    - downloads
+    - config
+
+- name: Recreate nzbget container
+  docker_container:
+    name: nzbget
+    image: linuxserver/nzbget
+    state: started
+    restart_policy: unless-stopped
+    recreate: no
+    restart: yes
+    pull: true
+    exposed_ports:
+      - 6789
+    published_ports:
+      - 6789:6789
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /docker/containers/nzbget/config:/config
+      - /docker/containers/nzbget/downloads:/downloads
+    env:
+      TZ: "America/Chicago"
+      PUID: 1000
+      PGID: 1000
+
+
+- name: Open Ports for nzbget
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items:
+    - "{{ docker_ports }}"
+  notify: Restart firewalld

@@ -1,0 +1,41 @@
+---
+# tasks file for docker-grafana
+
+- name: Create Docker paths
+  file:
+    path: "/docker/containers/plexpy/{{ item }}"
+    state: directory
+    mode: 0775
+  with_items:
+    - config
+
+- name: Recreate PlexPY container
+  docker_container:
+    name: plexPY
+    image: linuxserver/plexpy
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    exposed_ports:
+      - 8181
+    published_ports:
+      - 8181:8181
+    volumes:
+      - /docker/containers/plex/config/Library/Application Support/Plex Media Server/Logs:/logs:ro
+      - /docker/containers/plexpy/config:/config
+    env:
+      TZ: America/Chicago
+      PUID: 1000
+      PGID: 1000
+      VERSION: latest
+
+- name: Open Ports for PlexPY
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items:
+    - "{{ docker_ports }}"
+  notify: Restart firewalld

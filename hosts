@@ -6,6 +6,7 @@
 #wpl-docker04.vm
 #dev-seed
 
+
 [logs]
 #wpl-docker01.vm
 #wpl-docker02.vm
@@ -15,6 +16,7 @@
 [grafana]
 wpl-docker01.vm
 
+
 [LibreNMS]
 wpl-monitor02
 
@@ -22,8 +24,10 @@ wpl-monitor02
 wpl-docker02.vm
 #wpl-docker03.vm
 
+
 [home]
 stats
 
 [transmission]
 #dev-seed
+
