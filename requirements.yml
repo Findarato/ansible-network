@@ -4,3 +4,4 @@
 # - src: Findarato.Monitoring
 - src: geerlingguy.filebeat
 - src: mongrelion.docker
+- src: geerlingguy.ntp

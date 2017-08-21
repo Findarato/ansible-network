@@ -1,0 +1,7 @@
+nrpeDriveMounts:
+  - name: root
+    path: /dev/mapper/centos-root
+  - name: boot
+    path: /dev/sda2
+  - name: efi
+    path: /dev/sda1

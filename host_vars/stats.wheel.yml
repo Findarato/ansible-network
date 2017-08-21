@@ -1,0 +1,5 @@
+nrpeDriveMounts:
+  - name: root
+    path: /dev/mapper/cl-root
+  - name: boot
+    path: /dev/sda2

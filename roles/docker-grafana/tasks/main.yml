@@ -9,8 +9,6 @@
   with_items:
     - data
     - config
-    - plugins
-    - dashboards
 
 - name: Copy configuration file
   copy:
@@ -32,8 +30,8 @@
     published_ports:
       - 3000:3000
     volumes:
-      - /docker/containers/grafana/data:/var/lib/grafana/
-      - /docker/containers/grafana/config:/etc/grafana/
+      - /docker/containers/grafana/data:/var/lib/grafana
+      - /docker/containers/grafana/config:/etc/grafana
     env:
       GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-clock-panel,grafana-worldmap-panel,raintank-worldping-app,jdbranham-diagram-panel,neocat-cal-heatmap-panel
       GF_SECURITY_ADMIN_PASSWORD: secret

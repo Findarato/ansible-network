@@ -1,4 +1,10 @@
 ---
+- name:       Install EPEL
+  yum:
+    name:     epel-release
+    state:    present
+
+
 - name:       Install python bindings for SE Linux
   yum:
     name:     "{{ item }}"
@@ -6,6 +12,9 @@
   with_items:
     - libselinux-python
     - libsemanage-python
+    - fail2ban-all
+    - nano
+    - wget
 
 - name: "Install Docker helpers {{ansible_os_family}}"
   yum:
