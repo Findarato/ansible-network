@@ -1,0 +1,45 @@
+---
+# tasks file for docker-grafana
+
+- name: Create Docker paths
+  file:
+    path: "{{ docker_dns_storage }}/{{ item }}"
+    state: directory
+    mode: 0775
+  with_items:
+    - config
+    - data
+
+- name: Recreate Bind container
+  docker_container:
+    name: bind
+    image: sameersbn/bind:latest
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    dns: 127.0.0.1
+    exposed_ports:
+      - 53
+      - 10000
+    published_ports:
+      - 53:53
+      - 10000:10000
+    volumes:
+      - "{{ docker_dns_storage }}/data:/data"
+    env:
+      ROOT_PASSWORD: SecretPassword
+      TZ: America/Chicago
+      PUID: 1000
+      PGID: 1000
+      VERSION: latest
+
+- name: Open Ports for PlexPY
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items:
+    - "{{ docker_ports }}"
+  notify: Restart firewalld

@@ -18,16 +18,17 @@ $config['snmp']['community'][] = "public";
 // $config['snmp']['v3'][0]['cryptoalgo'] = 'AES';
 
 $config['nets'][] = '192.168.0.0/16';
+$config['nets'][] = '10.1.1.0/24';
 $config['nets'][] = '172.2.4.0/22';
 
 {%if docker_libreNMS_influxdb %}
 $config['influxdb']['enable'] = true;
 $config['influxdb']['transport'] = 'http'; # Default, other options: https, udp
 $config['influxdb']['host'] = '{{ docker_libreNMS_influxdb_ip }}';
-$config['influxdb']['port'] = '8086';
+$config['influxdb']['port'] = '{{ docker_libreNMS_influxdb_port }}';
 $config['influxdb']['db'] = '{{ docker_libreNMS_database_name }}';
-$config['influxdb']['username'] = 'admin';
-$config['influxdb']['password'] = 'admin';
+$config['influxdb']['username'] = '{{ docker_libreNMS_influxdb_username }}';
+$config['influxdb']['password'] = '{{ docker_libreNMS_influxdb_password }}';
 $config['influxdb']['timeout'] = 0; # Optional
 $config['influxdb']['verifySSL'] = false; # Optional
 {% endif %}

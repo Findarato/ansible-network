@@ -11,15 +11,17 @@
   become: true
   remote_user: it
   roles:
-    - basic-server
-    - geerlingguy.ntp
-    - docker-common
+    # - basic-server
+    # - geerlingguy.ntp
+    # - docker-common
     # - mongrelion.docker
-    - docker-grafana
-    - docker-plex
-    - docker-influxDB
-    - docker-transmission
-    - docker-plexpy
-    - docker-sonarr
+    # - docker-grafana
+    # - docker-plex
+    # - docker-influxDB
+    # - docker-transmission
+    # - docker-plexpy
+    # - docker-sonarr
+    - docker-LibreNMS
+    - docker-dns
     # - docker-nzbget
 
