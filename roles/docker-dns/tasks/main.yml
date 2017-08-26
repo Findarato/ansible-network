@@ -19,7 +19,7 @@
     recreate: yes
     restart: yes
     pull: true
-    dns: 127.0.0.1
+    dns_servers: 127.0.0.1
     exposed_ports:
       - 53
       - 10000

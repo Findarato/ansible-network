@@ -26,7 +26,7 @@
     restart_policy: unless-stopped
     recreate: false
     restart: yes
-    pull: true    
+    pull: true
     exposed_ports:
       - 8083
       - 8086
