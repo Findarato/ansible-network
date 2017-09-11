@@ -22,4 +22,11 @@ wpl-docker03.vm
 
 [influxdb]
 #wpl-docker02.vm
+<<<<<<< HEAD
 #wpl-docker03.vm
+=======
+#wpl-docker03.vm
+
+[home]
+tarabon.wheel
+>>>>>>> 9dbadead19ef3ea5669ac69d8a2969db2a2ed8b7

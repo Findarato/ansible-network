@@ -1,5 +1,5 @@
 ---
-# tasks file for docker-grafana
+# tasks file for docker-dns
 
 - name: Create Docker paths
   file:

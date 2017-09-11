@@ -9,3 +9,5 @@
 - name: Install python bindings for docker
   pip:
     name: docker-py
+
+# - name: Ensure docker is running

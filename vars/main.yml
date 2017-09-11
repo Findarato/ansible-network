@@ -1,0 +1,17 @@
+ntp_enabled: true
+ntp_timezone: "America/Chicago"
+ntp_manage_config: true
+
+---
+# User
+local_user: it
+local_user_passwordless_sudo: false
+
+libvirt_storage_path: /home/images
+
+# Services
+enable_sshd: true
+enable_fail2ban: false
+enable_powertop: false
+enable_vagrant_nfs: true
+enable_libvirtd: true

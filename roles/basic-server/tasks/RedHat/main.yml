@@ -1,0 +1,22 @@
+#!/usr/bin/env ansible-playbook
+---
+- name:       Install EPEL
+  package:
+    name:   "http://download.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-10.noarch.rpm"
+    state:    present
+  when:
+    - ansible_distribution == 'CentOS'
+    - ansible_distribution_version == '7'
+
+- name:       Install python bindings for SE Linux
+  package:
+    name:     "{{ item }}"
+    state:    present
+  with_items:
+    - libselinux-python
+    - libsemanage-python
+    - fail2ban-all
+    - nano
+    - wget
+    - python-pip
+    - git

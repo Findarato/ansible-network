@@ -12,7 +12,7 @@
   remote_user: it
   roles:
     - basic-server
-    - geerlingguy.ntp
+    - zsh
     - docker-common
     # - mongrelion.docker
     - docker-grafana
@@ -24,4 +24,5 @@
     - docker-LibreNMS
     - docker-dns
     # - docker-nzbget
+    # - geerlingguy.ntp
 
