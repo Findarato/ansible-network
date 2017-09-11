@@ -14,7 +14,7 @@
     image: linuxserver/plex
     state: started
     restart_policy: unless-stopped
-    recreate: yes
+    recreate: no
     restart: yes
     pull: true
     network_mode: host
