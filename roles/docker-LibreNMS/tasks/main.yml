@@ -26,23 +26,23 @@
     mode: 0644
 
 
-- name: Create and Update LibreNMS Database
-  docker_container:
-    name: libreNMS_DB
-    image: mariadb:10.3
-    state: started
-    restart_policy: unless-stopped
-    recreate: no
-    restart: no
-    pull: true
-    volumes:
-        - "{{ docker_libreNMS_storage }}/db/data:/var/lib/mysql"
-        - "{{ docker_libreNMS_storage }}/db/config:/etc/mysql/conf.d"
-    env:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: librenms
-      MYSQL_USER: librenms
-      MYSQL_PASSWORD: librenms
+# - name: Create and Update LibreNMS Database
+#   docker_container:
+#     name: libreNMS_DB
+#     image: mariadb:10.3
+#     state: started
+#     restart_policy: unless-stopped
+#     recreate: no
+#     restart: no
+#     pull: true
+#     volumes:
+#         - "{{ docker_libreNMS_storage }}/db/data:/var/lib/mysql"
+#         - "{{ docker_libreNMS_storage }}/db/config:/etc/mysql/conf.d"
+#     env:
+#       MYSQL_ROOT_PASSWORD: password
+#       MYSQL_DATABASE: librenms
+#       MYSQL_USER: librenms
+#       MYSQL_PASSWORD: librenms
 
 - name: Create and Update LibreNMS Container
   docker_container:
@@ -62,19 +62,17 @@
         - "{{ docker_libreNMS_storage }}/rrd:/opt/librenms/rrd"
         - "{{ docker_libreNMS_storage }}/config/config.custom.php:/opt/librenms/config.custom.php:ro"
     env:
-      DB_HOST: db
-      DB_NAME: librenms
-      DB_USER: librenms
-      DB_PASS: librenms
-      PUID: 1000
-      PGID: 1000
+      DB_HOST: "{{ docker_libreNMS_sql_ip }}"
+      DB_PORT: "{{ docker_libreNMS_sql_port }}"
+      DB_USER: "{{ docker_libreNMS_sql_username }}"
+      DB_PASS: "{{ docker_libreNMS_sql_password }}"
+      DB_NAME: "{{ docker_libreNMS_sql_database_name }}"
+      PUID: "{{ docker_libreNMS_PUID }}"
+      PGID: "{{ docker_libreNMS_PGID }}"
       TZ: "America/Chicago"
-      BASE_URL: "http://wpl-monitor:8668"
+      BASE_URL: "{{ docker_libreNMS_base_url }}"
       POLLERS: 16
-    links:
-      - libreNMS_DB:db
 
-# docker run --name some-mariadb -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mariadb:tag
 
 - name: Open Ports for transmission firewallD
   firewalld:
@@ -104,7 +102,7 @@
 - name: Create influxDB Database for LibreNMS
   influxdb_database:
       hostname: "{{ docker_libreNMS_influxdb_ip }}"
-      database_name: "{{ docker_libreNMS_database_name }}"
+      database_name: "{{ docker_libreNMS_influxdb_database_name }}"
       port: "{{ docker_libreNMS_influxdb_port }}"
       username: "{{ docker_libreNMS_influxdb_username }}"
       password: "{{ docker_libreNMS_influxdb_password }}"

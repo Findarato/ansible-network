@@ -35,6 +35,7 @@
     env:
       GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-clock-panel,grafana-worldmap-panel,raintank-worldping-app,jdbranham-diagram-panel,neocat-cal-heatmap-panel
       GF_SECURITY_ADMIN_PASSWORD: secret
+      VIRTUAL_HOST: "{{inventory_hostname}}"
 
 - name: Open Ports for Grafana
   firewalld:

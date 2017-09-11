@@ -1,5 +1,5 @@
 ---
-# tasks file for docker-grafana
+# tasks file for docker-dns
 
 - name: Create Docker paths
   file:
@@ -16,7 +16,7 @@
     image: sameersbn/bind:latest
     state: started
     restart_policy: unless-stopped
-    recreate: yes
+    recreate: no
     restart: yes
     pull: true
     dns_servers: 127.0.0.1
@@ -35,7 +35,7 @@
       PGID: 1000
       VERSION: latest
 
-- name: Open Ports for PlexPY
+- name: Open Ports for Bind
   firewalld:
     port: "{{ item }}"
     permanent: true

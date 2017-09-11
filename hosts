@@ -1,5 +1,5 @@
 [docker-cluster]
-wpl-monitor02
+#wpl-monitor02
 #wpl-docker01.vm
 #wpl-docker02.vm
 #wpl-docker03.vm
@@ -15,18 +15,14 @@ wpl-monitor02
 
 [grafana]
 #wpl-docker01.vm
-wpl-monitor02
-
 
 [LibreNMS]
-wpl-monitor02
+#wpl-monitor02
+wpl-docker03.vm
 
 [influxdb]
 #wpl-docker02.vm
 #wpl-docker03.vm
 
-
 [home]
-#stats.wheel
 tarabon.wheel
-

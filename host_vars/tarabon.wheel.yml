@@ -12,3 +12,7 @@ docker_libreNMS_influxdb_port: 8086
 docker_libreNMS_influxdb_username: admin
 docker_libreNMS_influxdb_password: admin
 docker_libreNMS_database_name: librenms
+
+# User
+local_user: it
+local_user_passwordless_sudo: false
