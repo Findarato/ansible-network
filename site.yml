@@ -1,20 +1,16 @@
 ---
-# This playbook deploys the whole application stack in this site.
-# - hosts: all
-#   become: true
-#   remote_user: it
-#   roles:
-#     - docker-proxy
-
 # Apply common configuration to all hosts
 - hosts: docker-cluster
   become: true
   remote_user: it
   roles:
     - basic-server
+    - zsh
     - docker-common
-    - mongrelion.docker
+    # - mongrelion.docker
     # - geerlingguy.filebeat
+    - docker-dns
+
 #
 - hosts: grafana
   remote_user: it
