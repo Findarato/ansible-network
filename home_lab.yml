@@ -15,11 +15,19 @@ Apply common configuration to all hosts
     - zsh
     - docker-common
     # - mongrelion.docker
+<<<<<<< HEAD
     # - docker-grafana
     # - docker-plex
     # - docker-influxDB
     # - docker-transmission
     # - docker-plexpy
+=======
+    - docker-grafana
+    - docker-plex
+    # - docker-influxDB
+    - docker-transmission
+    - docker-plexpy
+>>>>>>> f9e5173a77d915274850de67254c6cb767367887
     - docker-sonarr
     # - docker-LibreNMS
     # - docker-dns
