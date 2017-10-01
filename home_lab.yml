@@ -6,7 +6,7 @@
 #   roles:
 #     - docker-proxy
 
-# Apply common configuration to all hosts
+Apply common configuration to all hosts
 - hosts: home
   become: true
   remote_user: it
@@ -15,14 +15,14 @@
     - zsh
     - docker-common
     # - mongrelion.docker
-    - docker-grafana
-    - docker-plex
-    - docker-influxDB
-    - docker-transmission
-    - docker-plexpy
+    # - docker-grafana
+    # - docker-plex
+    # - docker-influxDB
+    # - docker-transmission
+    # - docker-plexpy
     - docker-sonarr
-    - docker-LibreNMS
-    - docker-dns
+    # - docker-LibreNMS
+    # - docker-dns
     # - docker-nzbget
     # - geerlingguy.ntp
 
