@@ -25,4 +25,8 @@ wpl-docker03.vm
 #wpl-docker03.vm
 
 [home]
-tarabon.wheel
+#tarabon.wheel
+stats.wheel
+
+[monitoring]
+stats.wheel

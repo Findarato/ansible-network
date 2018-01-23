@@ -21,7 +21,7 @@
     name: grafana
     image: grafana/grafana
     state: started
-    restart_policy: on-failure
+    restart_policy: always
     recreate: no
     restart: yes
     pull: true
@@ -33,7 +33,7 @@
       - /docker/containers/grafana/data:/var/lib/grafana
       - /docker/containers/grafana/config:/etc/grafana
     env:
-      GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-clock-panel,grafana-worldmap-panel,raintank-worldping-app,jdbranham-diagram-panel,neocat-cal-heatmap-panel
+      GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-clock-panel,grafana-worldmap-panel,jdbranham-diagram-panel,neocat-cal-heatmap-panel
       GF_SECURITY_ADMIN_PASSWORD: secret
       VIRTUAL_HOST: "{{inventory_hostname}}"
 
