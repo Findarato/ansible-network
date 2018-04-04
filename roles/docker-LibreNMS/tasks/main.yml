@@ -1,11 +1,14 @@
 ---
 # tasks file for docker-transmission
-- include: "{{ansible_os_family}}.yml"
+- include_tasks: "{{ansible_os_family}}.yml"
+  tags:
+    - libreNMS
 
 - name: Install python bindings for docker
   pip:
     name: docker-py
-
+  tags:
+    - libreNMS
 
 - name: Create Docker paths
   file:
@@ -18,13 +21,24 @@
     - config
     - db/data
     - db/config
+  tags:
+    - libreNMS
 
 - name: Install Configuration File
   template:
-    src: config.custom.php.j2
-    dest: "{{ docker_libreNMS_storage }}/config/config.custom.php"
+    src: config.interfaces.php.j2
+    dest: "{{ docker_libreNMS_storage }}/config/config.interfaces.php"
     mode: 0644
+  tags:
+    - libreNMS
 
+- name: Install influxDB Configuration File
+  template:
+    src: config.influx.php.j2
+    dest: "{{ docker_libreNMS_storage }}/config/config.influx.php"
+    mode: 0644
+  tags:
+    - libreNMS
 
 # - name: Create and Update LibreNMS Database
 #   docker_container:
@@ -60,7 +74,8 @@
     volumes:
         - "{{ docker_libreNMS_storage }}/logs:/opt/librenms/logs"
         - "{{ docker_libreNMS_storage }}/rrd:/opt/librenms/rrd"
-        - "{{ docker_libreNMS_storage }}/config/config.custom.php:/opt/librenms/config.custom.php:ro"
+        - "{{ docker_libreNMS_storage }}/config/config.interfaces.php:/opt/librenms/conf.d/config.interfaces.php"
+        - "{{ docker_libreNMS_storage }}/config/config.influx.php:/opt/librenms/conf.d/config.influx.php"
     env:
       DB_HOST: "{{ docker_libreNMS_sql_ip }}"
       DB_PORT: "{{ docker_libreNMS_sql_port }}"
@@ -72,9 +87,13 @@
       TZ: "America/Chicago"
       BASE_URL: "{{ docker_libreNMS_base_url }}"
       POLLERS: 16
+      DISCOVERY_ENABLE: true
+      RRDCACHED_ENABLE: false
+  tags:
+    - libreNMS
 
 
-- name: Open Ports for transmission firewallD
+- name: Open Ports for LibreNMS firewallD
   firewalld:
     port: "{{ item }}"
     permanent: true
@@ -83,8 +102,10 @@
     - "{{ docker_ports }}"
   notify: Restart firewalld
   when: ansible_distribution == "CentOS"
+  tags:
+    - libreNMS
 
-- name: Open Ports for transmission UFW
+- name: Open Ports for LibreNMS UFW
   ufw:
     port: "{{ item }}"
     rule: allow
@@ -92,19 +113,23 @@
     - "{{ docker_portsUFW }}"
   notify: Restart UFW
   when: ansible_distribution == "Ubuntu"
+  tags:
+    - libreNMS
 
 - name: Install Python influxDB Client
   pip:
     state: present
     name: influxdb
   when: "docker_libreNMS_influxdb  == true"
+  tags:
+    - libreNMS
 
-- name: Create influxDB Database for LibreNMS
-  influxdb_database:
-      hostname: "{{ docker_libreNMS_influxdb_ip }}"
-      database_name: "{{ docker_libreNMS_influxdb_database_name }}"
-      port: "{{ docker_libreNMS_influxdb_port }}"
-      username: "{{ docker_libreNMS_influxdb_username }}"
-      password: "{{ docker_libreNMS_influxdb_password }}"
-      state: present
-  when: "docker_libreNMS_influxdb  == true"
+# - name: Create influxDB Database for LibreNMS
+#   influxdb_database:
+#       hostname: "{{ docker_libreNMS_influxdb_ip }}"
+#       database_name: "{{ docker_libreNMS_influxdb_database_name }}"
+#       port: "{{ docker_libreNMS_influxdb_port }}"
+#       username: "{{ docker_libreNMS_influxdb_username }}"
+#       password: "{{ docker_libreNMS_influxdb_password }}"
+#       state: present
+#   when: "docker_libreNMS_influxdb  == true"

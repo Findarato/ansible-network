@@ -1,14 +1,17 @@
 ---
 # Apply common configuration to all hosts
-- hosts: docker-cluster
+- hosts: all
   become: true
   remote_user: it
   roles:
     - basic-server
     - zsh
+
+- hosts: docker-cluster
+  become: true
+  remote_user: it
+  roles:
     - docker-common
-    # - mongrelion.docker
-    # - geerlingguy.filebeat
     - docker-dns
 
 #
@@ -34,4 +37,4 @@
   remote_user: it
   become: true
   roles:
-    - docker-LibreNMS
+    - { role: docker-LibreNMS, tags: 'libreNMS'}

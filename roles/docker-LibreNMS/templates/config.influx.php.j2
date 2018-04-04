@@ -1,0 +1,16 @@
+<?Php
+/**
+* InfluxDB config
+*/
+
+{%if docker_libreNMS_influxdb %}
+$config['influxdb']['enable'] = true;
+$config['influxdb']['transport'] = 'http'; # Default, other options: https, udp
+$config['influxdb']['host'] = '{{ docker_libreNMS_influxdb_ip }}';
+$config['influxdb']['port'] = '{{ docker_libreNMS_influxdb_port }}';
+$config['influxdb']['db'] = '{{ docker_libreNMS_influxdb_database_name }}';
+$config['influxdb']['username'] = '{{ docker_libreNMS_influxdb_username }}';
+$config['influxdb']['password'] = '{{ docker_libreNMS_influxdb_password }}';
+$config['influxdb']['timeout'] = 0; # Optional
+$config['influxdb']['verifySSL'] = false; # Optional
+{% endif %}

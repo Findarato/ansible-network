@@ -30,7 +30,7 @@ docker_networkInfo:
 
 
 docker_libreNMS_influxdb: true
-docker_libreNMS_influxdb_ip: wpl-docker02.vm.library.wpl.lib.in.us
+docker_libreNMS_influxdb_ip: 192.168.1.217
 docker_libreNMS_influxdb_port: 8086
 docker_libreNMS_influxdb_username: admin
 docker_libreNMS_influxdb_password: admin
