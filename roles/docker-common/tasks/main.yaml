@@ -1,4 +1,4 @@
-- include: "{{ansible_os_family}}.yml"
+- include_tasks: "{{ansible_os_family}}.yml"
 
 - name: Create Docker paths
   file:

@@ -1,4 +1,4 @@
 #!/usr/bin/env ansible-playbook
 ---
-- include: "{{ansible_os_family}}/main.yml"
-- include: "dotfiles.yml"
+- include_tasks: "{{ansible_os_family}}/main.yml"
+- import_tasks: "dotfiles.yml"

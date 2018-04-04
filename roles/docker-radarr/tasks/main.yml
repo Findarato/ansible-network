@@ -1,0 +1,44 @@
+---
+# tasks file for docker-sonarr
+
+- name: Create Docker paths
+  file:
+    path: "/docker/containers/radarr/{{ item }}"
+    state: directory
+    mode: 0775
+    owner: it
+    group: it
+  with_items:
+    - downloads
+    - config
+
+- name: Recreate Radarr container
+  docker_container:
+    name: radarr
+    image: linuxserver/radarr
+    state: started
+    restart_policy: unless-stopped
+    recreate: no
+    restart: yes
+    pull: true
+    exposed_ports:
+      - 7878
+    published_ports:
+      - 7878:7878
+    volumes:
+      - /docker/containers/radarr/downloads:/downloads
+      - /mnt/tarvalon/storage/Movies:/movies
+      - /etc/localtime:/ect/localtime:ro
+    env:
+      TZ: "America/Chicago"
+      PUID: 1001
+      PGID: 1001
+
+- name: Open Ports for Radarr
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items:
+    - "{{ docker_ports }}"
+  notify: Restart firewalld

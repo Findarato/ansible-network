@@ -1,5 +1,5 @@
 #!/usr/bin/env ansible-playbook
-- name: "Install Docker helpers {{ansible_os_family}}"
+- name: "Install Docker helpers"
   apt:
     name: "{{ item }}"
     state: present

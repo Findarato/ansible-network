@@ -14,7 +14,7 @@
     image: linuxserver/plex
     state: started
     restart_policy: unless-stopped
-    recreate: no
+    recreate: yes
     restart: yes
     pull: true
     network_mode: host
@@ -30,7 +30,9 @@
       - 5353:5353/udp
       - 1900:1900/udp
     volumes:
-      - /docker/containers/plex/data:/data/
+      - /mnt/tarvalon/storage/Movies:/data/Movies
+      - /mnt/tarvalon/storage/TV:/data/TV
+      # - /docker/containers/plex/data:/data/
       - /docker/containers/plex/config:/config
       - /docker/containers/plex/transcode:/transcode
     env:

@@ -12,6 +12,9 @@
     path:            "{{ docker_transmission_storage }}/{{ item }}"
     state:           directory
     mode:            0775
+    owner:           1001
+    group:           1001
+    recurse:         yes
   with_items:
     - data
     - config
@@ -27,7 +30,7 @@
     image:           linuxserver/transmission
     state:           started
     restart_policy:  unless-stopped
-    recreate:        no
+    recreate:        yes
     restart:         yes
     pull:            true
     exposed_ports:
@@ -42,8 +45,8 @@
         - "{{ docker_transmission_storage }}/config:/config"
         - "{{ docker_transmission_storage }}/data/watch:/watch"
     env:
-      PGID:          1000
-      PUID:          1000
+      PGID:          1001
+      PUID:          1001
       TZ:            "America/Chicago"
 
 - name:              Open Ports for transmission firewallD
