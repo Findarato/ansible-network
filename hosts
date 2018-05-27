@@ -28,8 +28,13 @@ wpl-docker03.vm
 tarabon.wheel
 stats.wheel
 
+<<<<<<< HEAD
 [streaming]
 stats.wheel
 
 [getting]
 stats.wheel
+=======
+[monitoring]
+stats.wheel
+>>>>>>> d6641077bf7c17cfa501e58a22af4d915fe9ca02
