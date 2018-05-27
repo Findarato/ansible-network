@@ -8,6 +8,7 @@
     mode: 0775
   with_items:
     - downloads
+    - config
 
 - name: Recreate sonarr container
   docker_container:
@@ -15,7 +16,7 @@
     image: linuxserver/sonarr
     state: started
     restart_policy: unless-stopped
-    recreate: no
+    recreate: yes
     restart: yes
     pull: true
     exposed_ports:
@@ -24,12 +25,16 @@
       - 8989:8989
     volumes:
       - /docker/containers/sonarr/downloads:/downloads
-      - /mnt/tarvalon/storage/TV:/tv
+      - /docker/containers/sonarr/config:/config
+      - /mnt/tarvalon/storage/TV/:/tv/
+      - /etc/localtime:/etc/localtime:ro
     env:
       TZ: "America/Chicago"
       PUID: 1000
       PGID: 1000
       VERSION: latest
+  tags:
+    - sonarr
 
 - name: Open Ports for sonarr
   firewalld:
