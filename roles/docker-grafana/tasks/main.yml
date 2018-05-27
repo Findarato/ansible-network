@@ -6,15 +6,24 @@
     path: "/docker/containers/grafana/{{ item }}"
     state: directory
     mode: 0775
+    owner: 472
+    group: 472
+    recurse: yes
   with_items:
     - data
     - config
+  tags:
+    - grafana
 
 - name: Copy configuration file
   copy:
     src: defaults.ini
     dest: /docker/containers/grafana/config/grafana.ini
     mode: 0644
+    owner: 472
+    group: 472
+  tags:
+    - grafana
 
 - name: Recreate Grafana container
   docker_container:
@@ -33,9 +42,11 @@
       - /docker/containers/grafana/data:/var/lib/grafana
       - /docker/containers/grafana/config:/etc/grafana
     env:
-      GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-clock-panel,grafana-worldmap-panel,jdbranham-diagram-panel,neocat-cal-heatmap-panel
+      GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-clock-panel,jdbranham-diagram-panel
       GF_SECURITY_ADMIN_PASSWORD: secret
       VIRTUAL_HOST: "{{inventory_hostname}}"
+  tags:
+    - grafana
 
 - name: Open Ports for Grafana
   firewalld:
@@ -45,3 +56,5 @@
   with_items:
     - "{{ docker_ports }}"
   notify: Restart firewalld
+  tags:
+    - grafana

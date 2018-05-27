@@ -17,9 +17,9 @@
     # - docker-LibreNMS
     # - geerlingguy.ntp
     - docker-grafana
-    - docker-plex
-    - docker-plexpy
-    - docker-influxDB
+    # - docker-plex
+    # - docker-plexpy
+    # - docker-influxDB
 
 - hosts: getting
   become: true
@@ -28,3 +28,4 @@
     - docker-sonarr
     - docker-radarr
     - docker-transmission
+    - docker-jackett
