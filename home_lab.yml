@@ -14,7 +14,7 @@
     # - basic-server
     # - zsh
     # - docker-common
-    # - docker-LibreNMS
+    - docker-LibreNMS
     # - geerlingguy.ntp
     - docker-grafana
     # - docker-plex

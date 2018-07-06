@@ -31,7 +31,7 @@
     image: grafana/grafana
     state: started
     restart_policy: always
-    recreate: no
+    recreate: yes
     restart: yes
     pull: true
     exposed_ports:
@@ -41,8 +41,9 @@
     volumes:
       - /docker/containers/grafana/data:/var/lib/grafana
       - /docker/containers/grafana/config:/etc/grafana
+      - /etc/localtime:/etc/localtime:ro
     env:
-      GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-clock-panel,jdbranham-diagram-panel
+      GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-clock-panel,jdbranham-diagram-panel,vonage-status-panel
       GF_SECURITY_ADMIN_PASSWORD: secret
       VIRTUAL_HOST: "{{inventory_hostname}}"
   tags:

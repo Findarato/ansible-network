@@ -19,12 +19,13 @@
     - logs
     - rrd
     - config
-    - db/data
-    - db/config
+    - mariadb/data
+    - mariadb/config
   tags:
     - libreNMS
+    - mariadb
 
-- name: Install Configuration File
+- name: Install interfaces Configuration File
   template:
     src: config.interfaces.php.j2
     dest: "{{ docker_libreNMS_storage }}/config/config.interfaces.php"
@@ -40,23 +41,48 @@
   tags:
     - libreNMS
 
+- name: Install custom Configuration File
+  template:
+    src: config.influx.php.j2
+    dest: "{{ docker_libreNMS_storage }}/config/config.influx.php"
+    mode: 0644
+  tags:
+    - libreNMS
+
+# - name: Create network for LibreNMS
+#   docker_network:
+#     name: libreNMS_net
+#     ipam_options:
+#       subnet: '192.168.2.1/24'
+#       gateway: 192.168.2.1
+#     state: absent
+#   tags:
+#     - libreNMS
+
 # - name: Create and Update LibreNMS Database
 #   docker_container:
-#     name: libreNMS_DB
-#     image: mariadb:10.3
+#     name: libreNMS_db
+#     image: mariadb
 #     state: started
 #     restart_policy: unless-stopped
-#     recreate: no
-#     restart: no
+#     recreate: false
+#     restart: false
 #     pull: true
+#     exposed_ports:
+#       - 3306
 #     volumes:
-#         - "{{ docker_libreNMS_storage }}/db/data:/var/lib/mysql"
-#         - "{{ docker_libreNMS_storage }}/db/config:/etc/mysql/conf.d"
+#       - "{{ docker_libreNMS_storage }}/mariadb/data:/var/lib/mysql"
 #     env:
-#       MYSQL_ROOT_PASSWORD: password
-#       MYSQL_DATABASE: librenms
-#       MYSQL_USER: librenms
-#       MYSQL_PASSWORD: librenms
+#       MYSQL_ROOT_PASSWORD: "{{ docker_libreNMS_sql_root_password }}"
+#       MYSQL_DATABASE: "{{ docker_libreNMS_sql_database_name }}"
+#       MYSQL_USER: "{{ docker_libreNMS_sql_username }}"
+#       MYSQL_PASSWORD: "{{ docker_libreNMS_sql_password }}"
+#   tags:
+#     - libreNMS
+#     - mariadb
+#   # networks:
+#   #   - name: libreNMS_net
+#   #     ipv4_address: 192.168.2.2
 
 - name: Create and Update LibreNMS Container
   docker_container:
@@ -64,18 +90,18 @@
     image: jarischaefer/docker-librenms
     state: started
     restart_policy: unless-stopped
-    recreate: no
+    recreate: yes
     restart: yes
     pull: true
     exposed_ports:
-        - 80
+      - 80
     published_ports:
-        - 8668:80
+      - 8668:80
     volumes:
-        - "{{ docker_libreNMS_storage }}/logs:/opt/librenms/logs"
-        - "{{ docker_libreNMS_storage }}/rrd:/opt/librenms/rrd"
-        - "{{ docker_libreNMS_storage }}/config/config.interfaces.php:/opt/librenms/conf.d/config.interfaces.php"
-        - "{{ docker_libreNMS_storage }}/config/config.influx.php:/opt/librenms/conf.d/config.influx.php"
+      - "{{ docker_libreNMS_storage }}/logs:/opt/librenms/logs"
+      - "{{ docker_libreNMS_storage }}/rrd:/opt/librenms/rrd"
+      - "{{ docker_libreNMS_storage }}/config/config.interfaces.php:/opt/librenms/conf.d/config.interfaces.php"
+      - "{{ docker_libreNMS_storage }}/config/config.influx.php:/opt/librenms/conf.d/config.influx.php"
     env:
       DB_HOST: "{{ docker_libreNMS_sql_ip }}"
       DB_PORT: "{{ docker_libreNMS_sql_port }}"
@@ -88,10 +114,26 @@
       BASE_URL: "{{ docker_libreNMS_base_url }}"
       POLLERS: 16
       DISCOVERY_ENABLE: true
-      RRDCACHED_ENABLE: false
+      DISCOVERY_THREADS: 8
+      ALERTS_ENABLE: false
+    links:
+      - "libreNMS_db:db"
   tags:
     - libreNMS
 
+
+- name: fix LibreNMS paths
+  command: docker exec -i libreNMS /bin/chown -R librenms:librenms /opt/librenms/bootstrap/cache /opt/librenms/storage /opt/librenms/storage/framework/sessions /opt/librenms/storage/framework/views /opt/librenms/storage/framework/cache
+  tags:
+    - libreNMS
+
+- name: Add a container to a network, leaving existing containers connected
+  docker_network:
+    name: libreNMS_net
+    connected:
+      - libreNMS
+      - libreNMS-db
+    appends: yes
 
 - name: Open Ports for LibreNMS firewallD
   firewalld:
