@@ -2,5 +2,5 @@
 # vars file for docker-grafana
 
 docker_ports:
-  - 8989/tcp
+  - 9117/tcp
 

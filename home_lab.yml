@@ -20,6 +20,7 @@
     # - docker-plex
     # - docker-plexpy
     # - docker-influxDB
+    - docker-unifi
 
 - hosts: getting
   become: true
