@@ -3,30 +3,30 @@
 - hosts: home
   become: true
   roles:
-    # - basic-server
+    - basic-server
     # - zsh
-    - docker-dns
+    # - docker-dns
     # - geerlingguy.ntp
 
-- hosts: streaming
-  become: true
-  roles:
-    # - basic-server
-    # - zsh
-    # - docker-common
-    - docker-LibreNMS
-    # - geerlingguy.ntp
-    - docker-grafana
-    # - docker-plex
-    # - docker-plexpy
-    # - docker-influxDB
-    - docker-unifi
+# - hosts: streaming
+#   become: true
+#   roles:
+#     # - basic-server
+#     - zsh
+#     - docker-common
+#     - docker-LibreNMS
+#     # - geerlingguy.ntp
+#     - docker-grafana
+#     # - docker-plex
+#     # - docker-plexpy
+#     # - docker-influxDB
+#     - docker-unifi
 
-- hosts: getting
-  become: true
-  # remote_user: it
-  roles:
-    - docker-sonarr
-    - docker-radarr
-    - docker-transmission
-    - docker-jackett
+# - hosts: getting
+#   become: true
+#   # remote_user: it
+#   roles:
+#     - docker-sonarr
+#     - docker-radarr
+#     - docker-transmission
+#     - docker-jackett

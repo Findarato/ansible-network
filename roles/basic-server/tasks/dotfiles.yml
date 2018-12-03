@@ -5,11 +5,11 @@
   become:             false
   git:
     repo:             "https://github.com/Findarato/dotFiles.git"
-    dest:             "/home/{{ local_user }}/src/dotFiles"
+    dest:             "/home/{{ ansible_user }}/src/dotFiles"
     accept_hostkey:   yes
     track_submodules: no
     update:           yes
-    force:          yes
+    force:            yes
   register:           result
     # version:
 
@@ -17,8 +17,8 @@
 - name:               Delete exsisting files in home directory
   become:             false
   file:
-    src:              "/home/{{ local_user }}/src/dotFiles/{{ old_file }}"
-    dest:             "/home/{{ local_user }}/{{ old_file }}"
+    src:              "/home/{{ ansible_user }}/src/dotFiles/{{ old_file }}"
+    dest:             "/home/{{ ansible_user }}/{{ old_file }}"
     state:            absent
   with_items:
     - bin
@@ -37,13 +37,13 @@
     - .zshrc
   loop_control:
     loop_var:         old_file
-  when:               result|changed
+  when:               result is changed
 
 - name:               Link up Home directory to dotfiles
   become:             false
   file:
-    src:              "/home/{{ local_user }}/src/dotFiles/{{ link_file }}"
-    dest:             "/home/{{ local_user }}/{{ link_file }}"
+    src:              "/home/{{ ansible_user }}/src/dotFiles/{{ link_file }}"
+    dest:             "/home/{{ ansible_user }}/{{ link_file }}"
     state:            link
   with_items:
     - bin
@@ -62,4 +62,4 @@
     - .zshrc
   loop_control:
     loop_var:         link_file
-  when:               result|changed
+  when:               result is changed

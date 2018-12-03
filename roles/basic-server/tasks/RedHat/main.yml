@@ -1,18 +1,17 @@
 #!/usr/bin/env ansible-playbook
 ---
 
+- name:       Install EPEL {{ ansible_distribution }}
+  package:
+    name:   epel-release
+    state:    present
+  when:
+    - ansible_distribution == 'CentOS'
+
 - name: Update system
   yum:
     name: '*'
     state: latest
-
-- name:       Install EPEL
-  package:
-    name:   "http://download.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-10.noarch.rpm"
-    state:    present
-  when:
-    - ansible_distribution == 'CentOS'
-    - ansible_distribution_version == '7'
 
 - name:       Install python bindings for SE Linux
   package:

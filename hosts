@@ -1,13 +1,12 @@
 [home]
-#tarabon.wheel
-stats.wheel
+10.1.1.171
 
 [streaming]
-stats.wheel
+
 
 [getting]
-stats.wheel
+
 
 [home:vars]
 ansible_connection=ssh
-ansible_ssh_user=it
+ansible_ssh_user=joe
