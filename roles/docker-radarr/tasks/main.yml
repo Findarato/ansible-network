@@ -6,8 +6,8 @@
     path: "/docker/containers/radarr/{{ item }}"
     state: directory
     mode: 0775
-    owner: it
-    group: it
+    owner: 1000
+    group: docker
   with_items:
     - downloads
     - config
@@ -31,8 +31,8 @@
       - /etc/localtime:/ect/localtime:ro
     env:
       TZ: "America/Chicago"
-      PUID: 1001
-      PGID: 1001
+      PUID: 1000
+      PGID: 1000
 
 - name: Open Ports for Radarr
   firewalld:

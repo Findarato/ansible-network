@@ -7,9 +7,9 @@
     # - zsh
     # - docker-common
     # - geerlingguy.docker
-    - docker-grafana
-    - docker-unifi
-    - docker-influxDB
+    # - docker-grafana
+    # - docker-unifi
+    # - docker-influxDB
     - docker-sonarr
     - docker-radarr
     - docker-transmission
@@ -19,6 +19,27 @@
       - name: docker
     # - docker-dns
     # - geerlingguy.ntp
+
+- hosts: docker02
+  become: true
+  roles:
+    - basic-server
+    - zsh
+    - docker-common
+    - geerlingguy.docker
+    # - docker-grafana
+    # - docker-unifi
+    # - docker-influxDB
+    - docker-sonarr
+    - docker-radarr
+    - docker-transmission
+    - docker-jackett
+  vars:
+    pip_install_packages:
+      - name: docker
+    # - docker-dns
+    # - geerlingguy.ntp
+
 
 # - hosts: streaming
 #   become: true
