@@ -3,17 +3,14 @@
 - hosts: home
   become: true
   roles:
-    # - basic-server
-    # - zsh
-    # - docker-common
-    # - geerlingguy.docker
-    # - docker-grafana
-    # - docker-unifi
-    # - docker-influxDB
-    - docker-sonarr
-    - docker-radarr
-    - docker-transmission
-    - docker-jackett
+    - basic-server
+    - zsh
+    - docker-common
+    - geerlingguy.docker
+    - docker-grafana
+    - docker-unifi
+    - docker-influxDB
+    - docker-LibreNMS
   vars:
     pip_install_packages:
       - name: docker
@@ -27,9 +24,6 @@
     - zsh
     - docker-common
     - geerlingguy.docker
-    # - docker-grafana
-    # - docker-unifi
-    # - docker-influxDB
     - docker-sonarr
     - docker-radarr
     - docker-transmission
