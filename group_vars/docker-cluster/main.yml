@@ -1,5 +1,5 @@
 # User
-local_user: it
+local_user: joe
 local_user_passwordless_sudo: false
 
 libvirt_storage_path: /home/images

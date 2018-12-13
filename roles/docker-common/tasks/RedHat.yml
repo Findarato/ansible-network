@@ -1,7 +1,7 @@
 - name: "Install Docker helpers {{ansible_os_family}}"
   yum:
-    name: "{{ item }}"
+    name:
+      - python-pip
+      - nfs-utils
     state: present
-  with_items:
-    - python-pip
-    - nfs-utils
+

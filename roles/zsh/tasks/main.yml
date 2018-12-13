@@ -1,2 +1,1 @@
 #!/usr/bin/env ansible-playbook
-- import_tasks: "{{ansible_os_family}}/main.yml"

@@ -3,8 +3,20 @@
 - hosts: home
   become: true
   roles:
-    - basic-server
+    # - basic-server
     # - zsh
+    # - docker-common
+    # - geerlingguy.docker
+    - docker-grafana
+    - docker-unifi
+    - docker-influxDB
+    - docker-sonarr
+    - docker-radarr
+    - docker-transmission
+    - docker-jackett
+  vars:
+    pip_install_packages:
+      - name: docker
     # - docker-dns
     # - geerlingguy.ntp
 
@@ -13,20 +25,12 @@
 #   roles:
 #     # - basic-server
 #     - zsh
-#     - docker-common
 #     - docker-LibreNMS
 #     # - geerlingguy.ntp
-#     - docker-grafana
 #     # - docker-plex
 #     # - docker-plexpy
-#     # - docker-influxDB
-#     - docker-unifi
 
 # - hosts: getting
 #   become: true
 #   # remote_user: it
 #   roles:
-#     - docker-sonarr
-#     - docker-radarr
-#     - docker-transmission
-#     - docker-jackett
