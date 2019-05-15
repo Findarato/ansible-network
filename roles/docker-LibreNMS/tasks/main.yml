@@ -7,6 +7,7 @@
 - name: Install python bindings for docker
   pip:
     name: docker-py
+    state: latest
   tags:
     - libreNMS
 
@@ -49,15 +50,15 @@
   tags:
     - libreNMS
 
-# - name: Create network for LibreNMS
-#   docker_network:
-#     name: libreNMS_net
-#     ipam_options:
-#       subnet: '192.168.2.1/24'
-#       gateway: 192.168.2.1
-#     state: absent
-#   tags:
-#     - libreNMS
+- name: Create network for LibreNMS
+  docker_network:
+    name: libreNMS_net
+    ipam_options:
+      subnet: '192.168.2.1/24'
+      gateway: 192.168.2.1
+    state: absent
+  tags:
+    - libreNMS
 
 # - name: Create and Update LibreNMS Database
 #   docker_container:
@@ -113,9 +114,11 @@
       TZ: "America/Chicago"
       BASE_URL: "{{ docker_libreNMS_base_url }}"
       POLLERS: 16
-      DISCOVERY_ENABLE: true
-      DISCOVERY_THREADS: 8
-      ALERTS_ENABLE: false
+      DISCOVERY_ENABLE: "true"
+      DISCOVERY_THREADS: "8"
+      ALERTS_ENABLE: "false"
+      APP_KEY: "base64:cJYzqMhpCU4YsMdBeQxWZgDKVMeG2gy1Qo3M6lT9O5w="
+      DAILY_ON_STARTUP: "true"
     links:
       - "libreNMS_db:db"
   tags:
@@ -132,7 +135,7 @@
     name: libreNMS_net
     connected:
       - libreNMS
-      - libreNMS-db
+      - libreNMS_db
     appends: yes
 
 - name: Open Ports for LibreNMS firewallD

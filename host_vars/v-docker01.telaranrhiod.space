@@ -20,3 +20,4 @@ local_user_passwordless_sudo: false
 # Docker Setup
 docker_users:
   - joe
+  - it

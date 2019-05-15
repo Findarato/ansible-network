@@ -5,4 +5,5 @@ ntp_timezone: "America/Chicago"
 ntp_manage_config: true
 
 docker_users:
+  - it
   - joe

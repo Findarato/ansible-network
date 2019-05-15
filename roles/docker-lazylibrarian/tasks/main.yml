@@ -1,0 +1,53 @@
+---
+# tasks file for docker-lazylibrarian
+
+- name: Create Docker paths
+  file:
+    path: "{{docker_path}}/lazylibrarian/{{ item }}"
+    state: directory
+    mode: 0775
+    group: docker
+  with_items:
+    - downloads
+    - config
+  tags:
+    - lazylibrarian
+
+
+- name: Recreate lazylibrarian container
+  docker_container:
+    name: lazylibrarian
+    image: linuxserver/lazylibrarian
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    exposed_ports:
+      - 5299
+    published_ports:
+      - 5299:5299
+    volumes:
+      - "{{docker_path}}/lazylibrarian/downloads:/downloads"
+      - "{{docker_path}}/lazylibrarian/config:/config"
+      - /mnt/tarvalon/storage/TV/:/tv/
+      - /etc/localtime:/etc/localtime:ro
+    env:
+      TZ: "America/Chicago"
+      PUID: 1000
+      PGID: 1000
+      VERSION: latest
+  tags:
+    - lazylibrarian
+
+- name: Open Ports for lazylibrarian
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items:
+    - "{{ docker_ports }}"
+  notify: Restart firewalld
+  tags:
+    - lazylibrarian
+

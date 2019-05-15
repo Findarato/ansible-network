@@ -1,13 +1,18 @@
 [home]
 #10.1.1.171
-docker01
-
+#docker01
 [streaming]
+
+[stats]
+stats.telaranrhiod.space
 
 
 [getting]
 
 
-[home:vars]
+[all:vars]
 ansible_connection=ssh
-ansible_ssh_user=joe
+ansible_ssh_user=it
+
+[LibreNMS]
+stats.telaranrhiod.space

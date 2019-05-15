@@ -1,15 +1,13 @@
 ---
 #Apply common configuration to all hosts
-- hosts: home
+- hosts: stats
   become: true
   roles:
     - basic-server
-    - zsh
+#    - zsh
     - docker-common
-    - geerlingguy.docker
-    - docker-grafana
-    - docker-unifi
-    - docker-influxDB
+#    - geerlingguy.docker
+#    - docker-influxDB
     - docker-LibreNMS
   vars:
     pip_install_packages:
@@ -17,7 +15,7 @@
     # - docker-dns
     # - geerlingguy.ntp
 
-- hosts: docker02
+- hosts: v-docker02
   become: true
   roles:
     - basic-server

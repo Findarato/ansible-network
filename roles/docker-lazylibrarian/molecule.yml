@@ -5,7 +5,7 @@ driver:
   name: docker
 docker:
   containers:
-    - name: docker-plexpy
+    - name: docker-lazylibrarian
       image: ubuntu
       image_version: latest
       ansible_groups:
