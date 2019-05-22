@@ -6,10 +6,6 @@
 
 - name:       "Install python bindings for SE Linux  {{ansible_os_family}}"
   yum:
-    name:     "{{ item }}"
+    name:     ["libselinux-python","libsemanage-python","python-pip"]
     state:    present
-  with_items:
-    - libselinux-python
-    - libsemanage-python
-    - python-pip
     

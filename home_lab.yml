@@ -3,7 +3,7 @@
 - hosts: stats
   become: true
   roles:
-    - basic-server
+#    - basic-server
 #    - zsh
     - docker-common
 #    - geerlingguy.docker
@@ -15,11 +15,11 @@
     # - docker-dns
     # - geerlingguy.ntp
 
-- hosts: v-docker02
+- hosts: cluster
   become: true
   roles:
-    - basic-server
-    - zsh
+#    - basic-server
+#    - zsh
     - docker-common
     - geerlingguy.docker
     - docker-sonarr

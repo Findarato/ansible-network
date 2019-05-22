@@ -1,0 +1,28 @@
+---
+# tasks file for docker-watchtower
+
+- name: Recreate watchtower container
+  docker_container:
+    name: watchtower
+    image: v2tec/watchtowe
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    exposed_ports:
+      - 5299
+    published_ports:
+      - 5299:5299
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    env:
+      TZ: "America/Chicago"
+      PUID: "1000"
+      PGID: "1000"
+      VERSION: "latest"
+    command:
+      - 'schedule "0 0 * * * "'
+      - cleanup
+  tags:
+    - watchtower
