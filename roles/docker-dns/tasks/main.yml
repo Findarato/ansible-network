@@ -24,8 +24,8 @@
       - 53
       - 10000
     published_ports:
-      - 53:53
-      - 10000:10000
+      - '0.0.0.0:53:53'
+      - '0.0.0.0:10000:10000'
     volumes:
       - "{{ docker_dns_storage }}/data:/data"
     env:

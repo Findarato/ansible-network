@@ -1,49 +1,48 @@
 ---
 #Apply common configuration to all hosts
-- hosts: stats
+- hosts: home
   become: true
+  remote_user: joe
   roles:
-#    - basic-server
-#    - zsh
-    - docker-common
-#    - geerlingguy.docker
-#    - docker-influxDB
-    - docker-LibreNMS
-  vars:
-    pip_install_packages:
-      - name: docker
-    # - docker-dns
-    # - geerlingguy.ntp
-
-- hosts: cluster
-  become: true
-  roles:
-#    - basic-server
-#    - zsh
-    - docker-common
     - geerlingguy.docker
-    - docker-sonarr
-    - docker-radarr
-    - docker-transmission
-    - docker-jackett
-  vars:
-    pip_install_packages:
-      - name: docker
+    - docker-common
+    - docker-dns
+  vars_files:
+    - vars/main.yml
+    - vars/vault
+    # - basic-server
+    # - zsh
+#    - docker-influxDB
+
+#   vars:
+#     pip_install_packages:
+#       - name: docker
+#     # - docker-dns
+#     # - geerlingguy.ntp
+
+#  - hosts: cluster
+#    become: true
+#    roles:
+#      - basic-server
+#      - zsh
+#    - docker-common
+#    - geerlingguy.docker
+#    - docker-sonarr
+#    - docker-radarr
+#    - docker-transmission
+#    - docker-jackett
+#  vars:
+#    pip_install_packages:
+#      - name: docker
     # - docker-dns
     # - geerlingguy.ntp
 
-
-# - hosts: streaming
-#   become: true
-#   roles:
-#     # - basic-server
-#     - zsh
-#     - docker-LibreNMS
-#     # - geerlingguy.ntp
-#     # - docker-plex
-#     # - docker-plexpy
-
-# - hosts: getting
-#   become: true
-#   # remote_user: it
-#   roles:
+- hosts: getting
+  become: true
+  remote_user: joe
+  roles:
+#    - geerlingguy.docker
+#    - docker-sonarr
+#    - docker-radarr
+    - docker-transmission
+#    - docker-jackett

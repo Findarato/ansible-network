@@ -1,0 +1,30 @@
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: Download cache_domains.json
+      get_url:
+        url: "{{globalURL}}{{cacheDomain}}"
+        dest: ./cache_domains.json
+
+    - name: Read JSON file (can also be a variable).
+      shell: cat cache_domains.json
+      register: json
+
+    # - name: Get simple value.
+    #   set_fact:
+    #     simple_value: "{{ (json.stdout | from_json).example_simple.name }}"
+
+    # - name: Simple debug.
+    #   debug:
+    #     msg: "{{ (json.stdout| from_json).cache_domains }}"
+
+    - name: Test Looping
+      get_url:
+        url: "{{globalURL}}{{item.domain_files[0]}}"
+        dest: "./files/{{item.domain_files[0]}}"
+      with_items:
+        - "{{ (json.stdout| from_json).cache_domains}}"
+  vars:
+    cacheDomain: "cache_domains.json"
+    globalURL: "https://raw.githubusercontent.com/uklans/cache-domains/master/"

@@ -1,0 +1,61 @@
+; Ansible managed /home/joe/Documents/src/ansible/ansible-CentOS7-Docker/roles/docker-cache/templates/zone.j2
+
+
+;
+$TTL    86400
+@       IN      SOA       wheel.time.     admin.wheel.time. (
+                          1         ; Serial
+                          604800    ; Refresh
+                          86400     ; Retry
+                          2419200   ; Expire
+                          86400 )   ; Negative Cache TTL
+
+*.content.steampowered.com.       IN      A     0.0.0.0
+content1.steampowered.com.       IN      A     0.0.0.0
+content2.steampowered.com.       IN      A     0.0.0.0
+content3.steampowered.com.       IN      A     0.0.0.0
+content4.steampowered.com.       IN      A     0.0.0.0
+content5.steampowered.com.       IN      A     0.0.0.0
+content6.steampowered.com.       IN      A     0.0.0.0
+content7.steampowered.com.       IN      A     0.0.0.0
+content8.steampowered.com.       IN      A     0.0.0.0
+cs.steampowered.com.       IN      A     0.0.0.0
+steamcontent.com.       IN      A     0.0.0.0
+client-download.steampowered.com.       IN      A     0.0.0.0
+*.hsar.steampowered.com.edgesuite.net.       IN      A     0.0.0.0
+*.akamai.steamstatic.com.       IN      A     0.0.0.0
+content-origin.steampowered.com.       IN      A     0.0.0.0
+clientconfig.akamai.steamtransparent.com.       IN      A     0.0.0.0
+steampipe.akamaized.net.       IN      A     0.0.0.0
+edgecast.steamstatic.com.       IN      A     0.0.0.0
+steam.apac.qtlglb.com.mwcloudcdn.com.       IN      A     0.0.0.0
+*.cs.steampowered.com.       IN      A     0.0.0.0
+*.cm.steampowered.com.       IN      A     0.0.0.0
+*.edgecast.steamstatic.com.       IN      A     0.0.0.0
+*.steamcontent.com.       IN      A     0.0.0.0
+cdn1-sea1.valve.net.       IN      A     0.0.0.0
+cdn2-sea1.valve.net.       IN      A     0.0.0.0
+*.steam-content-dnld-1.apac-1-cdn.cqloud.com.       IN      A     0.0.0.0
+*.steam-content-dnld-1.eu-c1-cdn.cqloud.com.       IN      A     0.0.0.0
+steam.apac.qtlglb.com.       IN      A     0.0.0.0
+edge.steam-dns.top.comcast.net.       IN      A     0.0.0.0
+edge.steam-dns-2.top.comcast.net.       IN      A     0.0.0.0
+steam.naeu.qtlglb.com.       IN      A     0.0.0.0
+steampipe-kr.akamaized.net.       IN      A     0.0.0.0
+steam.ix.asn.au.       IN      A     0.0.0.0
+steam.eca.qtlglb.com .       IN      A     0.0.0.0
+steam.cdn.on.net.       IN      A     0.0.0.0
+update5.dota2.wmsj.cn.       IN      A     0.0.0.0
+update2.dota2.wmsj.cn.       IN      A     0.0.0.0
+update6.dota2.wmsj.cn.       IN      A     0.0.0.0
+update3.dota2.wmsj.cn.       IN      A     0.0.0.0
+update1.dota2.wmsj.cn.       IN      A     0.0.0.0
+update4.dota2.wmsj.cn.       IN      A     0.0.0.0
+update5.csgo.wmsj.cn.       IN      A     0.0.0.0
+update2.csgo.wmsj.cn.       IN      A     0.0.0.0
+update4.csgo.wmsj.cn.       IN      A     0.0.0.0
+update3.csgo.wmsj.cn.       IN      A     0.0.0.0
+update6.csgo.wmsj.cn.       IN      A     0.0.0.0
+update1.csgo.wmsj.cn.       IN      A     0.0.0.0
+st.dl.bscstorage.net.       IN      A     0.0.0.0
+cdn.mileweb.cs.steampowered.com.8686c.com.       IN      A     0.0.0.0

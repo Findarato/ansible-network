@@ -1,0 +1,17 @@
+; Ansible managed /home/joe/Documents/src/ansible/ansible-CentOS7-Docker/roles/docker-cache/templates/zone.j2
+
+
+;
+$TTL    86400
+@       IN      SOA       wheel.time.     admin.wheel.time. (
+                          1         ; Serial
+                          604800    ; Refresh
+                          86400     ; Retry
+                          2419200   ; Expire
+                          86400 )   ; Negative Cache TTL
+
+l3cdn.riotgames.com.       IN      A     0.0.0.0
+worldwide.l3cdn.riotgames.com.       IN      A     0.0.0.0
+riotgamespatcher-a.akamaihd.net.       IN      A     0.0.0.0
+riotgamespatcher-a.akamaihd.net.edgesuite.net.       IN      A     0.0.0.0
+lol.dyn.riotcdn.net.       IN      A     0.0.0.0

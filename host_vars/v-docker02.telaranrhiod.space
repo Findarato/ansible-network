@@ -21,3 +21,5 @@ local_user_passwordless_sudo: false
 docker_users:
   - joe
   - it
+
+ansible_dns_host: 10.1.1.175

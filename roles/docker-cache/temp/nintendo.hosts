@@ -1,0 +1,25 @@
+; Ansible managed /home/joe/Documents/src/ansible/ansible-CentOS7-Docker/roles/docker-cache/templates/zone.j2
+
+
+;
+$TTL    86400
+@       IN      SOA       wheel.time.     admin.wheel.time. (
+                          1         ; Serial
+                          604800    ; Refresh
+                          86400     ; Retry
+                          2419200   ; Expire
+                          86400 )   ; Negative Cache TTL
+
+ccs.cdn.wup.shop.nintendo.com.       IN      A     0.0.0.0
+ccs.cdn.wup.shop.nintendo.net.       IN      A     0.0.0.0
+ccs.cdn.wup.shop.nintendo.net.edgesuite.net.       IN      A     0.0.0.0
+geisha-wup.cdn.nintendo.net.       IN      A     0.0.0.0
+geisha-wup.cdn.nintendo.net.edgekey.net.       IN      A     0.0.0.0
+idbe-wup.cdn.nintendo.net.       IN      A     0.0.0.0
+idbe-wup.cdn.nintendo.net.edgekey.net.       IN      A     0.0.0.0
+ecs-lp1.hac.shop.nintendo.net.       IN      A     0.0.0.0
+receive-lp1.dg.srv.nintendo.net.       IN      A     0.0.0.0
+*.wup.shop.nintendo.net.       IN      A     0.0.0.0
+*.wup.eshop.nintendo.net.       IN      A     0.0.0.0
+*.hac.lp1.d4c.nintendo.net.       IN      A     0.0.0.0
+*.hac.lp1.eshop.nintendo.net.       IN      A     0.0.0.0

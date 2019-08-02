@@ -1,0 +1,24 @@
+; Ansible managed /home/joe/Documents/src/ansible/ansible-CentOS7-Docker/roles/docker-cache/templates/zone.j2
+
+
+;
+$TTL    86400
+@       IN      SOA       wheel.time.     admin.wheel.time. (
+                          1         ; Serial
+                          604800    ; Refresh
+                          86400     ; Retry
+                          2419200   ; Expire
+                          86400 )   ; Negative Cache TTL
+
+rxp-fl.cncirc.net.       IN      A     0.0.0.0
+rxp-chi.cncirc.net.       IN      A     0.0.0.0
+rxp-nz.cncirc.net.       IN      A     0.0.0.0
+rxp-bgr.cncirc.net.       IN      A     0.0.0.0
+rxp-fr.cncirc.net.       IN      A     0.0.0.0
+rxp-nyc.cncirc.net.       IN      A     0.0.0.0
+rxp-uk.cncirc.net.       IN      A     0.0.0.0
+rxp-sg.cncirc.net.       IN      A     0.0.0.0
+rxp-la.cncirc.net.       IN      A     0.0.0.0
+rxp-fin.cncirc.net.       IN      A     0.0.0.0
+denver1.renegade-x.com.       IN      A     0.0.0.0
+seattle1.renegade-x.com.       IN      A     0.0.0.0

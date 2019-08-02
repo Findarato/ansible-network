@@ -1,2 +1,3 @@
 ---
 # defaults file for docker-grafana
+ansible_dns_host: 0.0.0.0

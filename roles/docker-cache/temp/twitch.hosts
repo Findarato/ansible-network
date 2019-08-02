@@ -1,0 +1,16 @@
+; Ansible managed /home/joe/Documents/src/ansible/ansible-CentOS7-Docker/roles/docker-cache/templates/zone.j2
+
+
+;
+$TTL    86400
+@       IN      SOA       wheel.time.     admin.wheel.time. (
+                          1         ; Serial
+                          604800    ; Refresh
+                          86400     ; Retry
+                          2419200   ; Expire
+                          86400 )   ; Negative Cache TTL
+
+d3rmjivj4k4f0t.cloudfront.net.       IN      A     0.0.0.0
+addons.forgesvc.net.       IN      A     0.0.0.0
+media.forgecdn.net.       IN      A     0.0.0.0
+files.forgecdn.net.       IN      A     0.0.0.0

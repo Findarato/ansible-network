@@ -1,0 +1,31 @@
+; Ansible managed /home/joe/Documents/src/ansible/ansible-CentOS7-Docker/roles/docker-cache/templates/zone.j2
+
+
+;
+$TTL    86400
+@       IN      SOA       wheel.time.     admin.wheel.time. (
+                          1         ; Serial
+                          604800    ; Refresh
+                          86400     ; Retry
+                          2419200   ; Expire
+                          86400 )   ; Negative Cache TTL
+
+dl1.wargaming.net.       IN      A     0.0.0.0
+dl2.wargaming.net.       IN      A     0.0.0.0
+wg.gcdn.co.       IN      A     0.0.0.0
+wgusst-na.wargaming.net.       IN      A     0.0.0.0
+wgusst-eu.wargaming.net.       IN      A     0.0.0.0
+update-v4r4h10x.worldofwarships.com.       IN      A     0.0.0.0
+wgus-wotasia.wargaming.net.       IN      A     0.0.0.0
+dl-wot-ak.wargaming.net.       IN      A     0.0.0.0
+dl-wot-gc.wargaming.net.       IN      A     0.0.0.0
+dl-wot-se.wargaming.net .       IN      A     0.0.0.0
+dl-wot-cdx.wargaming.net.       IN      A     0.0.0.0
+dl-wows-ak.wargaming.net.       IN      A     0.0.0.0
+dl-wows-gc.wargaming.net.       IN      A     0.0.0.0
+dl-wows-se.wargaming.net .       IN      A     0.0.0.0
+dl-wows-cdx.wargaming.net.       IN      A     0.0.0.0
+dl-wowp-ak.wargaming.net.       IN      A     0.0.0.0
+dl-wowp-gc.wargaming.net.       IN      A     0.0.0.0
+dl-wowp-se.wargaming.net .       IN      A     0.0.0.0
+dl-wowp-cdx.wargaming.net.       IN      A     0.0.0.0
