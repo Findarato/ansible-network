@@ -1,0 +1,9 @@
+---
+all:
+  children:
+    servers:
+      hosts:
+        v-docker02.telaranrhiod.space: #CentOS 7 Template
+  vars:
+    ansible_connection: ssh
+    ansible_ssh_user: joe
