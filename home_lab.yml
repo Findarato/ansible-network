@@ -13,12 +13,26 @@
     - vars/vault
     # - zsh
 #    - docker-influxDB
-
 #   vars:
 #     pip_install_packages:
 #       - name: docker
 #     # - docker-dns
 #     # - geerlingguy.ntp
+
+- hosts: stats
+  become: true
+  remote_user: it
+  roles:
+    - basic-server
+    - geerlingguy.docker
+    - docker-influxDB
+  vars_files:
+    - vars/main.yml
+    - vars/vault
+    # - zsh
+#    - docker-influxDB
+
+
 
 #  - hosts: cluster
 #    become: true

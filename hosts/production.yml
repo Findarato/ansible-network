@@ -11,6 +11,9 @@ all:
     watching:
       hosts:
         v-docker01.telaranrhiod.space: #CentOS 7 Template
+    stats:
+      hosts:
+        stats.telaranrhiod.space:
   vars:
     ansible_connection: ssh
     ansible_ssh_user: joe

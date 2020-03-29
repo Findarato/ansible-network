@@ -1,5 +1,0 @@
----
-# vars file for docker-grafana
-
-docker_ports:
-  - 8181/tcp

@@ -3,3 +3,6 @@
 #    path: /dev/mapper/cl-root
 #  - name: boot
 #    path: /dev/sda2
+
+include_vars: vault
+ansible_become_pass: "{{vault_user_pass}}"
