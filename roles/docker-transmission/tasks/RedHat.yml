@@ -1,10 +1,10 @@
 ---
-- name:       "Install epel for extra packages  {{ansible_os_family}}"
+- name: "Install epel for extra packages  {{ ansible_os_family }}"
   yum:
-    name:     epel-release
-    state:    present
+    name: epel-release
+    state: present
 
-- name:       "Install python bindings for SE Linux  {{ansible_os_family}}"
+- name: "Install python bindings for SE Linux  {{ ansible_os_family }}"
   yum:
-    name:     [ "libselinux-python","libsemanage-python","python-pip" ]
-    state:    present
+    name: [ "libselinux-python", "libsemanage-python", "python-pip" ]
+    state: present

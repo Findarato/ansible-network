@@ -1,20 +1,17 @@
 ---
 # tasks file for docker-transmission
-- include:           "{{ansible_os_family}}.yml"
+- include: "{{ ansible_os_family }}.yml"
 
-- name:              Install python bindings for docker
+- name: Install python bindings for docker
   pip:
-    name:            docker-py
-
-
-- name:              Create Docker paths
+    name: docker-py
+- name: Create Docker paths
   file:
-    path:            "{{ docker_transmission_storage }}/{{ item }}"
-    state:           directory
-#    mode:            0775
-    owner:           1000
-    group:           1000
-    recurse:         yes
+    path: "{{ docker_transmission_storage }}/{{ item }}"
+    state: directory
+    owner: 1000
+    group: 1000
+    recurse: yes
   with_items:
     - data
     - config
@@ -23,47 +20,46 @@
     - data/downloads/complete
     - data/downloads/incomplete
 
-
-- name:              Create and Update Transmission Container
+- name: Create and Update Transmission Container
   docker_container:
-    name:            transmission
-    image:           linuxserver/transmission
-    state:           started
-    restart_policy:  unless-stopped
-    recreate:        yes
-    restart:         yes
-    pull:            true
+    name: transmission
+    image: linuxserver/transmission
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
     exposed_ports:
-        - 9091
-        - 51413
+      - 9091
+      - 51413
     published_ports:
-        - 9091:9091
-        - 51413:51413
-        - 51413:51413/udp
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
     volumes:
-        - "{{ docker_transmission_storage }}/data/downloads:/downloads"
-        - "{{ docker_transmission_storage }}/config:/config"
-        - "{{ docker_transmission_storage }}/data/watch:/watch"
+      - "{{ docker_transmission_storage }}/data/downloads:/downloads"
+      - "{{ docker_transmission_storage }}/config:/config"
+      - "{{ docker_transmission_storage }}/data/watch:/watch"
     env:
-      PGID:          1000
-      PUID:          1000
-      TZ:            "America/Chicago"
+      PGID: 1000
+      PUID: 1000
+      TZ: "America/Chicago"
 
-- name:              Open Ports for transmission firewallD
+- name: Open Ports for transmission firewallD
   firewalld:
-    port:            "{{ item }}"
-    permanent:       true
-    state:           enabled
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
   with_items:
     - "{{ docker_ports }}"
-  notify:            Restart firewalld
-  when:              ansible_distribution == "CentOS"
+  notify: Restart firewalld
+  when: ansible_distribution == "CentOS"
 
-- name:              Open Ports for transmission UFW
+- name: Open Ports for transmission UFW
   ufw:
-    port:            "{{ item }}"
-    rule:            allow
+    port: "{{ item }}"
+    rule: allow
   with_items:
     - "{{ docker_portsUFW }}"
-  notify:            Restart UFW
-  when:              ansible_distribution == "Ubuntu"
+  notify: Restart UFW
+  when: ansible_distribution == "Ubuntu"
