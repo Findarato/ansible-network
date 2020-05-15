@@ -26,6 +26,7 @@
     - basic-server
     - geerlingguy.docker
     - docker-influxDB
+    - docker-watchtower
   vars_files:
     - vars/main.yml
     - vars/vault

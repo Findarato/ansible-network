@@ -33,17 +33,17 @@
       - 2003
       - 4242
     published_ports:
-      - 8083:8083
-      - 8086:8086
-      - 8089:8089
-      - 4242:4242
-      - 2003:2003
-      - 25826:25826/udp
+      - "8083:8083"
+      - "8086:8086"
+      - "8089:8089"
+      - "4242:4242"
+      - "2003:2003"
+      - "25826:25826/udp"
     volumes:
       - /docker/containers/influxdb/data:/var/lib/influxdb/
       - /docker/containers/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
     env:
-      VIRTUAL_HOST: "{{inventory_hostname}}influx.library.wpl.lib.in.us"
+      VIRTUAL_HOST: "influx.telaranrhiod.space
 
 - name: Open Ports for influxdb
   firewalld:

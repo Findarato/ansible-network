@@ -43,7 +43,7 @@
       - /docker/containers/grafana/config:/etc/grafana
       - /etc/localtime:/etc/localtime:ro
     env:
-      GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-clock-panel,jdbranham-diagram-panel,vonage-status-panel,fatcloud-windrose-panel,snuids-radar-panel
+      GF_INSTALL_PLUGINS: grafana-googlesheets-datasource,grafana-piechart-panel,grafana-clock-panel,jdbranham-diagram-panel
       GF_SECURITY_ADMIN_PASSWORD: secret
       VIRTUAL_HOST: "{{inventory_hostname}}"
   tags:
