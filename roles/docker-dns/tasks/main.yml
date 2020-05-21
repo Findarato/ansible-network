@@ -1,6 +1,11 @@
 ---
 # tasks file for docker-dns
 
+# - name: Install Python tools for docker
+#   pip:
+#     name: docker
+#     state: latest
+
 - name: Create Docker paths
   file:
     path: "{{ docker_dns_storage }}/{{ item }}"
@@ -18,21 +23,18 @@
     restart_policy: unless-stopped
     recreate: no
     restart: yes
-    pull: true
-    dns_servers: 127.0.0.1
-    exposed_ports:
-      - 53
-      - 10000
-    published_ports:
-      - '0.0.0.0:53:53'
+    pull: false
+    dns_servers: ["10.1.1.171","10.1.1.175"]
+    ports:
+      - '0.0.0.0:53:53/udp'
       - '0.0.0.0:10000:10000'
     volumes:
       - "{{ docker_dns_storage }}/data:/data"
     env:
       ROOT_PASSWORD: SecretPassword
       TZ: America/Chicago
-      PUID: 1000
-      PGID: 1000
+      PUID: "1000"
+      PGID: "1000"
       VERSION: latest
 
 - name: Open Ports for Bind

@@ -3,5 +3,6 @@
 
 docker_ports:
   - 8181/tcp
+  - 53/udp
 
 docker_dns_storage: "/docker/containers/dns/"

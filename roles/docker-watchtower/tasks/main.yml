@@ -4,7 +4,7 @@
 - name: Recreate watchtower container
   docker_container:
     name: watchtower
-    image: v2tec/watchtowe
+    image: v2tec/watchtower
     state: started
     restart_policy: unless-stopped
     recreate: yes
@@ -23,6 +23,6 @@
       VERSION: "latest"
     command:
       - 'schedule "0 0 * * * "'
-      - cleanup
+      - "cleanup"
   tags:
     - watchtower

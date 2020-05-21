@@ -1,13 +1,15 @@
 ---
 #Apply common configuration to all hosts
-- hosts: home
+- hosts: v-docker01.telaranrhiod.space:v-docker02.telaranrhiod.space
   become: true
   remote_user: joe
   roles:
-    - basic-server
-    - geerlingguy.docker
-    - docker-common
     - docker-dns
+    # - basic-server
+    # - zsh
+    # - geerlingguy.docker
+    # - docker-common
+    # - docker-watchtower
   vars_files:
     - vars/main.yml
     - vars/vault
@@ -16,23 +18,19 @@
 #   vars:
 #     pip_install_packages:
 #       - name: docker
-#     # - docker-dns
-#     # - geerlingguy.ntp
 
-- hosts: stats
-  become: true
-  remote_user: it
-  roles:
-    - basic-server
-    - geerlingguy.docker
-    - docker-influxDB
-    - docker-watchtower
-  vars_files:
-    - vars/main.yml
-    - vars/vault
-    # - zsh
-#    - docker-influxDB
-
+# - hosts: stats
+#   become: true
+#   remote_user: it
+#   roles:
+#     - basic-server
+#     - geerlingguy.docker
+#     - docker-influxDB
+#   vars_files:
+#     - vars/main.yml
+#     - vars/vault
+#     # - zsh
+# #    - docker-influxDB
 
 
 #  - hosts: cluster
@@ -49,15 +47,25 @@
 #  vars:
 #    pip_install_packages:
 #      - name: docker
-    # - docker-dns
-    # - geerlingguy.ntp
 
-- hosts: getting
-  become: true
-  remote_user: joe
-  roles:
-#    - geerlingguy.docker
-#    - docker-sonarr
-#    - docker-radarr
-    - docker-transmission
-#    - docker-jackett
+# - hosts: watching
+#   become: true
+#   remote_user: joe
+#   roles:
+#     - geerlingguy.docker
+#     - docker-sonarr
+#     - docker-radarr
+#     - docker-transmission
+#     - docker-jackett
+#     - docker-dns
+
+# - hosts: getting
+#   become: true
+#   remote_user: joe
+#   roles:
+#     - geerlingguy.docker
+#     - docker-sonarr
+#     - docker-radarr
+#     # - docker-transmission
+#     - docker-jackett
+#     - docker-dns

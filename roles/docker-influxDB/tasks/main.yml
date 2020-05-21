@@ -17,7 +17,7 @@
     dest: /docker/containers/influxdb/influxdb.conf
     mode: 0644
 
-- name: Start influxDB container {{inventory_hostname}}
+- name: "Start influxDB container {{inventory_hostname}}"
   docker_container:
     name: influxdb
     image: influxdb
@@ -43,7 +43,7 @@
       - /docker/containers/influxdb/data:/var/lib/influxdb/
       - /docker/containers/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
     env:
-      VIRTUAL_HOST: "influx.telaranrhiod.space
+      VIRTUAL_HOST: "influx.telaranrhiod.space"
 
 - name: Open Ports for influxdb
   firewalld:
