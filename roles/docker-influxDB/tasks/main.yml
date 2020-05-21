@@ -1,6 +1,11 @@
 ---
 # tasks file for docker-influxDB
 
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
 - name: Create paths
   file:
     path: "/docker/containers/influxdb/{{ item }}"
@@ -26,13 +31,13 @@
     recreate: false
     restart: yes
     pull: true
-    exposed_ports:
-      - 8083
-      - 8086
-      - 8089
-      - 2003
-      - 4242
-    published_ports:
+    # exposed_ports:
+    #   - 8083
+    #   - 8086
+    #   - 8089
+    #   - 2003
+    #   - 4242
+    ports:
       - "8083:8083"
       - "8086:8086"
       - "8089:8089"

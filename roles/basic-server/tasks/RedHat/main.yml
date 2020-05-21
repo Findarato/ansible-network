@@ -1,27 +1,21 @@
-#!/usr/bin/env ansible-playbook
 ---
-
-- name:       Install EPEL {{ ansible_distribution }}
+- name: Install EPEL {{ ansible_distribution }}
   package:
-    name:   epel-release
-    state:    present
+    name: epel-release
+    state: present
   when:
     - ansible_distribution == 'CentOS'
 
 - name: Update system
   yum:
-    name: '*'
+    name: "*"
     state: latest
 
-- name:       Install python bindings for SE Linux
+- name: Install generic packages
   package:
-    name:     "{{ item }}"
-    state:    present
+    name: "{{ item }}"
+    state: present
   with_items:
-    - libselinux-python
-    - libsemanage-python
-    - fail2ban-all
     - nano
     - wget
-    - python-pip
     - git

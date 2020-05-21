@@ -45,7 +45,7 @@
     env:
       GF_INSTALL_PLUGINS: grafana-googlesheets-datasource,grafana-piechart-panel,grafana-clock-panel,jdbranham-diagram-panel
       GF_SECURITY_ADMIN_PASSWORD: secret
-      VIRTUAL_HOST: "{{inventory_hostname}}"
+      VIRTUAL_HOST: "grafana.telaranrhiod.space"
   tags:
     - grafana
 

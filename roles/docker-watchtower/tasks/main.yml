@@ -1,6 +1,11 @@
 ---
 # tasks file for docker-watchtower
 
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
 - name: Recreate watchtower container
   docker_container:
     name: watchtower
@@ -10,10 +15,8 @@
     recreate: yes
     restart: yes
     pull: true
-    exposed_ports:
-      - 5299
-    published_ports:
-      - 5299:5299
+    ports:
+      - '5299:5299/tcp'
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     env:

@@ -8,19 +8,19 @@
 
 - name: Create Docker paths
   file:
-    path: "/docker/containers/jackett/{{ item }}"
+    path: "/docker/containers/pihole/{{ item }}"
     state: directory
     mode: 0775
   with_items:
     - downloads
     - config
   tags:
-    - jackett
+    - pihole
 
-- name: Recreate jackett container
+- name: Recreate pihole container
   docker_container:
-    name: jackett
-    image: linuxserver/jackett
+    name: pihole
+    image: linuxserver/pihole
     state: started
     restart_policy: unless-stopped
     recreate: yes
@@ -31,15 +31,16 @@
     published_ports:
       - 9117:9117
     volumes:
-      - /docker/containers/jackett/downloads:/downloads
-      - /docker/containers/jackett/config:/config
+      - /docker/containers/pihole/downloads:/downloads
+      - /docker/containers/pihole/config:/config
       - /etc/localtime:/etc/localtime:ro
     env:
       TZ: "America/Chicago"
       PUID: 1000
       PGID: 1000
+      VIRTUAL_HOST: "pihole.telaranrhiod.space"
   tags:
-    - jackett
+    - pihole
 
 - name: Open Ports for jackett
   firewalld:
@@ -50,4 +51,4 @@
     - "{{ docker_ports }}"
   notify: Restart firewalld
   tags:
-    - jackett
+    - pihole

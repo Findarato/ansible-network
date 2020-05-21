@@ -1,36 +1,39 @@
 ---
-#Apply common configuration to all hosts
-- hosts: v-docker01.telaranrhiod.space:v-docker02.telaranrhiod.space
+# Apply common configuration to all hosts
+- hosts: all
   become: true
   remote_user: joe
   roles:
-    - docker-dns
-    # - basic-server
-    # - zsh
-    # - geerlingguy.docker
-    # - docker-common
-    # - docker-watchtower
+    - basic-server
+    - zsh
+    - geerlingguy.repo-epel
+    - geerlingguy.pip
+    - geerlingguy.docker
+    - docker-watchtower
   vars_files:
     - vars/main.yml
     - vars/vault
-    # - zsh
-#    - docker-influxDB
-#   vars:
-#     pip_install_packages:
-#       - name: docker
+
+# - hosts: dns
+#   become: true
+#   remote_user: joe
+#   roles:
+#     - docker-dns
+#   vars_files:
+#     - vars/main.yml
+#     - vars/vault
+
 
 # - hosts: stats
 #   become: true
 #   remote_user: it
 #   roles:
-#     - basic-server
-#     - geerlingguy.docker
 #     - docker-influxDB
 #   vars_files:
 #     - vars/main.yml
 #     - vars/vault
-#     # - zsh
-# #    - docker-influxDB
+    # - zsh
+#    - docker-influxDB
 
 
 #  - hosts: cluster
