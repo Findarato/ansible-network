@@ -1,6 +1,11 @@
 ---
 # tasks file for docker-jacket
 
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
 - name: Create Docker paths
   file:
     path: "/docker/containers/jackett/{{ item }}"

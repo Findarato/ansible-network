@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include docker-jackett"
+      include_role:
+        name: "docker-jackett"
+  roles:
+    - geerlingguy.docker
