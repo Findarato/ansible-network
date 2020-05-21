@@ -6,6 +6,7 @@
     path: "/docker/containers/sonarr/{{ item }}"
     state: directory
     mode: 0775
+    group: docker
   with_items:
     - downloads
     - config

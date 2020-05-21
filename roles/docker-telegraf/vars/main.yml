@@ -1,0 +1,7 @@
+---
+# vars file for docker-grafana
+
+docker_ports:
+  - 8181/tcp
+
+docker_dns_storage: "/docker/containers/dns/"

@@ -1,28 +1,29 @@
 ---
 # defaults file for docker-LibreNMS
 docker_ports:
-    - 8668/tcp
+    - '8668/tcp'
 docker_portsUFW:
-    - 8668
+    - '8668'
+
 docker_libreNMS_storage: "/docker/containers/libreNMS/"
 
-docker_libreNMS_influxdb: true
-docker_libreNMS_influxdb_ip: 10.1.1.33
-docker_libreNMS_influxdb_port: 8086
+docker_libreNMS_influxdb: 'true'
+docker_libreNMS_influxdb_ip: influx.telaranrhiod.space
+docker_libreNMS_influxdb_port: '8086'
 docker_libreNMS_influxdb_username: admin
 docker_libreNMS_influxdb_password: admin
 docker_libreNMS_influxdb_database_name: librenms
 
 docker_libreNMS_sql_ip: db
 # docker_libreNMS_sql_ip: 10.1.1.33
-docker_libreNMS_sql_port: 3306
+docker_libreNMS_sql_port: '3306'
 docker_libreNMS_sql_username: librenms
 docker_libreNMS_sql_password: a0kCcEIMRXhxCaEy
 docker_libreNMS_sql_database_name: librenms
 docker_libreNMS_sql_root_password: ZqdXs66vzm9}~d34ZJ82Ya
 
-docker_libreNMS_PUID: 1000
-docker_libreNMS_PGID: 1000
+docker_libreNMS_PUID: '1000'
+docker_libreNMS_PGID: '1000'
 
 
-docker_libreNMS_base_url: "http://stats:8668"
+docker_libreNMS_base_url: "http://stats.telaranrhiod.space:8668"

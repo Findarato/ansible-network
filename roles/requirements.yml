@@ -1,8 +1,8 @@
 ---
 # Adding my own monitoring software in.
 # @TODO: Fully add in this role
-# - src: Findarato.Monitoring
+- src: geerlingguy.repo-epel
 - src: geerlingguy.filebeat
-# - src: mongrelion.docker
 - src: geerlingguy.ntp
 - src: geerlingguy.docker
+- src: geerlingguy.pip

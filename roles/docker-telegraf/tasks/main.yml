@@ -1,0 +1,33 @@
+---
+# tasks file for docker-dns
+
+- name: Create Docker paths
+  file:
+    path: "{{ docker_telegraf_storage }}/{{ item }}"
+    state: directory
+    mode: 0775
+  with_items:
+    - config
+    - data
+    - data/telegraf.d/
+    - data/dataCollection/
+
+- name: Recreate telegraf container
+  docker_container:
+    name: bind
+    image: telegraf
+    state: started
+    restart_policy: unless-stopped
+    recreate: no
+    restart: yes
+    pull: true
+    dns_servers:
+      - 10.1.1.171
+      - 10.1.1.175
+    exposed_ports:
+      - 53
+      - 10000
+    volumes:
+      - "{{ docker_telegraf_storage }}/config/telegraf.cfg:/etc/telegraf/telegraf.conf:ro"
+      - "{{ docker_telegraf_storage }}/config/telegraf.d/:/etc/telegraf/telegraf.d:ro"
+      - "{{ docker_telegraf_storage }}/data/dataCollection/:/opt/dataCollection:ro"

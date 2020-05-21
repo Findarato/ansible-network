@@ -1,0 +1,7 @@
+---
+# vars file for docker-grafana
+
+docker_ports:
+  - 5299/tcp
+
+docker_path: /mnt/tarvalon/docker/v-docker01/

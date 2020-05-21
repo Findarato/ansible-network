@@ -1,36 +1,74 @@
 ---
-#Apply common configuration to all hosts
-- hosts: home
+# Apply common configuration to all hosts
+- hosts: all
   become: true
+  remote_user: joe
   roles:
-    # - basic-server
-    # - zsh
-    # - docker-common
-    # - geerlingguy.docker
-    - docker-grafana
-    - docker-unifi
-    - docker-influxDB
-    - docker-sonarr
-    - docker-radarr
-    - docker-transmission
-    - docker-jackett
-  vars:
-    pip_install_packages:
-      - name: docker
-    # - docker-dns
-    # - geerlingguy.ntp
+    - basic-server
+    - zsh
+    - geerlingguy.repo-epel
+    - geerlingguy.pip
+    - geerlingguy.docker
+    - docker-watchtower
+  vars_files:
+    - vars/main.yml
+    - vars/vault
 
-# - hosts: streaming
+# - hosts: dns
 #   become: true
+#   remote_user: joe
 #   roles:
-#     # - basic-server
-#     - zsh
-#     - docker-LibreNMS
-#     # - geerlingguy.ntp
-#     # - docker-plex
-#     # - docker-plexpy
+#     - docker-dns
+#   vars_files:
+#     - vars/main.yml
+#     - vars/vault
+
+
+# - hosts: stats
+#   become: true
+#   remote_user: it
+#   roles:
+#     - docker-influxDB
+#   vars_files:
+#     - vars/main.yml
+#     - vars/vault
+    # - zsh
+#    - docker-influxDB
+
+
+#  - hosts: cluster
+#    become: true
+#    roles:
+#      - basic-server
+#      - zsh
+#    - docker-common
+#    - geerlingguy.docker
+#    - docker-sonarr
+#    - docker-radarr
+#    - docker-transmission
+#    - docker-jackett
+#  vars:
+#    pip_install_packages:
+#      - name: docker
+
+# - hosts: watching
+#   become: true
+#   remote_user: joe
+#   roles:
+#     - geerlingguy.docker
+#     - docker-sonarr
+#     - docker-radarr
+#     - docker-transmission
+#     - docker-jackett
+#     - docker-dns
 
 # - hosts: getting
 #   become: true
-#   # remote_user: it
+#   remote_user: joe
 #   roles:
+#     - geerlingguy.docker
+#     - docker-sonarr
+#     - docker-radarr
+#     # - docker-transmission
+#     - docker-jackett
+#     - docker-dns

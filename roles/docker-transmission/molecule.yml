@@ -1,20 +1,13 @@
 ---
 dependency:
   name: galaxy
-  requirements_file: requirements.yml
 driver:
-  name: docker
-docker:
-  containers:
-    - name: docker-transmission-ubuntu-1604
-      image: ubuntu
-      image_version: 16.04
-      ansible_groups:
-        - group1
-    - name: docker-transmission-centos-7
-      image: centos
-      image_version: 7
-      ansible_groups:
-        - group1        
+  name: podman
+platforms:
+  - name: instance
+    image: docker.io/pycontribs/centos:7
+    pre_build_image: true
+provisioner:
+  name: ansible
 verifier:
-  name: testinfra
+  name: ansible
