@@ -1,0 +1,48 @@
+---
+# tasks file for docker-influxDB
+
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
+- name: Create paths
+  file:
+    path: "/docker/containers/prometheus/{{ item }}"
+    state: directory
+    mode: "0775"
+    group: docker
+  with_items:
+    - data
+    - config
+
+- name: Copy prometheus config file
+  copy:
+    src: prometheus.yml
+    dest: /docker/containers/prometheus/config/prometheus.yml
+    mode: "0644"
+
+- name: "Start prometheus container {{inventory_hostname}}"
+  docker_container:
+    name: prometheus
+    image: prom/prometheus
+    state: started
+    restart_policy: unless-stopped
+    recreate: false
+    restart: yes
+    pull: true
+    ports:
+      - "9090:9090"
+    volumes:
+      - /docker/containers/prometheus/config:/etc/prometheus
+    env:
+      VIRTUAL_HOST: "prometheus.telaranrhiod.space"
+
+- name: Open Ports for influxdb
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items:
+    - "{{ docker_ports }}"
+  notify: Restart firewalld

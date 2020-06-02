@@ -1,0 +1,4 @@
+---
+# vars file for docker-influxDB
+docker_ports:
+  - 9090/tcp
