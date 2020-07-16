@@ -2,7 +2,7 @@
   file:
     path: "/docker/containers/plex/{{ item }}"
     state: directory
-    mode: 0775
+    mode: "0775"
   with_items:
     - data
     - config
@@ -18,12 +18,7 @@
     restart: yes
     pull: true
     network_mode: host
-    exposed_ports:
-      - 32400
-      - 32469
-      - 5353
-      - 1900
-    published_ports:
+    ports:
       - 32400:32400
       - 32400:32400/udp
       - 32469:32469

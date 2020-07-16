@@ -1,18 +1,18 @@
 ---
 # Apply common configuration to all hosts
-- hosts: all
-  become: true
-  remote_user: joe
-  roles:
-    - basic-server
-    - zsh
-    - geerlingguy.repo-epel
-    - geerlingguy.pip
-    - geerlingguy.docker
-    - docker-watchtower
-  vars_files:
-    - vars/main.yml
-    - vars/vault
+# - hosts: all
+#   become: true
+#   remote_user: joe
+#   roles:
+#     - basic-server
+#     - zsh
+#     - geerlingguy.repo-epel
+#     - geerlingguy.pip
+#     - geerlingguy.docker
+#     - docker-watchtower
+#   vars_files:
+#     - vars/main.yml
+#     - vars/vault
 
 # - hosts: dns
 #   become: true
@@ -51,16 +51,18 @@
 #    pip_install_packages:
 #      - name: docker
 
-# - hosts: watching
-#   become: true
-#   remote_user: joe
-#   roles:
-#     - geerlingguy.docker
-#     - docker-sonarr
-#     - docker-radarr
-#     - docker-transmission
-#     - docker-jackett
-#     - docker-dns
+- hosts: watching
+  become: true
+  remote_user: joe
+  roles:
+    # - docker-piHole
+    - docker-grafana
+    - docker-jackett
+    # - docker-prometheus
+    # - docker-influxDB
+  vars_files:
+    - vars/main.yml
+    - vars/vault
 
 # - hosts: getting
 #   become: true
@@ -69,6 +71,5 @@
 #     - geerlingguy.docker
 #     - docker-sonarr
 #     - docker-radarr
-#     # - docker-transmission
 #     - docker-jackett
 #     - docker-dns

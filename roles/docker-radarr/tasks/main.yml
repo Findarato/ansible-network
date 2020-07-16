@@ -5,8 +5,8 @@
   file:
     path: "/docker/containers/radarr/{{ item }}"
     state: directory
-    mode: 0775
-    owner: 1000
+    mode: "0775"
+    owner: "1000"
     group: docker
   with_items:
     - downloads
@@ -21,9 +21,7 @@
     recreate: no
     restart: yes
     pull: true
-    exposed_ports:
-      - 7878
-    published_ports:
+    ports:
       - 7878:7878
     volumes:
       - /docker/containers/radarr/downloads:/downloads

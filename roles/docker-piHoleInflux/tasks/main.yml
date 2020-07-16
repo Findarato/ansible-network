@@ -1,0 +1,49 @@
+---
+# tasks file for docker-piHole
+
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
+# - name: Create Docker paths
+#   file:
+#     path: "/docker/containers/pihole/{{ item }}"
+#     state: directory
+#     mode: "0775"
+#   with_items:
+#     - config/pihole
+#     - config/dnsmasq.d
+#   tags:
+#     - pihole
+
+# - name: Install config
+#   template:
+#     src: user.toml.j2
+#     dest: /docker/containers/pihole/config/
+
+
+- name: Recreate pihole InfluxDB container
+  docker_container:
+    name: pihole-influxDB
+    image: registry.gitlab.com/janw/pi-hole-influx
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    env:
+      PIHOLE_INFLUXDB_HOST: "influx.telaranrhiod.space"
+      PIHOLE_INFLUXDB_PORT: "8086"
+      PIHOLE_INFLUXDB_DATABASE: "pihole"
+      PIHOLE_INSTANCES: '{pihole1="pihole1=http://pihole01.telaranrhiod.space/admin/api.php",pihole2="http://pihole02.telaranrhiod.space/admin/api.php"}'
+      VIRTUAL_HOST: "piholeInflux.telaranrhiod.space"
+    dns_servers:
+      - 10.1.1.171
+      - 10.1.1.175
+    network_mode: host
+  tags:
+    - pihole
+    - influxDB

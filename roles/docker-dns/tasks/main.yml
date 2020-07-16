@@ -10,7 +10,7 @@
   file:
     path: "{{ docker_dns_storage }}/{{ item }}"
     state: directory
-    mode: 0775
+    mode: "0775"
   with_items:
     - config
     - data

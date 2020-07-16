@@ -10,45 +10,59 @@
   file:
     path: "/docker/containers/pihole/{{ item }}"
     state: directory
-    mode: 0775
+    mode: "0775"
   with_items:
-    - downloads
-    - config
+    - config/pihole
+    - config/dnsmasq.d
   tags:
     - pihole
 
 - name: Recreate pihole container
   docker_container:
     name: pihole
-    image: linuxserver/pihole
+    hostname: pihole
+    image: pihole/pihole:latest
     state: started
     restart_policy: unless-stopped
     recreate: yes
     restart: yes
     pull: true
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
     exposed_ports:
-      - 9117
-    published_ports:
-      - 9117:9117
+      - "67/udp"
+      - "80/tcp"
+      - "443/tcp"
     volumes:
-      - /docker/containers/pihole/downloads:/downloads
-      - /docker/containers/pihole/config:/config
+      - /docker/containers/pihole/config/pihole:/etc/pihole/
+      - /docker/containers/pihole/config/dnsmasq.d:/etc/dnsmasq.d/
       - /etc/localtime:/etc/localtime:ro
     env:
       TZ: "America/Chicago"
-      PUID: 1000
-      PGID: 1000
-      VIRTUAL_HOST: "pihole.telaranrhiod.space"
+      VIRTUAL_HOST: "pihole01.telaranrhiod.space"
+      WEBPASSWORD: password
+    dns_servers:
+      - 8.8.8.8
+      - 1.1.1.1
   tags:
     - pihole
 
-- name: Open Ports for jackett
-  firewalld:
-    port: "{{ item }}"
-    permanent: true
-    state: enabled
-  with_items:
-    - "{{ docker_ports }}"
-  notify: Restart firewalld
-  tags:
-    - pihole
+# - name: Create Pihole Network
+#   docker_network:
+#     name: pihole
+#     connected:
+#       - pihole
+#       - pihole-influxDB
+#     appends: yes
+
+# - name: Open Ports for pihole
+#   firewalld:
+#     port: "{{ item }}"
+#     permanent: true
+#     state: enabled
+#   with_items:
+#     - "{{ docker_ports }}"
+#   notify: Restart firewalld
+#   tags:
+#     - pihole

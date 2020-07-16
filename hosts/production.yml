@@ -1,24 +1,20 @@
 ---
 all:
   children:
-    # servers:
-    #   hosts:
-    #     v-docker02.telaranrhiod.space: #CentOS 7 Template
-    #     v-docker01.telaranrhiod.space: #CentOS 7 Template
     getting:
       hosts:
-        v-docker02.telaranrhiod.space: #CentOS 7 Template
+        v-docker02.telaranrhiod.space: #CentOS 7
     watching:
       hosts:
-        v-docker01.telaranrhiod.space: #CentOS 7 Template
+        v-docker01.telaranrhiod.space: #CentOS 7
     stats:
       hosts:
-        stats.telaranrhiod.space:
-        v-stats.telaranrhiod.space:
+        stats.telaranrhiod.space: # CentOS 7
+        v-stats.telaranrhiod.space: # CentOS 8
     dns:
       hosts:
-        v-docker01.telaranrhiod.space: #CentOS 7 Template
-        v-docker02.telaranrhiod.space: #CentOS 7 Template
+        v-docker01.telaranrhiod.space: #CentOS 7
+        v-docker02.telaranrhiod.space: #CentOS 7
   vars:
     ansible_connection: ssh
     ansible_ssh_user: joe

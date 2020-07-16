@@ -5,9 +5,9 @@
   file:
     path: "/docker/containers/grafana/{{ item }}"
     state: directory
-    mode: 0775
-    owner: 472
-    group: 472
+    mode: "0775"
+    owner: "472"
+    group: "472"
     recurse: yes
   with_items:
     - data
@@ -19,24 +19,22 @@
   copy:
     src: defaults.ini
     dest: /docker/containers/grafana/config/grafana.ini
-    mode: 0644
-    owner: 472
-    group: 472
+    mode: '0644'
+    owner: "472"
+    group: "472"
   tags:
     - grafana
 
 - name: Recreate Grafana container
   docker_container:
     name: grafana
-    image: grafana/grafana
+    image: grafana/grafana:latest-ubuntu
     state: started
     restart_policy: always
     recreate: yes
     restart: yes
     pull: true
-    exposed_ports:
-      - 3000
-    published_ports:
+    ports:
       - 3000:3000
     volumes:
       - /docker/containers/grafana/data:/var/lib/grafana
@@ -44,8 +42,8 @@
       - /etc/localtime:/etc/localtime:ro
     env:
       GF_INSTALL_PLUGINS: grafana-googlesheets-datasource,grafana-piechart-panel,grafana-clock-panel,jdbranham-diagram-panel
-      GF_SECURITY_ADMIN_PASSWORD: secret
-      VIRTUAL_HOST: "grafana.telaranrhiod.space"
+      GF_SECURITY_ADMIN_PASSWORD: "{{ GF_SECURITY_ADMIN_PASSWORD  }}"
+      VIRTUAL_HOST: "{{ GF_virtual_host }}"
   tags:
     - grafana
 

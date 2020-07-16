@@ -10,7 +10,7 @@
   file:
     path: "/docker/containers/jackett/{{ item }}"
     state: directory
-    mode: 0775
+    mode: "0775"
   with_items:
     - downloads
     - config
@@ -27,7 +27,7 @@
     restart: yes
     pull: true
     exposed_ports:
-      - 9117
+      - "9117"
     published_ports:
       - 9117:9117
     volumes:
@@ -36,8 +36,9 @@
       - /etc/localtime:/etc/localtime:ro
     env:
       TZ: "America/Chicago"
-      PUID: 1000
-      PGID: 1000
+      PUID: "1000"
+      PGID: "1000"
+      VIRTUAL_HOST: "jackett.telaranrhiod.space"
   tags:
     - jackett
 
