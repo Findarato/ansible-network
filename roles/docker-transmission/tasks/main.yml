@@ -18,7 +18,7 @@
     - data/watch
     - data/downloads
     - data/downloads/complete
-    - data/downloads/incomplete
+    # - data/downloads/incomplete
 
 - name: Create and Update Transmission Container
   docker_container:
@@ -38,6 +38,7 @@
       - 51413:51413/udp
     volumes:
       - "{{ docker_transmission_storage }}/data/downloads:/downloads"
+      - "/tank/torrents/incomplete:/downloads/incomplete"
       - "{{ docker_transmission_storage }}/config:/config"
       - "{{ docker_transmission_storage }}/data/watch:/watch"
     env:

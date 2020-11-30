@@ -32,9 +32,6 @@
 #   vars_files:
 #     - vars/main.yml
 #     - vars/vault
-    # - zsh
-#    - docker-influxDB
-
 
 #  - hosts: cluster
 #    become: true
@@ -55,11 +52,12 @@
   become: true
   remote_user: joe
   roles:
-    # - docker-piHole
-    - docker-grafana
-    - docker-jackett
+    - docker-piHole
+    - docker-proxy
+    # - docker-piHole-Influx
+    # - docker-grafana
+    # - docker-jackett
     # - docker-prometheus
-    # - docker-influxDB
   vars_files:
     - vars/main.yml
     - vars/vault

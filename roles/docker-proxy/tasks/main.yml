@@ -9,9 +9,7 @@
     group: "1000"
     owner: "1000"
   with_items:
-    - html
-    - includes
-    - ssl
+    - config
 # docker run --name proxy -d  -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy
 
 - name: Create Proxy Server
@@ -23,31 +21,37 @@
     recreate: true
     # pull: true
     ports:
-      - 80
-      - 443
-    volumes:
-      - "/var/run/docker.sock:/tmp/docker.sock:ro"
-
-- name: Create LetsEncrypt
-  docker_container:
-    name: LetsEncrypt
-    image: linuxserver/letsencrypt
-    state: started
-    restart_policy: unless-stopped
-    recreate: true
-    pull: true
+      - "80:80/tcp"
+      # - "443:443/tcp"
     volumes:
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
     env:
       TZ: "America/Chicago"
-      PUID: 1000
-      PGID: 1000
-      URL: telaranrhiod.space
-      SUBDOMAINS: grafana, jackett
-      DNSPLUGIN: digitalocean
-      VALIDATION: dns
-      EMAIL: findarato@gmail.com
-      ONLY_SUBDOMAINS: true
+
+- name: Create LetsEncrypt
+  docker_container:
+    name: lets_encrypt
+    image: ghcr.io/linuxserver/swag
+    state: started
+    restart_policy: unless-stopped
+    recreate: true
+    pull: true
+    ports:
+      # - "80:80/tcp"
+      - "443:443/tcp"
+    volumes:
+      - "{{docker_storage_path}}/config:/config"
+    env:
+      TZ: "America/Chicago"
+      PUID: "1000"
+      PGID: "1000"
+      URL: "telaranrhiod.space"
+      # SUBDOMAINS: "grafana, jackett"
+      SUBDOMAINS: "wildcard"
+      DNSPLUGIN: "digitalocean"
+      VALIDATION: "dns"
+      EMAIL: "findarato@gmail.com"
+      STAGING: "true"
 
 # docker create \
 #   --name=letsencrypt \

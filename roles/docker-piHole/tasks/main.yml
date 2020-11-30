@@ -27,6 +27,7 @@
     recreate: yes
     restart: yes
     pull: true
+    shm_size: 5G
     ports:
       - "53:53/tcp"
       - "53:53/udp"
@@ -48,13 +49,7 @@
   tags:
     - pihole
 
-# - name: Create Pihole Network
-#   docker_network:
-#     name: pihole
-#     connected:
-#       - pihole
-#       - pihole-influxDB
-#     appends: yes
+    # docker run -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy
 
 # - name: Open Ports for pihole
 #   firewalld:
