@@ -1,0 +1,51 @@
+---
+# tasks file for docker-minecraft
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: theways
+
+- name: Create Docker paths
+  file:
+    path: "/docker/containers/minecraft/{{ item }}"
+    state: directory
+    # mode: 0775
+    # group: docker
+  with_items:
+    - data
+
+- name: Recreate minecraft container
+  docker_container:
+    name: minecraft
+    image: itzg/minecraft-server
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    exposed_ports:
+      - '25565'
+    published_ports:
+      - 25562:25565
+    volumes:
+      - /docker/containers/minecraft/data:/data
+    networks_cli_compatible: false
+    env:
+      TZ: "America/Chicago"
+      EULA: TRUE
+      # VIRTUAL_HOST: "minecraft.telaranrhiod.space"
+  tags:
+    - minecraft
+
+- name: Open Ports for minecraft
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items:
+    - "{{ docker_ports }}"
+  notify: Restart firewalld
