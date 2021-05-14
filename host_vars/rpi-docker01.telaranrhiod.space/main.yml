@@ -1,0 +1,12 @@
+#nrpeDriveMounts:
+#  - name: root
+#    path: /dev/mapper/cl-root
+#  - name: boot
+#    path: /dev/sda2
+
+include_vars: vault
+remote_user: pi
+ansible_become_pass: "{{vault_user_pass}}"
+pip_package: python3-pip
+
+docker_storage: "/mnt/raid10/docker/"

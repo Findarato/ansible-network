@@ -1,12 +1,20 @@
 ---
 # tasks file for docker-sonarr
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: theways
 
 - name: Create Docker paths
   file:
     path: "/docker/containers/sonarr/{{ item }}"
     state: directory
-    mode: 0775
-    group: docker
+    # mode: 0775
+    # group: docker
   with_items:
     - downloads
     - config
@@ -21,19 +29,22 @@
     restart: yes
     pull: true
     exposed_ports:
-      - 8989
-    published_ports:
-      - 8989:8989
+      - '8989'
+    # published_ports:
+    #   - 8989:8989
     volumes:
       - /docker/containers/sonarr/downloads:/downloads
       - /docker/containers/sonarr/config:/config
       - /mnt/tarvalon/storage/TV/:/tv/
-      - /etc/localtime:/etc/localtime:ro
+    networks_cli_compatible: false
+    networks:
+      - name: theways
     env:
       TZ: "America/Chicago"
-      PUID: 1000
-      PGID: 1000
+      PUID: '1000'
+      PGID: '1000'
       VERSION: latest
+      # VIRTUAL_HOST: "sonarr.telaranrhiod.space"
   tags:
     - sonarr
 

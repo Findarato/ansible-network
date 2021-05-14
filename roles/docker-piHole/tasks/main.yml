@@ -6,6 +6,10 @@
     name: docker
     state: latest
 
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: theways
+
 - name: Create Docker paths
   file:
     path: "/docker/containers/pihole/{{ item }}"
@@ -20,7 +24,7 @@
 - name: Recreate pihole container
   docker_container:
     name: pihole
-    hostname: pihole
+    hostname: "{{pihole_virtual_hostname}}"
     image: pihole/pihole:latest
     state: started
     restart_policy: unless-stopped
@@ -39,10 +43,13 @@
       - /docker/containers/pihole/config/pihole:/etc/pihole/
       - /docker/containers/pihole/config/dnsmasq.d:/etc/dnsmasq.d/
       - /etc/localtime:/etc/localtime:ro
+    networks_cli_compatible: false
+    networks:
+      - name: theways
     env:
       TZ: "America/Chicago"
-      VIRTUAL_HOST: "pihole01.telaranrhiod.space"
       WEBPASSWORD: password
+      VIRTUAL_HOST: "{{ pihole_virtual_host }}"
     dns_servers:
       - 8.8.8.8
       - 1.1.1.1

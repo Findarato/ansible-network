@@ -14,60 +14,53 @@
 #     - vars/main.yml
 #     - vars/vault
 
-# - hosts: dns
-#   become: true
-#   remote_user: joe
-#   roles:
-#     - docker-dns
-#   vars_files:
-#     - vars/main.yml
-#     - vars/vault
-
-
-# - hosts: stats
-#   become: true
-#   remote_user: it
-#   roles:
-#     - docker-influxDB
-#   vars_files:
-#     - vars/main.yml
-#     - vars/vault
-
-#  - hosts: cluster
-#    become: true
-#    roles:
-#      - basic-server
-#      - zsh
-#    - docker-common
-#    - geerlingguy.docker
-#    - docker-sonarr
-#    - docker-radarr
-#    - docker-transmission
-#    - docker-jackett
-#  vars:
-#    pip_install_packages:
-#      - name: docker
-
 - hosts: watching
   become: true
   remote_user: joe
   roles:
-    - docker-piHole
     - docker-proxy
+    - {
+        role: docker-piHole,
+        pihole_virtual_hostname: "pihole01",
+        pihole_virtual_host: "pihole01.telaranrhiod.space",
+      }
     # - docker-piHole-Influx
-    # - docker-grafana
-    # - docker-jackett
+    - docker-grafana
+    - docker-jackett
     # - docker-prometheus
+    # - docker-tautlli
+    #  - docker-sonarr
+    #  - docker-varken
   vars_files:
     - vars/main.yml
     - vars/vault
 
-# - hosts: getting
+- hosts: getting
+  become: true
+  remote_user: joe
+  roles:
+    - docker-proxy
+    - {
+        role: docker-piHole,
+        pihole_virtual_hostname: "pihole02",
+        pihole_virtual_host: "pihole02.telaranrhiod.space",
+      }
+      # - docker-piHole-Influx
+      # - docker-grafana
+      # - docker-jackett
+    #  - docker-tautlli
+    - docker-sonarr
+    #  - docker-varken
+  vars_files:
+    - vars/main.yml
+    - vars/vault
+
+# - hosts: pi-getting
 #   become: true
-#   remote_user: joe
+#   remote_user: pi
 #   roles:
 #     - geerlingguy.docker
-#     - docker-sonarr
-#     - docker-radarr
-#     - docker-jackett
-#     - docker-dns
+#     - docker-transmission
+#   vars_files:
+#     - vars/main.yml
+#     - vars/vault

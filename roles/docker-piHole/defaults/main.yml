@@ -1,2 +1,5 @@
 ---
 # defaults file for docker-piHole
+
+pihole_virtual_host: pihole.localhost.test
+pihole_virtual_hostname: pihole

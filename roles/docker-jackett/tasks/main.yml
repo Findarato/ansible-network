@@ -6,6 +6,11 @@
     name: docker
     state: latest
 
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: theways
+
+
 - name: Create Docker paths
   file:
     path: "/docker/containers/jackett/{{ item }}"
@@ -28,27 +33,19 @@
     pull: true
     exposed_ports:
       - "9117"
-    published_ports:
-      - 9117:9117
+    # published_ports:
+    #   - 9117:9117
     volumes:
       - /docker/containers/jackett/downloads:/downloads
       - /docker/containers/jackett/config:/config
       - /etc/localtime:/etc/localtime:ro
+    networks_cli_compatible: false
+    networks:
+      - name: theways
     env:
       TZ: "America/Chicago"
       PUID: "1000"
       PGID: "1000"
-      VIRTUAL_HOST: "jackett.telaranrhiod.space"
-  tags:
-    - jackett
-
-- name: Open Ports for jackett
-  firewalld:
-    port: "{{ item }}"
-    permanent: true
-    state: enabled
-  with_items:
-    - "{{ docker_ports }}"
-  notify: Restart firewalld
+      # VIRTUAL_HOST: "jackett.telaranrhiod.space"
   tags:
     - jackett

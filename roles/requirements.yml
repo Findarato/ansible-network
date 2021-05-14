@@ -1,8 +1,19 @@
 ---
 # Adding my own monitoring software in.
 # @TODO: Fully add in this role
-- src: geerlingguy.repo-epel
-- src: geerlingguy.filebeat
-- src: geerlingguy.ntp
-- src: geerlingguy.docker
-- src: geerlingguy.pip
+roles: 
+  - name: geerlingguy.repo-epel
+    source: https://galaxy.ansible.com
+  - name: geerlingguy.filebeat
+    source: https://galaxy.ansible.com
+  - name: geerlingguy.ntp
+    source: https://galaxy.ansible.com
+  - name: geerlingguy.docker
+    source: https://galaxy.ansible.com
+  - name: geerlingguy.pip
+    source: https://galaxy.ansible.com
+
+collections:
+  - name: community.docker
+
+...

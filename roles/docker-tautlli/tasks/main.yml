@@ -1,0 +1,29 @@
+- name: Create Docker paths
+  file:
+    path: "/docker/containers/tautulli/{{ item }}"
+    state: directory
+    mode: "0775"
+  with_items:
+    - config
+
+- name: Recreate tautulli container
+  docker_container:
+    name: tautulli
+    image: linuxserver/tautulli
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    exposed_ports:
+      - "8181"
+    published_ports:
+      - 8181:8181
+    volumes:
+      - /docker/containers/tautulli/config:/config
+
+    env:
+      TZ: "America/Chicago"
+      PUID: "1000"
+      PGID: "1000"
+      VIRTUAL_HOST: "tautulli.telaranrhiod.space"

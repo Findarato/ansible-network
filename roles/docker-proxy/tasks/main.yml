@@ -1,77 +1,62 @@
 ---
 # tasks file for docker-grafana
 
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: theways
+
 - name: Create Docker paths
   file:
-    path: "{{docker_storage_path}}{{ item }}"
+    path: "{{docker_storage}}/proxy/{{ item }}"
     state: directory
     mode: "0775"
     group: "1000"
     owner: "1000"
   with_items:
     - config
+    # - le/config/config/etc/letsencrypt/live
 # docker run --name proxy -d  -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy
 
-- name: Create Proxy Server
-  docker_container:
-    name: proxy
-    image: jwilder/nginx-proxy
-    state: started
-    restart_policy: unless-stopped
-    recreate: true
-    # pull: true
-    ports:
-      - "80:80/tcp"
-      # - "443:443/tcp"
-    volumes:
-      - "/var/run/docker.sock:/tmp/docker.sock:ro"
-    env:
-      TZ: "America/Chicago"
+# - name: Create Proxy Server
+#   docker_container:
+#     name: proxy
+#     image: jwilder/nginx-proxy
+#     state: started
+#     restart_policy: unless-stopped
+#     recreate: true
+#     # pull: true
+#     ports:
+#       - "80:80/tcp"
+#       - "443:443/tcp"
+#     volumes:
+#       - "/var/run/docker.sock:/tmp/docker.sock:ro"
+#       # - "{{docker_storage}}/proxy/le/config/etc/letsencrypt/live:/etc/nginx/certs:ro"
+#     env:
+#       TZ: "America/Chicago"
 
-- name: Create LetsEncrypt
+- name: Create SWAG
   docker_container:
-    name: lets_encrypt
+    name: swag
     image: ghcr.io/linuxserver/swag
     state: started
     restart_policy: unless-stopped
     recreate: true
     pull: true
     ports:
-      # - "80:80/tcp"
+      - "80:80/tcp"
       - "443:443/tcp"
     volumes:
-      - "{{docker_storage_path}}/config:/config"
+      - "{{docker_storage}}/proxy/le/config:/config"
+    networks_cli_compatible: false
+    networks:
+      - name: theways
     env:
       TZ: "America/Chicago"
       PUID: "1000"
       PGID: "1000"
       URL: "telaranrhiod.space"
-      # SUBDOMAINS: "grafana, jackett"
       SUBDOMAINS: "wildcard"
       DNSPLUGIN: "digitalocean"
       VALIDATION: "dns"
       EMAIL: "findarato@gmail.com"
-      STAGING: "true"
-
-# docker create \
-#   --name=letsencrypt \
-#   --cap-add=NET_ADMIN \
-#   -e PUID=1000 \
-#   -e PGID=1000 \
-#   -e TZ=Europe/London \
-#   -e URL=yourdomain.url \
-#   -e SUBDOMAINS=www, \
-#   -e VALIDATION=http \
-#   -e DNSPLUGIN=cloudflare `#optional` \
-#   -e PROPAGATION= `#optional` \
-#   -e DUCKDNSTOKEN= `#optional` \
-#   -e EMAIL= `#optional` \
-#   -e DHLEVEL=2048 `#optional` \
-#   -e ONLY_SUBDOMAINS=false `#optional` \
-#   -e EXTRA_DOMAINS= `#optional` \
-#   -e STAGING=false `#optional` \
-#   -p 443:443 \
-#   -p 80:80 `#optional` \
-#   -v /path/to/appdata/config:/config \
-#   --restart unless-stopped \
-#   linuxserver/letsencrypt
+      STAGING: "false"

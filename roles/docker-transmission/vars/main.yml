@@ -4,14 +4,13 @@
 docker_ports:
     - 3000/tcp
     - 9091/tcp
-    - 51413/tcp
-    - 51413/udp
+    - 27975/tcp
+    - 27975/udp
 docker_portsUFW:
     - 3000
     - 9091
-    - 51413
-    - 51413
-docker_transmission_storage: "/mnt/tarvalon/docker/v-docker02/transmission"
+    - 27975
+
 docker_transmission_blacklist: "http://john.bitsurge.net/public/biglist.p2p.gz"
 docker_transmission_blocklist_enabled: true
 docker_transmission_folders:

@@ -2,15 +2,17 @@
 # tasks file for docker-transmission
 - include: "{{ ansible_os_family }}.yml"
 
-- name: Install python bindings for docker
+- name: Install Python tools for docker
   pip:
-    name: docker-py
+    name: docker
+    state: latest
+
 - name: Create Docker paths
   file:
-    path: "{{ docker_transmission_storage }}/{{ item }}"
+    path: "{{docker_storage}}/transmission/{{ item }}"
     state: directory
-    owner: 1000
-    group: 1000
+    owner: "1000"
+    group: "1000"
     recurse: yes
   with_items:
     - data
@@ -18,6 +20,8 @@
     - data/watch
     - data/downloads
     - data/downloads/complete
+  tags:
+    - transmission
     # - data/downloads/incomplete
 
 - name: Create and Update Transmission Container
@@ -30,21 +34,23 @@
     restart: yes
     pull: true
     exposed_ports:
-      - 9091
-      - 51413
+      - "9091"
+      - "27975"
     published_ports:
       - 9091:9091
-      - 51413:51413
-      - 51413:51413/udp
+      - 27975:27975
+      - 27975:27975/udp
     volumes:
-      - "{{ docker_transmission_storage }}/data/downloads:/downloads"
-      - "/tank/torrents/incomplete:/downloads/incomplete"
-      - "{{ docker_transmission_storage }}/config:/config"
-      - "{{ docker_transmission_storage }}/data/watch:/watch"
+      - "{{docker_storage}}/transmission/data/downloads:/downloads"
+      - "{{docker_storage}}/transmission/data/watch:/watch"
+      - "{{docker_storage}}/transmission/config:/config"
     env:
-      PGID: 1000
-      PUID: 1000
+      PGID: "1000"
+      PUID: "1000"
       TZ: "America/Chicago"
+      VIRTUAL_HOST: "transmission.telaranrhiod.space"
+  tags:
+    - transmission
 
 - name: Open Ports for transmission firewallD
   firewalld:
@@ -55,12 +61,5 @@
     - "{{ docker_ports }}"
   notify: Restart firewalld
   when: ansible_distribution == "CentOS"
-
-- name: Open Ports for transmission UFW
-  ufw:
-    port: "{{ item }}"
-    rule: allow
-  with_items:
-    - "{{ docker_portsUFW }}"
-  notify: Restart UFW
-  when: ansible_distribution == "Ubuntu"
+  tags:
+    - transmission

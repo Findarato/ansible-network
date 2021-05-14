@@ -1,20 +1,21 @@
 ---
 all:
   children:
+    piGetting:
+      hosts:
+         rpi-docker01.telaranrhiod.space: #raspberry pi os
     getting:
       hosts:
         v-docker02.telaranrhiod.space: #CentOS 7
     watching:
       hosts:
         v-docker01.telaranrhiod.space: #CentOS 7
+        # 10.1.1.171: #CentOS 7
     stats:
       hosts:
         stats.telaranrhiod.space: # CentOS 7
-        v-stats.telaranrhiod.space: # CentOS 8
+        # v-stats.telaranrhiod.space: # CentOS 8
     dns:
       hosts:
         v-docker01.telaranrhiod.space: #CentOS 7
         v-docker02.telaranrhiod.space: #CentOS 7
-  vars:
-    ansible_connection: ssh
-    ansible_ssh_user: joe

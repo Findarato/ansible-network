@@ -1,6 +1,15 @@
 ---
 # tasks file for docker-grafana
 
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: theways
+
 - name: Create Docker paths
   file:
     path: "/docker/containers/grafana/{{ item }}"
@@ -40,6 +49,9 @@
       - /docker/containers/grafana/data:/var/lib/grafana
       - /docker/containers/grafana/config:/etc/grafana
       - /etc/localtime:/etc/localtime:ro
+    networks_cli_compatible: false
+    networks:
+      - name: theways
     env:
       GF_INSTALL_PLUGINS: grafana-googlesheets-datasource,grafana-piechart-panel,grafana-clock-panel,jdbranham-diagram-panel
       GF_SECURITY_ADMIN_PASSWORD: "{{ GF_SECURITY_ADMIN_PASSWORD  }}"
@@ -47,13 +59,13 @@
   tags:
     - grafana
 
-- name: Open Ports for Grafana
-  firewalld:
-    port: "{{ item }}"
-    permanent: true
-    state: enabled
-  with_items:
-    - "{{ docker_ports }}"
-  notify: Restart firewalld
-  tags:
-    - grafana
+# - name: Open Ports for Grafana
+#   firewalld:
+#     port: "{{ item }}"
+#     permanent: true
+#     state: enabled
+#   with_items:
+#     - "{{ docker_ports }}"
+#   notify: Restart firewalld
+#   tags:
+#     - grafana
