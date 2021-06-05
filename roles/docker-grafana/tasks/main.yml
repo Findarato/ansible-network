@@ -58,14 +58,3 @@
       VIRTUAL_HOST: "{{ GF_virtual_host }}"
   tags:
     - grafana
-
-# - name: Open Ports for Grafana
-#   firewalld:
-#     port: "{{ item }}"
-#     permanent: true
-#     state: enabled
-#   with_items:
-#     - "{{ docker_ports }}"
-#   notify: Restart firewalld
-#   tags:
-#     - grafana

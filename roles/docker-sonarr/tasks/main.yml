@@ -30,8 +30,6 @@
     pull: true
     exposed_ports:
       - '8989'
-    # published_ports:
-    #   - 8989:8989
     volumes:
       - /docker/containers/sonarr/downloads:/downloads
       - /docker/containers/sonarr/config:/config
@@ -47,12 +45,3 @@
       # VIRTUAL_HOST: "sonarr.telaranrhiod.space"
   tags:
     - sonarr
-
-- name: Open Ports for sonarr
-  firewalld:
-    port: "{{ item }}"
-    permanent: true
-    state: enabled
-  with_items:
-    - "{{ docker_ports }}"
-  notify: Restart firewalld

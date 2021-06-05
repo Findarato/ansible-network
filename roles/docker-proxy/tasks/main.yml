@@ -1,5 +1,8 @@
 ---
-# tasks file for docker-grafana
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
 
 - name: Grow the Ways
   community.docker.docker_network:
@@ -13,29 +16,10 @@
     group: "1000"
     owner: "1000"
   with_items:
-    - config
-    # - le/config/config/etc/letsencrypt/live
-# docker run --name proxy -d  -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy
-
-# - name: Create Proxy Server
-#   docker_container:
-#     name: proxy
-#     image: jwilder/nginx-proxy
-#     state: started
-#     restart_policy: unless-stopped
-#     recreate: true
-#     # pull: true
-#     ports:
-#       - "80:80/tcp"
-#       - "443:443/tcp"
-#     volumes:
-#       - "/var/run/docker.sock:/tmp/docker.sock:ro"
-#       # - "{{docker_storage}}/proxy/le/config/etc/letsencrypt/live:/etc/nginx/certs:ro"
-#     env:
-#       TZ: "America/Chicago"
+    - le/config
 
 - name: Create SWAG
-  docker_container:
+  community.general.docker_container:
     name: swag
     image: ghcr.io/linuxserver/swag
     state: started

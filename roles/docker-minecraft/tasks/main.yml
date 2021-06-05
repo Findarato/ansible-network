@@ -13,15 +13,17 @@
   file:
     path: "/docker/containers/minecraft/{{ item }}"
     state: directory
-    # mode: 0775
-    # group: docker
   with_items:
     - data
+    - data/config
+    - data/plugins
+    - data/mods
 
 - name: Recreate minecraft container
   docker_container:
     name: minecraft
     image: itzg/minecraft-server
+    # version: latest
     state: started
     restart_policy: unless-stopped
     recreate: yes
@@ -35,17 +37,23 @@
       - /docker/containers/minecraft/data:/data
     networks_cli_compatible: false
     env:
-      TZ: "America/Chicago"
+      # OPS: Findarato
+      # TYPE: BUKKIT
+      # TYPE: FORGE
+      # TYPE: SPIGOT
+      TYPE: PAPER
+      ALLOW_NETHER: TRUE
+      ENABLE_AUTOPAUSE: TRUE
+      ENABLE_ROLLING_LOGS: TRUE
       EULA: TRUE
-      # VIRTUAL_HOST: "minecraft.telaranrhiod.space"
+      GID: 1000
+      MEMORY: 8G
+      MOTD: McHarryVille's Minecraft Server
+      SERVER_PORT: 25566
+      SNOOPER_ENABLED: FALSE
+      TZ: "America/Chicago"
+      UID: 1000
+      REMOVE_OLD_MODS: TRUE
+      SPIGET_RESOURCES: 9089,34315
   tags:
     - minecraft
-
-- name: Open Ports for minecraft
-  firewalld:
-    port: "{{ item }}"
-    permanent: true
-    state: enabled
-  with_items:
-    - "{{ docker_ports }}"
-  notify: Restart firewalld

@@ -19,3 +19,4 @@ all:
       hosts:
         v-docker01.telaranrhiod.space: #CentOS 7
         v-docker02.telaranrhiod.space: #CentOS 7
+

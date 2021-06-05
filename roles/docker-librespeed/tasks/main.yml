@@ -1,0 +1,53 @@
+---
+# tasks file for docker-minecraft
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: theways
+
+- name: Create Docker paths
+  file:
+    path: "/docker/containers/librespeed/{{ item }}"
+    state: directory
+    owner: "1000"
+    group: "1000"
+  with_items:
+    - config
+
+- name: Recreate librespeed container
+  community.general.docker_container:
+    name: librespeed
+    image: ghcr.io/linuxserver/librespeed
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    exposed_ports:
+      # - '443'
+      - '80'
+    # ports:
+    #   - '8888:80'
+    volumes:
+      - /docker/containers/librespeed/config:/config
+    networks:
+      - name: theways
+    networks_cli_compatible: false
+    env:
+      TZ: "America/Chicago"
+      PUID: "1000"
+      PGID: "1000"
+#       - PASSWORD=PASSWORD
+#       - CUSTOM_RESULTS=false #optional
+#       - DB_TYPE=sqlite #optional
+#       - DB_NAME=DB_NAME #optional
+#       - DB_HOSTNAME=DB_HOSTNAME #optional
+#       - DB_USERNAME=DB_USERNAME #optional
+#       - DB_PASSWORD=DB_PASSWORD #optional
+#       - DB_PORT=DB_PORT #optional
+  tags:
+    - librespeed
