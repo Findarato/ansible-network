@@ -33,7 +33,7 @@
     volumes:
       - /docker/containers/sonarr/downloads:/downloads
       - /docker/containers/sonarr/config:/config
-      - /mnt/tarvalon/storage/TV/:/tv/
+      - /mnt/storage/TV/:/tv/
     networks_cli_compatible: false
     networks:
       - name: theways

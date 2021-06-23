@@ -25,7 +25,7 @@
       - 7878:7878
     volumes:
       - /docker/containers/radarr/downloads:/downloads
-      - /mnt/tarvalon/storage/Movies:/movies
+      - /mnt/Movies:/movies
       - /etc/localtime:/ect/localtime:ro
     env:
       TZ: "America/Chicago"

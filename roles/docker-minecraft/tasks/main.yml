@@ -52,7 +52,7 @@
       # SPIGET_RESOURCES: "274"
       # TYPE: "BUKKIT"
       # TYPE: "FORGE"
-      # TYPE: "PAPER"
+      #TYPE: "PAPER"
       # TYPE: "SPIGOT"
       TYPE: "VANILLA"
       TZ: "America/Chicago"

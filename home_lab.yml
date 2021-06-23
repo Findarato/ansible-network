@@ -19,15 +19,15 @@
   remote_user: joe
   roles:
     # - docker-proxy
-    # - {
-    #     role: docker-piHole,
-    #     pihole_virtual_hostname: "pihole01",
-    #     pihole_virtual_host: "pihole01.telaranrhiod.space",
-    #   }
+    - {
+        role: docker-piHole,
+        pihole_virtual_hostname: "pihole01",
+        pihole_virtual_host: "pihole01.telaranrhiod.space",
+      }
     # - docker-librespeed
     # - docker-piHole-Influx
     # - docker-grafana
-    # - docker-jackett
+    - docker-jackett
     - docker-minecraft
     # - docker-prometheus
     # - docker-tautlli
