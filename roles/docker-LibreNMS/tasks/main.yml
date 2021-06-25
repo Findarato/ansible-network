@@ -93,7 +93,7 @@
       DISCOVERY_ENABLE: "true"
       DISCOVERY_THREADS: '8'
       ALERTS_ENABLE: "false"
-      APP_KEY: "base64:cJYzqMhpCU4YsMdBeQxWZgDKVMeG2gy1Qo3M6lT9O5w="
+      APP_KEY: "{{ vault_docker_librenms_key }}"
       DAILY_ON_STARTUP: "true"
     links:
       - "libreNMS_db:db"

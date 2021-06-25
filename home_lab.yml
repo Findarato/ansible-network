@@ -14,41 +14,41 @@
 #     - vars/main.yml
 #     - vars/vault
 
-- hosts: watching
-  become: true
-  remote_user: joe
-  roles:
-    # - docker-proxy
-    - {
-        role: docker-piHole,
-        pihole_virtual_hostname: "pihole01",
-        pihole_virtual_host: "pihole01.telaranrhiod.space",
-      }
-    # - docker-librespeed
-    # - docker-piHole-Influx
-    # - docker-grafana
-    - docker-jackett
-    - docker-minecraft
-    # - docker-prometheus
-    # - docker-tautlli
-    #  - docker-sonarr
-    #  - docker-varken
-  vars:
-    - ansible_python_interpreter: "/usr/bin/python3"
-  vars_files:
-    - vars/main.yml
-    - vars/vault
+# - hosts: watching
+#   become: true
+#   remote_user: joe
+#   roles:
+#     # - docker-proxy
+#     - {
+#         role: docker-piHole,
+#         pihole_virtual_hostname: "pihole01",
+#         pihole_virtual_host: "pihole01.telaranrhiod.space",
+#       }
+#     # - docker-librespeed
+#     # - docker-piHole-Influx
+#     # - docker-grafana
+#     - docker-jackett
+#     - docker-minecraft
+#     # - docker-prometheus
+#     # - docker-tautlli
+#     #  - docker-sonarr
+#     #  - docker-varken
+#   vars:
+#     - ansible_python_interpreter: "/usr/bin/python3"
+#   vars_files:
+#     - vars/main.yml
+#     - vars/vault
 
 - hosts: getting
   become: true
   remote_user: joe
   roles:
-    - docker-proxy
-    - {
-        role: docker-piHole,
-        pihole_virtual_hostname: "pihole02",
-        pihole_virtual_host: "pihole02.telaranrhiod.space",
-      }
+    # - docker-proxy
+    # - {
+    #     role: docker-piHole,
+    #     pihole_virtual_hostname: "pihole02",
+    #     pihole_virtual_host: "pihole02.telaranrhiod.space",
+    #   }
       # - docker-piHole-Influx
       # - docker-grafana
       # - docker-jackett

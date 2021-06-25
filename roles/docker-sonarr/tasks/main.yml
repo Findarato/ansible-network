@@ -31,7 +31,8 @@
     exposed_ports:
       - '8989'
     volumes:
-      - /docker/containers/sonarr/downloads:/downloads
+      # - /docker/containers/sonarr/downloads:/downloads
+      - /mnt/transmission/downloads:/downloads
       - /docker/containers/sonarr/config:/config
       - /mnt/storage/TV/:/tv/
     networks_cli_compatible: false
