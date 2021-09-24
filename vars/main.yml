@@ -4,10 +4,8 @@ ntp_enabled: true
 ntp_timezone: "America/Chicago"
 ntp_manage_config: true
 
-# docker_users:
-#   - it
-#   - joe
-
 ansible_become_pass: "{{ vault_ansible_become_pass  }}"
 # ansible_ssh_pass: "{{ vault_ansible_become_pass  }}"
 ansible_ssh_pass: "{{ vault_ansible_ssh_pass  }}"
+
+docker_network: theways

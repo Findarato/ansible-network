@@ -1,0 +1,7 @@
+---
+# Adding my own monitoring software in.
+# @TODO: Fully add in this role
+# - src: geerlingguy.docker
+
+# collections: 
+#   - containers.podman.podman_container

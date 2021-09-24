@@ -2,14 +2,14 @@
 # # tasks file for docker-transmission
 # - include: "{{ ansible_os_family }}.yml"
 
-- name: Install Python tools for docker
-  pip:
-    name: docker
-    state: latest
+# - name: Install Python tools for docker
+#   pip:
+#     name: docker
+#     state: latest
 
 - name: Grow the Ways
-  community.docker.docker_network:
-    name: "{{ docker-network }}"
+  containers.podman.podman_network:
+    name: "{{ docker_network }}"
 
 - name: Create Docker paths
   file:
@@ -19,24 +19,30 @@
     group: "1000"
     recurse: yes
   with_items:
-    - data
+    # - data
     - config
-    - data/watch
-    - data/downloads
-    - data/downloads/complete
+    # - data/watch
+    # - data/downloads
+    # - data/downloads/complete
   tags:
     - transmission
+    - podman
     # - data/downloads/incomplete
 
+- name: Pull the latest image
+  containers.podman.podman_image:
+    name: linuxserver/transmission
+    pull: yes
+
+
 - name: Create and Update Transmission Container
-  docker_container:
+  containers.podman.podman_container:
     name: transmission
     image: linuxserver/transmission
     state: started
-    restart_policy: unless-stopped
+    restart_policy: always
     recreate: yes
     restart: yes
-    pull: true
     exposed_ports:
       - "9091"
       - "27975"
@@ -52,9 +58,9 @@
       PGID: "1000"
       PUID: "1000"
       TZ: "America/Chicago"
-      VIRTUAL_HOST: "transmission.telaranrhiod.space"
   tags:
     - transmission
+    - podman
 
 - name: Open Ports for transmission firewallD
   firewalld:
@@ -64,6 +70,6 @@
   with_items:
     - "{{ docker_ports }}"
   notify: Restart firewalld
-  when: ansible_distribution == "CentOS"
   tags:
     - transmission
+    - podman

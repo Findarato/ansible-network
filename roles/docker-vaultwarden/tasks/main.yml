@@ -11,29 +11,29 @@
 
 - name: Create Docker paths
   file:
-    path: "/docker/containers/librespeed/{{ item }}"
+    path: "/docker/containers/vaultwarden/{{ item }}"
     state: directory
     owner: "1000"
     group: "1000"
   with_items:
-    - config
+    - data
 
-- name: Recreate librespeed container
+- name: Recreate vaultwarden container
   community.general.docker_container:
-    name: librespeed
-    image: ghcr.io/linuxserver/librespeed
+    name: vaultwarden
+    image: vaultwarden/server:latest
     state: started
     restart_policy: unless-stopped
     recreate: yes
     restart: yes
     pull: true
     exposed_ports:
-      # - '443'
+      - '3012'
       - '80'
     # ports:
     #   - '8888:80'
     volumes:
-      - /docker/containers/librespeed/config:/config
+      - /docker/containers/vaultwarden/data:/data
     networks:
       - name: theways
     networks_cli_compatible: false
@@ -41,11 +41,7 @@
       TZ: "America/Chicago"
       PUID: "1000"
       PGID: "1000"
-      DB_TYPE: "mysql"
-      DB_NAME: "librespeed"
-      DB_HOSTNAME: "10.1.1.5"
-      DB_USERNAME: "librespeed"
-      DB_PASSWORD: "{{vault_docker_librespeed_mysql_password}}"
-      DB_PORT: "3306"
+      WEBSOCKET_ENABLED: "true"
+      DATABASE_URL: "mysql://{{ vault_docker_vaultwarden_mysql_user }}:{{ vault_docker_vaultwarden_mysql_password }}@10.1.1.5:3306/vaultwarden"
   tags:
-    - librespeed
+    - vaultwarden

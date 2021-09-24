@@ -1,5 +1,13 @@
 ---
 # tasks file for docker-dns
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: theways
 
 - name: Create Docker paths
   file:
@@ -15,24 +23,25 @@
     - unifi
 
 - name: Recreate Unifi container
-  docker_container:
+  community.general.docker_container:
     name: unifi
-    image: jacobalberty/unifi:latest
+    # image: jacobalberty/unifi:latest-5
+    image: jacobalberty/unifi:6.0
     state: started
     restart_policy: unless-stopped
     recreate: yes
     restart: yes
     pull: true
     exposed_ports:
-      - 8080
-      - 8443
-      - 3478/udp
-      - 10001/udp
+      - "8080"
+      - "8443"
+      - "3478/udp"
+      - "10001/udp"
     published_ports:
-      - 8080:8080
-      - 8443:8443
-      - 3478:3478/udp
-      - 10001:10001/udp
+      - "8080:8080"
+      - "8443:8443"
+      - "3478:3478/udp"
+      - "10001:10001/udp"
     volumes:
       - "{{ docker_unifi_storage }}/data:/unifi/data"
       - "{{ docker_unifi_storage }}/log:/unifi/log"
@@ -40,16 +49,5 @@
       - "{{ docker_unifi_storage }}/init.d:/unifi/init.d"
     env:
       TZ: America/Chicago
-  tags:
-    - unifi
-
-- name: Open Ports for Unifi
-  firewalld:
-    port: "{{ item }}"
-    permanent: true
-    state: enabled
-  with_items:
-    - "{{ docker_ports }}"
-  notify: Restart firewalld
   tags:
     - unifi

@@ -11,6 +11,10 @@
   tags:
     - libreNMS
 
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: "{{ docker_network }}"
+
 - name: Create Docker paths
   file:
     path: "{{ docker_libreNMS_storage }}/{{ item }}"
@@ -47,16 +51,6 @@
     src: config.influx.php.j2
     dest: "{{ docker_libreNMS_storage }}/config/config.influx.php"
     mode: 0644
-  tags:
-    - libreNMS
-
-- name: Create network for LibreNMS
-  docker_network:
-    name: libreNMS_net
-    ipam_config:
-      - subnet: '192.168.2.1/24'
-        gateway: '192.168.2.1'
-    state: absent
   tags:
     - libreNMS
 
@@ -144,13 +138,3 @@
   when: "docker_libreNMS_influxdb  == true"
   tags:
     - libreNMS
-
-# - name: Create influxDB Database for LibreNMS
-#   influxdb_database:
-#       hostname: "{{ docker_libreNMS_influxdb_ip }}"
-#       database_name: "{{ docker_libreNMS_influxdb_database_name }}"
-#       port: "{{ docker_libreNMS_influxdb_port }}"
-#       username: "{{ docker_libreNMS_influxdb_username }}"
-#       password: "{{ docker_libreNMS_influxdb_password }}"
-#       state: present
-#   when: "docker_libreNMS_influxdb  == true"

@@ -15,6 +15,10 @@ all:
       hosts:
         stats.telaranrhiod.space: # CentOS 7
         # v-stats.telaranrhiod.space: # CentOS 8
+    torrents:
+      hosts:
+        torrents.telaranrhiod.space: # Fedora Servers
+        # v-stats.telaranrhiod.space: # CentOS 8
     dns:
       hosts:
         v-docker01.telaranrhiod.space: #CentOS 7

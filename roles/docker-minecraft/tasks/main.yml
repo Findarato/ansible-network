@@ -29,33 +29,43 @@
     recreate: yes
     restart: yes
     pull: true
+    hostname: xandercraft
     exposed_ports:
       - '25565'
+      - '8123'
     published_ports:
       - 25565:25565
+      - 8123:8123
     volumes:
       - /docker/containers/minecraft/data:/data
     networks_cli_compatible: false
+    container_default_behavior: no_defaults
     env:
       ALLOW_NETHER: "true"
-      # ENABLE_AUTOPAUSE: "true"
       ENABLE_ROLLING_LOGS: "true"
+      VERSION: "1.17.1"
       EULA: "true"
       GID: "1000"
+      UID: "1000"
       MEMORY: "8G"
-      MOTD: "McHarryVille's Minecraft Server"
-      # OPS: Findarato
+      MOTD: "McHarryVille's A §l§cMinecraft§r Server"
+      OPS: Findarato
+      GENERATE_STRUCTURES: "true"
       REMOVE_OLD_MODS: "true"
       SERVER_PORT: "25565"
       SNOOPER_ENABLED: "false"
-      SPIGET_RESOURCES: "9089,34315,274"
+      SPIGET_RESOURCES: "92998,9089,34315,274"
+      # ICON: "http://..../some/image.png"
+      OVERRIDE_ICON: "true"
       # SPIGET_RESOURCES: "274"
       # TYPE: "BUKKIT"
       # TYPE: "FORGE"
-      #TYPE: "PAPER"
+      TYPE: "PAPER"
       # TYPE: "SPIGOT"
-      TYPE: "VANILLA"
+      # TYPE: "VANILLA"
+      RESOURCE_PACK: "https://sapixcraft.com/downloads/java/files/Sapixcraft%2064x%20MC1.17.zip"
       TZ: "America/Chicago"
-      UID: "1000"
+      PVP: "false"
+      TUNE_VIRTUALIZED: "true"
   tags:
     - minecraft

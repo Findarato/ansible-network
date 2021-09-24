@@ -14,46 +14,26 @@
 #     - vars/main.yml
 #     - vars/vault
 
-# - hosts: watching
-#   become: true
-#   remote_user: joe
-#   roles:
-#     # - docker-proxy
-#     - {
-#         role: docker-piHole,
-#         pihole_virtual_hostname: "pihole01",
-#         pihole_virtual_host: "pihole01.telaranrhiod.space",
-#       }
-#     # - docker-librespeed
-#     # - docker-piHole-Influx
-#     # - docker-grafana
-#     - docker-jackett
-#     - docker-minecraft
-#     # - docker-prometheus
-#     # - docker-tautlli
-#     #  - docker-sonarr
-#     #  - docker-varken
-#   vars:
-#     - ansible_python_interpreter: "/usr/bin/python3"
-#   vars_files:
-#     - vars/main.yml
-#     - vars/vault
-
-- hosts: getting
+- hosts: watching
   become: true
   remote_user: joe
   roles:
+    - docker-unifi
     # - docker-proxy
-    # - {
-    #     role: docker-piHole,
-    #     pihole_virtual_hostname: "pihole02",
-    #     pihole_virtual_host: "pihole02.telaranrhiod.space",
-    #   }
-      # - docker-piHole-Influx
-      # - docker-grafana
-      # - docker-jackett
-    #  - docker-tautlli
-    - docker-sonarr
+    - {
+        role: docker-piHole,
+        pihole_virtual_hostname: "pihole01",
+        pihole_virtual_host: "pihole01.telaranrhiod.space",
+      }
+    - docker-librespeed
+    # - docker-vaultwarden
+    # - docker-piHole-Influx
+    - docker-grafana
+    # - docker-jackett
+    # - docker-minecraft
+    # - docker-prometheus
+    # - docker-tautlli
+    # - docker-transmission
     #  - docker-varken
   vars:
     - ansible_python_interpreter: "/usr/bin/python3"
@@ -61,7 +41,40 @@
     - vars/main.yml
     - vars/vault
 
-# - hosts: pi-getting
+- hosts: getting
+  become: true
+  remote_user: joe
+  roles:
+    - docker-proxy
+    - {
+      role: docker-piHole,
+      pihole_virtual_hostname: "pihole02",
+      pihole_virtual_host: "pihole02.telaranrhiod.space",
+    }
+#       # - docker-piHole-Influx
+#       # - docker-jackett
+#     #  - docker-tautlli
+#     - docker-sonarr
+#     #  - docker-varken
+  vars:
+    - ansible_python_interpreter: "/usr/bin/python3"
+#   vars_files:
+#     - vars/main.yml
+#     - vars/vault
+
+- hosts: torrents
+  become: true
+  remote_user: joe
+  roles:
+    - podman-transmission
+  vars:
+    - ansible_python_interpreter: "/usr/bin/python3"
+  vars_files:
+    - vars/main.yml
+    - vars/vault
+
+
+# - hosts: pi-geting
 #   become: true
 #   remote_user: pi
 #   roles:

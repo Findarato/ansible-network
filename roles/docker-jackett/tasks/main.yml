@@ -6,9 +6,13 @@
     name: docker
     state: latest
 
+# - name: Grow the Ways
+#   community.docker.docker_network:
+#     name: "{{ docker-network }}"
+
 - name: Grow the Ways
   community.docker.docker_network:
-    name: theways
+    name: "{{ docker_network }}"
 
 
 - name: Create Docker paths
@@ -46,6 +50,6 @@
       TZ: "America/Chicago"
       PUID: "1000"
       PGID: "1000"
-      # VIRTUAL_HOST: "jackett.telaranrhiod.space"
+      AUTO_UPDATE: 'true'
   tags:
     - jackett
