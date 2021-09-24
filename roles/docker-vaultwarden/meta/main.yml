@@ -1,6 +1,6 @@
 galaxy_info:
   author: Joseph Harry
-  description: Runs minecraft in a docker container
+  description: Runs Vaultwarden in a docker container
   company: your company (optional)
 
   # If the issue tracker for your role is not on github, uncomment the

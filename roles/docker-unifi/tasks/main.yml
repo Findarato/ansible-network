@@ -15,18 +15,19 @@
     state: directory
     mode: 0775
   with_items:
-    - /data
-    - /log
-    - /cert
-    - /init.d
+    # - /data
+    # - /log
+    # - /cert
+    # - /init.d
+    - /config
   tags:
     - unifi
 
 - name: Recreate Unifi container
   community.general.docker_container:
-    name: unifi
-    # image: jacobalberty/unifi:latest-5
-    image: jacobalberty/unifi:6.0
+    name: unifi-controller
+    # image: jacobalberty/unifi:latest
+    image: ghcr.io/linuxserver/unifi-controller
     state: started
     restart_policy: unless-stopped
     recreate: yes
@@ -42,12 +43,21 @@
       - "8443:8443"
       - "3478:3478/udp"
       - "10001:10001/udp"
+      - "1900:1900/udp"
     volumes:
-      - "{{ docker_unifi_storage }}/data:/unifi/data"
-      - "{{ docker_unifi_storage }}/log:/unifi/log"
-      - "{{ docker_unifi_storage }}/cert:/unifi/cert"
-      - "{{ docker_unifi_storage }}/init.d:/unifi/init.d"
+      # - "{{ docker_unifi_storage }}/data:/unifi/data"
+      # - "{{ docker_unifi_storage }}/log:/unifi/log"
+      # - "{{ docker_unifi_storage }}/cert:/unifi/cert"
+      # - "{{ docker_unifi_storage }}/init.d:/unifi/init.d"
+      - "{{ docker_unifi_storage }}/config:/config"
+    networks_cli_compatible: false
+    networks:
+      - name: theways
     env:
       TZ: America/Chicago
+      PUID: "1000"
+      PGID: "1000"
+      MEM_LIMIT: "1024M"
+      MEM_STARTUP: "1024M"
   tags:
     - unifi
