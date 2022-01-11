@@ -22,7 +22,7 @@
     - pihole
 
 - name: Recreate pihole container
-  docker_container:
+  community.docker.docker_container:
     name: pihole
     hostname: "{{pihole_virtual_hostname}}"
     image: pihole/pihole:latest

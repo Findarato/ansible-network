@@ -1,0 +1,4 @@
+---
+# vars file for docker-grafana
+
+docker_uptime_kuma_storage: "/docker/containers/uptime-kuma/"

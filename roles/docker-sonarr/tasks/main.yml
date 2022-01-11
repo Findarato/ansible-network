@@ -20,7 +20,7 @@
     - config
 
 - name: Recreate sonarr container
-  docker_container:
+  community.docker.docker_container:
     name: sonarr
     image: linuxserver/sonarr
     state: started

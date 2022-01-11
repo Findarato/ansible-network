@@ -13,7 +13,7 @@
     - config
 
 - name: Recreate Radarr container
-  docker_container:
+  community.docker.docker_container:
     name: radarr
     image: linuxserver/radarr
     state: started

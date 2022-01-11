@@ -7,7 +7,7 @@
     - config
 
 - name: Recreate tautulli container
-  docker_container:
+  community.docker.docker_container:
     name: tautulli
     image: linuxserver/tautulli
     state: started

@@ -19,7 +19,7 @@
     - data
 
 - name: Recreate vaultwarden container
-  community.general.docker_container:
+  community.docker.docker_container:
     name: vaultwarden
     image: vaultwarden/server:latest
     state: started

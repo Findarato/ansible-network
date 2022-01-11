@@ -9,7 +9,7 @@
   community.docker.docker_network:
     name: theways
 
-- name: Create Docker paths
+- name: Create Minecraft paths
   file:
     path: "/docker/containers/minecraft/{{ item }}"
     state: directory
@@ -18,6 +18,18 @@
     - data/config
     - data/plugins
     - data/mods
+
+- name: Create Minecraft Oneblock paths
+  file:
+    path: "/docker/containers/minecraft-oneblock/{{ item }}"
+    state: directory
+  with_items:
+    - data
+    - data/config
+    - data/plugins
+    - data/mods
+  when:
+    - minecraft-oneblock is true
 
 - name: Recreate minecraft container
   docker_container:
@@ -35,37 +47,84 @@
       - '8123'
     published_ports:
       - 25565:25565
+      - 25565:25565/udp
       - 8123:8123
     volumes:
       - /docker/containers/minecraft/data:/data
     networks_cli_compatible: false
-    container_default_behavior: no_defaults
+    # network_mode: host
     env:
       ALLOW_NETHER: "true"
       ENABLE_ROLLING_LOGS: "true"
-      VERSION: "1.17.1"
+      VERSION: "1.18"
       EULA: "true"
       GID: "1000"
       UID: "1000"
-      MEMORY: "8G"
+      MEMORY: "4G"
       MOTD: "McHarryVille's A §l§cMinecraft§r Server"
       OPS: Findarato
       GENERATE_STRUCTURES: "true"
       REMOVE_OLD_MODS: "true"
       SERVER_PORT: "25565"
       SNOOPER_ENABLED: "false"
-      SPIGET_RESOURCES: "92998,9089,34315,274"
+      # SPIGET_RESOURCES: "92998,34315,274"
       # ICON: "http://..../some/image.png"
       OVERRIDE_ICON: "true"
       # SPIGET_RESOURCES: "274"
       # TYPE: "BUKKIT"
       # TYPE: "FORGE"
-      TYPE: "PAPER"
+      # TYPE: "PAPER"
       # TYPE: "SPIGOT"
-      # TYPE: "VANILLA"
+      TYPE: "VANILLA"
       RESOURCE_PACK: "https://sapixcraft.com/downloads/java/files/Sapixcraft%2064x%20MC1.17.zip"
       TZ: "America/Chicago"
       PVP: "false"
       TUNE_VIRTUALIZED: "true"
   tags:
     - minecraft
+
+- name: Recreate minecraft One Block
+  docker_container:
+    name: minecraft-oneblock
+    image: itzg/minecraft-server
+    # version: latest
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    hostname: xandercraft
+    exposed_ports:
+      - '25566'
+    published_ports:
+      - 25566:25565
+      - 25566:25565/udp
+    volumes:
+      - /docker/containers/minecraft-oneblock/data:/data
+    networks_cli_compatible: false
+    # network_mode: host
+    env:
+      ALLOW_NETHER: "true"
+      ENABLE_ROLLING_LOGS: "true"
+      VERSION: "1.18"
+      EULA: "true"
+      GID: "1000"
+      UID: "1000"
+      MEMORY: "4G"
+      MOTD: "McHarryVille's A One-block Server"
+      OPS: Findarato
+      GENERATE_STRUCTURES: "true"
+      REMOVE_OLD_MODS: "true"
+      SERVER_PORT: "25566"
+      SNOOPER_ENABLED: "false"
+      # ICON: "http://..../some/image.png"
+      OVERRIDE_ICON: "true"
+      TYPE: "VANILLA"
+      RESOURCE_PACK: "https://sapixcraft.com/downloads/java/files/Sapixcraft%2064x%20MC1.18.zip"
+      TZ: "America/Chicago"
+      PVP: "false"
+      TUNE_VIRTUALIZED: "true"
+  tags:
+    - minecraft
+  when:
+    - minecraft-oneblock is true

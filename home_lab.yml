@@ -18,7 +18,7 @@
   become: true
   remote_user: joe
   roles:
-    - docker-unifi
+    # - docker-unifi
     # - docker-proxy
     # - {
     #     role: docker-piHole,
@@ -30,7 +30,7 @@
     # - docker-piHole-Influx
     # - docker-grafana
     # - docker-jackett
-    # - docker-minecraft
+    - docker-minecraft
     # - docker-prometheus
     # - docker-tautlli
     # - docker-transmission
@@ -41,26 +41,27 @@
     - vars/main.yml
     - vars/vault
 
-# - hosts: getting
-#   become: true
-#   remote_user: joe
-#   roles:
-#     - docker-proxy
-#     - {
-#       role: docker-piHole,
-#       pihole_virtual_hostname: "pihole02",
-#       pihole_virtual_host: "pihole02.telaranrhiod.space",
-#     }
-#     - docker-piHole-Influx
-#     - docker-jackett
-#     - docker-tautlli
+- hosts: getting
+  become: true
+  remote_user: joe
+  roles:
+    # - docker-proxy
+    # - {
+    #   role: docker-piHole,
+    #   pihole_virtual_hostname: "pihole02",
+    #   pihole_virtual_host: "pihole02.telaranrhiod.space",
+    # }
+#     - docker-uptime-kuma
 #     - docker-sonarr
+#     - docker-signal-messager
+#     - docker-piHole-Influx
+#     - docker-tautlli
 #     - docker-varken
-#   vars:
-#     - ansible_python_interpreter: "/usr/bin/python3"
-#   vars_files:
-#     - vars/main.yml
-#     - vars/vault
+  vars:
+    - ansible_python_interpreter: "/usr/bin/python3"
+  vars_files:
+    - vars/main.yml
+    - vars/vault
 
 # - hosts: torrents
 #   become: true

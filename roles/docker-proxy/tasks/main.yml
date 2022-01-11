@@ -19,7 +19,7 @@
     - le/config
 
 - name: Create SWAG
-  community.general.docker_container:
+  community.docker.docker_container:
     name: swag
     image: ghcr.io/linuxserver/swag
     state: started

@@ -1,11 +1,4 @@
 ---
 # vars file for docker-grafana
 
-docker_ports:
-  - 8181/tcp
-  - "8080/tcp"
-  - "8443/tcp"
-  - "3478/udp"
-  - "10001/udp"
-
 docker_unifi_storage: "/docker/containers/unifi/"

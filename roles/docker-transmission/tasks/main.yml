@@ -29,7 +29,7 @@
     # - data/downloads/incomplete
 
 - name: Create and Update Transmission Container
-  docker_container:
+  community.docker.docker_container:
     name: transmission
     image: linuxserver/transmission
     state: started

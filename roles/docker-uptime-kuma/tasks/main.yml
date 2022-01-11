@@ -1,0 +1,46 @@
+---
+# tasks file for docker-dns
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: theways
+
+- name: Create Docker paths
+  file:
+    path: "{{ docker_uptime_kuma_storage }}/{{ item }}"
+    state: directory
+    mode: 0775
+  with_items:
+    - /data
+  tags:
+    - uptime-kuma
+
+
+# docker run -d --restart=always -p 3001:3001 -v uptime-kuma:/app/data --name uptime-kuma louislam/uptime-kuma:1
+
+- name: Recreate uptime-kuma container
+  community.docker.docker_container:
+    name: uptime-kuma
+    image: louislam/uptime-kuma:1
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    exposed_ports:
+      - "3001"
+    published_ports:
+      - "3001:3001"
+    volumes:
+      - "{{ docker_uptime_kuma_storage }}/data:/app/data"
+    networks_cli_compatible: false
+    networks:
+      - name: theways
+    env:
+      TZ: America/Chicago
+  tags:
+    - uptime-kuma

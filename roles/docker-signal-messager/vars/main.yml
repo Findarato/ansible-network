@@ -1,0 +1,5 @@
+---
+# vars file for docker-grafana
+
+
+docker_signal_storage: "/docker/containers/signal/"
