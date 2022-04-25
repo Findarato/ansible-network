@@ -14,32 +14,32 @@
 #     - vars/main.yml
 #     - vars/vault
 
-- hosts: watching
-  become: true
-  remote_user: joe
-  roles:
-    # - docker-unifi
-    # - docker-proxy
-    # - {
-    #     role: docker-piHole,
-    #     pihole_virtual_hostname: "pihole01",
-    #     pihole_virtual_host: "pihole01.telaranrhiod.space",
-    #   }
-    # - docker-librespeed
-    # - docker-vaultwarden
-    # - docker-piHole-Influx
-    # - docker-grafana
-    # - docker-jackett
-    - docker-minecraft
-    # - docker-prometheus
-    # - docker-tautlli
-    # - docker-transmission
-    # - docker-varken
-  vars:
-    - ansible_python_interpreter: "/usr/bin/python3"
-  vars_files:
-    - vars/main.yml
-    - vars/vault
+# - hosts: watching
+#   become: true
+#   remote_user: joe
+#   roles:
+#     # - docker-unifi
+#     # - docker-proxy
+#     # - {
+#     #     role: docker-piHole,
+#     #     pihole_virtual_hostname: "pihole01",
+#     #     pihole_virtual_host: "pihole01.telaranrhiod.space",
+#     #   }
+#     # - docker-librespeed
+#     # - docker-vaultwarden
+#     # - docker-piHole-Influx
+#     # - docker-grafana
+#     # - docker-jackett
+#     # - docker-minecraft
+#     # - docker-prometheus
+#     # - docker-tautlli
+#     # - docker-transmission
+#     # - docker-varken
+#   vars:
+#     - ansible_python_interpreter: "/usr/bin/python3"
+#   vars_files:
+#     - vars/main.yml
+#     - vars/vault
 
 - hosts: getting
   become: true
@@ -52,7 +52,8 @@
     #   pihole_virtual_host: "pihole02.telaranrhiod.space",
     # }
 #     - docker-uptime-kuma
-#     - docker-sonarr
+    # - docker-sonarr
+      - docker-radarr
 #     - docker-signal-messager
 #     - docker-piHole-Influx
 #     - docker-tautlli
@@ -63,24 +64,37 @@
     - vars/main.yml
     - vars/vault
 
-# - hosts: torrents
-#   become: true
-#   remote_user: joe
-#   roles:
-#     - podman-transmission
-#   vars:
-#     - ansible_python_interpreter: "/usr/bin/python3"
-#   vars_files:
-#     - vars/main.yml
-#     - vars/vault
-
-
 # - hosts: pi-geting
 #   become: true
 #   remote_user: pi
 #   roles:
 #     - geerlingguy.docker
 #     - docker-transmission
+#   vars_files:
+#     - vars/main.yml
+#     - vars/vault
+
+
+# - hosts: stats
+#   become: true
+#   remote_user: it
+#   roles:
+#     # - docker-proxy
+#     # - {
+#     #   role: docker-piHole,
+#     #   pihole_virtual_hostname: "pihole02",
+#     #   pihole_virtual_host: "pihole02.telaranrhiod.space",
+#     # }
+# #     - docker-uptime-kuma
+# #     - docker-sonarr
+# #     - docker-signal-messager
+# #     - docker-piHole-Influx
+# #     - docker-tautlli
+#     # - docker-transmission
+#     # - docker-influxDB
+#     - docker-LibreNMS
+#   vars:
+#     - ansible_python_interpreter: "/usr/bin/python"
 #   vars_files:
 #     - vars/main.yml
 #     - vars/vault

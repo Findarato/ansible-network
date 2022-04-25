@@ -1,6 +1,15 @@
 ---
 # tasks file for docker-sonarr
 
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: theways
+
 - name: Create Docker paths
   file:
     path: "/docker/containers/radarr/{{ item }}"
@@ -24,19 +33,31 @@
     ports:
       - 7878:7878
     volumes:
-      - /docker/containers/radarr/downloads:/downloads
+      # - /docker/containers/radarr/downloads:/downloads
       - /mnt/Movies:/movies
       - /etc/localtime:/ect/localtime:ro
+    mounts:
+      - labels: {'transmission'}
+        source: 'nfsvolume'
+        type: 'volume'
+        target: '/downloads'
+        volume_driver: 'local'
+        volume_options:
+          type: 'nfs'
+          device: :/docker/containers/transmission/data/
+          o: "addr=10.1.1.33,nolock,soft,rw"
+    networks_cli_compatible: false
+    networks:
+      - name: theways
     env:
       TZ: "America/Chicago"
-      PUID: 1000
-      PGID: 1000
+      PUID: '1000'
+      PGID: '1000'
+      VERSION: latest
+  tags:
+    - radarr
 
-- name: Open Ports for Radarr
-  firewalld:
-    port: "{{ item }}"
-    permanent: true
-    state: enabled
-  with_items:
-    - "{{ docker_ports }}"
-  notify: Restart firewalld
+# docker service create -d \
+#   --name nfs-service \
+#   --mount 'type=volume,source=nfsvolume,target=/app,volume-driver=local,volume-opt=type=nfs,volume-opt=device=:/var/docker-nfs,volume-opt=o=addr=10.0.0.10' \
+#   nginx:latest

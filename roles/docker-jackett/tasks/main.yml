@@ -6,10 +6,6 @@
     name: docker
     state: latest
 
-# - name: Grow the Ways
-#   community.docker.docker_network:
-#     name: "{{ docker-network }}"
-
 - name: Grow the Ways
   community.docker.docker_network:
     name: "{{ docker_network }}"

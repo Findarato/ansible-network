@@ -1,6 +1,5 @@
 ---
-# # tasks file for docker-transmission
-# - include: "{{ ansible_os_family }}.yml"
+# tasks file for docker-transmission
 
 - name: Install Python tools for docker
   pip:
@@ -9,11 +8,11 @@
 
 - name: Grow the Ways
   community.docker.docker_network:
-    name: "{{ docker-network }}"
+    name: "{{ docker_network }}"
 
 - name: Create Docker paths
   file:
-    path: "{{docker_storage}}/transmission/{{ item }}"
+    path: "/docker/containers/transmission/{{ item }}"
     state: directory
     owner: "1000"
     group: "1000"
@@ -45,9 +44,9 @@
       - 27975:27975
       - 27975:27975/udp
     volumes:
-      - "{{docker_storage}}/transmission/data/downloads:/downloads"
-      - "{{docker_storage}}/transmission/data/watch:/watch"
-      - "{{docker_storage}}/transmission/config:/config"
+      - "/docker/containers/transmission/data/downloads:/downloads"
+      - "/docker/containers/transmission/data/watch:/watch"
+      - "/docker/containers/transmission/config:/config"
     env:
       PGID: "1000"
       PUID: "1000"

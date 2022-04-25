@@ -15,7 +15,6 @@ docker_libreNMS_influxdb_password: admin
 docker_libreNMS_influxdb_database_name: librenms
 
 docker_libreNMS_sql_ip: db
-# docker_libreNMS_sql_ip: 10.1.1.33
 docker_libreNMS_sql_port: '3306'
 docker_libreNMS_sql_username: librenms
 docker_libreNMS_sql_password: a0kCcEIMRXhxCaEy

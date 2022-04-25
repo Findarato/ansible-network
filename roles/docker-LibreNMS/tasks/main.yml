@@ -1,19 +1,16 @@
 ---
-# tasks file for docker-transmission
-- include_tasks: "{{ansible_os_family}}.yml"
-  tags:
-    - libreNMS
 
-- name: Install python bindings for docker
+
+- name: Install Python tools for docker
   pip:
-    name: docker-py
+    name: docker
     state: latest
   tags:
     - libreNMS
 
-- name: Grow the Ways
+- name: libreNMS Network
   community.docker.docker_network:
-    name: "{{ docker_network }}"
+    name: "libreNMS_net"
 
 - name: Create Docker paths
   file:
@@ -54,6 +51,43 @@
   tags:
     - libreNMS
 
+- name: Create and Update LibreNMS_db Container
+  docker_container:
+    name: libreNMS_db
+    image: mariadb
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    volumes:
+      - "{{ docker_libreNMS_storage }}/mariadb/data:/var/lib/mysql"
+      - "{{ docker_libreNMS_storage }}/mariadb/config:/etc/mysql/conf.d"
+    env:
+
+      MARIADB_ROOT_PASSWORD: "{{ vault_librenmsDB_root_password }}"
+      MARIADB_DATABASE: "{{ docker_libreNMS_sql_database_name }}"
+      MARIADB_USER: "{{ docker_libreNMS_sql_username }}"
+      MARIADB_PASSWORD: "{{ docker_libreNMS_sql_password }}"
+      PUID: "{{ docker_libreNMS_PUID }}"
+      PGID: "{{ docker_libreNMS_PGID }}"
+      TZ: "America/Chicago"
+      BASE_URL: "{{ docker_libreNMS_base_url }}"
+      POLLERS: '16'
+      DISCOVERY_ENABLE: "true"
+      DISCOVERY_THREADS: '8'
+      ALERTS_ENABLE: "false"
+      APP_KEY: "{{ vault_docker_librenms_key }}"
+      DAILY_ON_STARTUP: "true"
+    networks:
+      - name: theways
+      - name: libreNMS_net
+    links:
+      - "libreNMS"
+  tags:
+    - libreNMS
+
+
 - name: Create and Update LibreNMS Container
   docker_container:
     name: libreNMS
@@ -89,8 +123,9 @@
       ALERTS_ENABLE: "false"
       APP_KEY: "{{ vault_docker_librenms_key }}"
       DAILY_ON_STARTUP: "true"
-    links:
-      - "libreNMS_db:db"
+    networks:
+      - name: theways
+      - name: libreNMS_net
   tags:
     - libreNMS
 
