@@ -12,6 +12,8 @@ roles:
     source: https://galaxy.ansible.com
   - name: geerlingguy.pip
     source: https://galaxy.ansible.com
+  - name: acimadamore.raspberry_pi
+    source: https://galaxy.ansible.com
 
 collections:
   - name: community.general

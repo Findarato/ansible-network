@@ -1,2 +1,3 @@
 ---
-# defaults file for docker-grafana
+# defaults file for docker-proxy
+docker_proxy_storage: "/docker/containers/proxy/"

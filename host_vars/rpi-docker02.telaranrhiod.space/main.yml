@@ -5,16 +5,16 @@ remote_user:             pi
 ansible_become_pass:     "{{vault_user_pass}}"
 pip_package:             python3-pip
 
-pihole_virtual_hostname: "pihole01"
-pihole_virtual_host:     "pihole01.telaranrhiod.space"
-piHole_storage:          "/docker/containers/pihole/"
+# PIHole variables
+docker_pihole_virtual_hostname: "pihole01"
+docker_pihole_virtual_host:     "pihole01.telaranrhiod.space"
+docker_piHole_storage:          "/docker/containers/pihole/"
 
 # Basic setup vars
-
 raspberry_pi_locale:            en_US.UTF-8
 raspberry_pi_timezone:          America/Chicago
 raspberry_pi_keyboard_layout:   en
-# raspberry_pi_hostname:          rpi-docker01
+# raspberry_pi_hostname:          rpi-docker02
 raspberry_pi_configure_network: no
 # raspberry_pi_ip_address:      192.168.0.2/24
 # raspberry_pi_routers:         192.168.0.1

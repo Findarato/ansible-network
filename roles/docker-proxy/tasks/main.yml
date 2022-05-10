@@ -10,7 +10,7 @@
 
 - name: Create Docker paths
   file:
-    path: "{{docker_storage}}/proxy/{{ item }}"
+    path: "{{docker_proxy_storage}}{{ item }}"
     state: directory
     mode: "0775"
     group: "1000"
@@ -30,7 +30,7 @@
       - "80:80/tcp"
       - "443:443/tcp"
     volumes:
-      - "{{docker_storage}}/proxy/le/config:/config"
+      - "{{docker_proxy_storage}}/le/config:/config"
     networks_cli_compatible: false
     networks:
       - name: theways
@@ -44,3 +44,10 @@
       VALIDATION: "dns"
       EMAIL: "findarato@gmail.com"
       STAGING: "false"
+
+- name: Copy in custom configs
+  template:
+    src: digitalocean.ini.j2
+    dest: "{{docker_proxy_storage}}/le/config/dns-conf/digitalocean.ini"
+  notify:
+    - Restart SWAG

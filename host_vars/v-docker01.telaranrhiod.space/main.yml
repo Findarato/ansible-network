@@ -1,13 +1,5 @@
 ---
 
-nrpeDriveMounts:
-  - name: root
-    path: /dev/mapper/centos-root
-  - name: boot
-    path: /dev/sda2
-  - name: efi
-    path: /dev/sda1
-
 docker_libreNMS_influxdb: true
 docker_libreNMS_influxdb_ip: tarvalon.wheel
 docker_libreNMS_influxdb_port: 8086
@@ -24,4 +16,4 @@ docker_users:
   - joe
   - it
 
-ansible_dns_host: 10.1.1.171
+ansible_dns_host: 10.1.1.10

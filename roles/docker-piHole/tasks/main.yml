@@ -12,36 +12,37 @@
 
 - name: Create Docker paths
   file:
-    path: "/docker/containers/pihole/{{ item }}"
+    path: "{{docker_piHole_storage}}{{ item }}"
     state: directory
     mode: "0775"
   with_items:
-    - config/pihole
-    - config/dnsmasq.d
+    - etc-pihole
+    - etc-dnsmasq.d
   tags:
     - pihole
 
 - name: Recreate pihole container
   community.docker.docker_container:
     name: pihole
-    hostname: "{{pihole_virtual_hostname}}"
+    hostname: "{{docker_pihole_virtual_hostname}}"
     image: pihole/pihole:latest
     state: started
     restart_policy: unless-stopped
     recreate: yes
     restart: yes
     pull: true
-    shm_size: 5G
+    shm_size: 500Mb
     ports:
       - "53:53/tcp"
+      - "8888:80/tcp"
       - "53:53/udp"
     exposed_ports:
       - "67/udp"
       - "80/tcp"
       - "443/tcp"
     volumes:
-      - /docker/containers/pihole/config/pihole:/etc/pihole/
-      - /docker/containers/pihole/config/dnsmasq.d:/etc/dnsmasq.d/
+      - "{{docker_piHole_storage}}/etc-pihole:/etc/pihole/"
+      - "{{docker_piHole_storage}}/etc-dnsmasq.d:/etc/dnsmasq.d/"
       - /etc/localtime:/etc/localtime:ro
     networks_cli_compatible: false
     networks:
@@ -49,22 +50,10 @@
     env:
       TZ: "America/Chicago"
       WEBPASSWORD: password
-      VIRTUAL_HOST: "{{ pihole_virtual_host }}"
+      VIRTUAL_HOST: "{{ docker_pihole_virtual_host }}"
+      hostname: "{{docker_pihole_virtual_hostname}}"
     dns_servers:
-      - 8.8.8.8
+      - 10.1.1.1
       - 1.1.1.1
   tags:
     - pihole
-
-    # docker run -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy
-
-# - name: Open Ports for pihole
-#   firewalld:
-#     port: "{{ item }}"
-#     permanent: true
-#     state: enabled
-#   with_items:
-#     - "{{ docker_ports }}"
-#   notify: Restart firewalld
-#   tags:
-#     - pihole
