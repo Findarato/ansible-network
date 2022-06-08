@@ -20,7 +20,7 @@
     - data/mods
 
 - name: Recreate minecraft container
-  docker_container:
+  community.docker.docker_container:
     name: minecraft
     image: itzg/minecraft-server
     state: started
@@ -39,7 +39,8 @@
     volumes:
       - /docker/containers/minecraft/data:/data
     networks_cli_compatible: false
-    # network_mode: host
+    networks:
+      - name: theways
     env:
       ALLOW_NETHER: "true"
       ENABLE_ROLLING_LOGS: "true"
@@ -48,21 +49,21 @@
       GID: "1000"
       UID: "1000"
       MEMORY: "4G"
+      MODS: "https://media.forgecdn.net/files/3724/63/Dynmap-3.4-beta-3-spigot.jar"
       MOTD: "McHarryVille's A §l§cMinecraft§r Server"
       OPS: Findarato
       GENERATE_STRUCTURES: "true"
-      REMOVE_OLD_MODS: "true"
+      REMOVE_OLD_MODS: "false"
       SERVER_PORT: "25565"
       SNOOPER_ENABLED: "false"
-      # SPIGET_RESOURCES: "92998,34315,274"
+      SPIGET_RESOURCES: "92998,34315"
       # ICON: "http://..../some/image.png"
       OVERRIDE_ICON: "true"
-      # SPIGET_RESOURCES: "274"
       # TYPE: "BUKKIT"
       # TYPE: "FORGE"
-      # TYPE: "PAPER"
+      TYPE: "PAPER"
       # TYPE: "SPIGOT"
-      TYPE: "VANILLA"
+      # TYPE: "VANILLA"
       RESOURCE_PACK: ""
       TZ: "America/Chicago"
       PVP: "false"

@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include docker-piHole"
+      include_role:
+        name: "docker-piHole"

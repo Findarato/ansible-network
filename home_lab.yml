@@ -18,18 +18,18 @@
   become: true
   remote_user: joe
   roles:
-    - docker-unifi
-    # - docker-proxy
+    # - docker-unifi
+    - docker-proxy
     # - {
     #     role: docker-piHole,
     #     pihole_virtual_hostname: "pihole01",
     #     pihole_virtual_host: "pihole01.telaranrhiod.space",
     #   }
-    - docker-librespeed
-    - docker-vaultwarden
+    # - docker-librespeed
+    # - docker-vaultwarden
     # - docker-piHole-Influx
-    - docker-grafana
-    - docker-jackett
+    # - docker-grafana
+    # - docker-jackett
     # - docker-minecraft
     # - docker-prometheus
     # - docker-tautlli
@@ -41,11 +41,11 @@
     - vars/main.yml
     - vars/vault
 
-# - hosts: getting
-#   become: true
-#   remote_user: joe
-#   roles:
-#     # - docker-proxy
+- hosts: getting
+  become: true
+  remote_user: joe
+  roles:
+    - docker-proxy
 #     # - {
 #     #   role: docker-piHole,
 #     #   pihole_virtual_hostname: "pihole02",

@@ -1,0 +1,50 @@
+---
+# tasks file for docker-transmission
+
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
+
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: "{{ docker_network }}"
+
+- name: Create Docker paths
+  file:
+    path: "/docker/containers/dashy/{{ item }}"
+    state: directory
+    owner: "1000"
+    group: "1000"
+    recurse: yes
+  with_items:
+    - config
+  tags:
+    - deluge
+    # - data/downloads/incomplete
+
+- name: Create and Update Dashy Container
+  community.docker.docker_container:
+    name: dashy
+    image: lissy93/dashy
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    exposed_ports:
+      - "80"
+    published_ports: []
+      # - 8112:8112
+    volumes:
+      - "/docker/containers/dashy/my-local-conf.yml:/app/public/conf.yml"
+    env:
+      PGID: "1000"
+      PUID: "1000"
+      TZ: "America/Chicago"
+      VIRTUAL_HOST: "dashy.telaranrhiod.space"
+    networks:
+      - name: theways
+  tags:
+    - deluge

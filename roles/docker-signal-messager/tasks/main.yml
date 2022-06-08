@@ -11,11 +11,9 @@
 
 - name: Create Docker paths
   file:
-    path: "{{ docker_signal_storage }}/{{ item }}"
+    path: "{{ docker_signal_storage }}/"
     state: directory
     mode: 0775
-  with_items:
-    - /signal-cli-config
   tags:
     - signal-messager
 
@@ -35,7 +33,7 @@
     published_ports:
       - "8080:8080"
     volumes:
-      - "{{ docker_signal_storage }}/signal-cli-config:/home/.local/share/signal-cli"
+      - "{{ docker_signal_storage }}/signal:/home/.local/share/signal-cli"
     networks_cli_compatible: false
     networks:
       - name: theways

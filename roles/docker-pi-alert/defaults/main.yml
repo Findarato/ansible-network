@@ -1,0 +1,7 @@
+---
+# defaults file for docker-pi-alert
+
+docker_pi_alert_virtual_host: pialert.localhost.test
+docker_pi_alert_virtual_hostname: pialert
+
+docker_pi_alert_storage: "/docker/containers/pialert/"

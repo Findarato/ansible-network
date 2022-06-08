@@ -1,5 +1,6 @@
 ---
-# tasks file for docker-piHole
+# tasks file for docker-pi-alert
+# https://registry.hub.docker.com/r/jokobsk/pi.alert
 
 - name: Install Python tools for docker
   pip:
@@ -12,44 +13,43 @@
 
 - name: Create Docker paths
   file:
-    path: "{{docker_piHole_storage}}{{ item }}"
+    path: "{{docker_pi_alert_storage}}{{ item }}"
     state: directory
     mode: "0775"
   with_items:
-    - etc-pihole
-    - etc-dnsmasq.d
+    - data
   tags:
     - pihole
 
-- name: Recreate pihole container
+- name: Recreate pi-alert container
   community.docker.docker_container:
-    name: pihole
+    name: pi-alert
     hostname: "{{docker_pihole_virtual_hostname}}"
-    image: pihole/pihole:latest
+    image: jokobsk/pi.alert:latest
     state: started
     restart_policy: unless-stopped
     recreate: yes
     restart: yes
     pull: true
-    shm_size: 500MB
-    ports:
-      - "53:53/tcp"
-      - "8888:80/tcp"
-      - "53:53/udp"
+    shm_size: 500Mb
+    ports: []
+      # - "53:53/tcp"
+      # - "8888:80/tcp"
+      # - "53:53/udp"
     exposed_ports:
-      - "67/udp"
-      - "80/tcp"
-      - "443/tcp"
+      - "20211/tcp"
     volumes:
-      - "{{docker_piHole_storage}}/etc-pihole:/etc/pihole/"
-      - "{{docker_piHole_storage}}/etc-dnsmasq.d:/etc/dnsmasq.d/"
+      - "{{docker_pi_alert_storage}}/data/db/:/home/pi/pialert/db"
+      - "{{docker_pi_alert_storage}}/data/pialert.conf:/home/pi/pialert/config/pialert.conf"
+      - "{{docker_pi_alert_storage}}/data/version.conf:/home/pi/pialert/config/version.conf"
       - /etc/localtime:/etc/localtime:ro
     networks_cli_compatible: false
     networks:
       - name: theways
+      - name: local
+          ipv
     env:
       TZ: "America/Chicago"
-      WEBPASSWORD: password
       VIRTUAL_HOST: "{{ docker_pihole_virtual_host }}"
       hostname: "{{docker_pihole_virtual_hostname}}"
     dns_servers:
