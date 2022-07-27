@@ -1,0 +1,14 @@
+---
+# Apply common configuration to all hosts
+- hosts: torrents
+  become: true
+  remote_user: joe
+  roles:
+    - basic-server
+    - zsh
+    - geerlingguy.pip
+    - geerlingguy.docker
+  vars_files:
+    - vars/main.yml
+    - vars/vault
+

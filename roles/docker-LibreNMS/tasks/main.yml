@@ -64,7 +64,6 @@
       - "{{ docker_libreNMS_storage }}/mariadb/data:/var/lib/mysql"
       - "{{ docker_libreNMS_storage }}/mariadb/config:/etc/mysql/conf.d"
     env:
-
       MARIADB_ROOT_PASSWORD: "{{ vault_librenmsDB_root_password }}"
       MARIADB_DATABASE: "{{ docker_libreNMS_sql_database_name }}"
       MARIADB_USER: "{{ docker_libreNMS_sql_username }}"

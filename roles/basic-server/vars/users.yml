@@ -1,56 +1,44 @@
 ---
 
 default_users:
-   - name: joe
-     state: present
-     comment: Account for Joseph Harry
-     uid: 1000
-     createhome: yes        # Defaults to yes
-     home: /home/joe
-     generate_ssh_key: yes
-     ssh_key_bits: 4096
-     ssh_key_file: .ssh/id_rsa
-     update_password: on_create
-     groups: ["{{ sudo_group }}","users","family"]
-   - name: alix
-     state: present
-     comment: Account for Alix Harry
-     uid: 1001
-     createhome: yes        # Defaults to yes
-     home: /home/alix
-     generate_ssh_key: yes
-     ssh_key_bits: 4096
-     ssh_key_file: .ssh/id_rsa
-     update_password: on_create
-     groups: ["{{ sudo_group }}","users","family"]
-   - name: xander
-     state: present
-     comment: Account for Xander Harry
-     uid: 1002
-     createhome: yes        # Defaults to yes
-     home: /home/xander
-     generate_ssh_key: yes
-     ssh_key_bits: 4096
-     ssh_key_file: .ssh/id_rsa
-     update_password: on_create
-     groups: ["users","family"]
-   - name: it
-     state: present
-     comment: Account for Joseph Harry
-     uid: 8888
-     createhome: yes        # Defaults to yes
-     home: /home/it
-     generate_ssh_key: yes
-     ssh_key_bits: 4096
-     ssh_key_file: .ssh/id_rsa
-     update_password: on_create
-     groups: ["{{ sudo_group }}","users"]
+  - name: joe
+    state: present
+    comment: Account for Joseph Harry
+    uid: 1000
+    createhome: yes        # Defaults to yes
+    home: /home/joe
+    generate_ssh_key: True
+    ssh_key_bits: 4096
+    ssh_key_file: .ssh/id_ed25519
+    ssh_key_type: ed25519
+    update_password: "on_create"
+    groups: ["{{ sudo_group }}","users","family"]
+  - name: alix
+    state: present
+    comment: Account for Alix Harry
+    uid: 1000
+    createhome: yes        # Defaults to yes
+    home: /home/alix
+    generate_ssh_key: True
+    ssh_key_bits: 4096
+    ssh_key_file: .ssh/id_ed25519
+    ssh_key_type: ed25519
+    update_password: "on_create"
+    groups: ["users","family"]
+  - name: xander
+    state: present
+    comment: Account for Xander Harry
+    uid: 1000
+    createhome: yes        # Defaults to yes
+    home: /home/xander
+    generate_ssh_key: True
+    ssh_key_bits: 4096
+    ssh_key_file: .ssh/id_ed25519
+    ssh_key_type: ed25519
+    update_password: "on_create"
+    groups: ["users","family"]
 
-
+sudo_group: wheel
 
 default_password: "{{ vault_default_password | password_hash('sha512','fe46ffed0054679b153688c6848ad7') }}"
 
-disabled_users:
-  - name: badUser1
-  - name: badUser2
-        

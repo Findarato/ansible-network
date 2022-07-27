@@ -28,4 +28,4 @@ all:
         # v-stats.telaranrhiod.space: # CentOS 8
     torrents:
       hosts:
-        torrents.telaranrhiod.space: # Fedora Servers
+        v-torrents.telaranrhiod.space: # 

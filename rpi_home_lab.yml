@@ -29,8 +29,7 @@
   become: true
   remote_user: pi
   roles:
-    # - docker-uptime-kuma
-    - docker-dashy
+    - docker-uptime-kuma
   vars:
     - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:
@@ -48,6 +47,7 @@
         role: docker-deluge,
         deluge_port: "54856"
       }
+    - docker-dashy
     - docker-jackett
     - docker-signal-messager
   vars:

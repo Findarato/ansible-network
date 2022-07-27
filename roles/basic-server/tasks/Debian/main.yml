@@ -1,4 +1,5 @@
-#!/usr/bin/env ansible-playbook
+---
+
 - name: "Install Docker helpers"
   apt:
     name: "{{ item }}"
@@ -9,3 +10,5 @@
     - wget
     - python-pip
     - git
+
+...
