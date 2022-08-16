@@ -1,6 +1,11 @@
 ---
-
 # run a bunch of things with things
+
+- include_vars:
+    file: "{{ item }}"
+  with_items:
+    - users.yml
+    - vault
 
 - include_tasks: "{{ansible_os_family}}/main.yml"
 # - import_tasks: "dotfiles.yml"

@@ -70,7 +70,3 @@
     - vars/vault
   tags:
     - rpi
-
-
-        # - docker-grafana
-    # - docker-jackett

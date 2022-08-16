@@ -32,19 +32,19 @@
       - '8989'
     volumes:
       # - /docker/containers/sonarr/downloads:/downloads
-      - /mnt/transmission/downloads:/downloads
+      - /mnt/whitetower/torrents/downloads:/downloads
       - /docker/containers/sonarr/config:/config
       - /mnt/storage/TV/:/tv/
-    mounts:
-      - labels: transmission
-        source: nfsvolume
-        type: volume
-        target: /downloads
-        volume_driver: local
-        volume_options:
-          - type: 'nfs'
-            device: ':/docker/containers/transmission/data/'
-            addr: '10.1.1.33'
+    # mounts:
+    #   - labels: transmission
+    #     source: nfsvolume
+    #     type: volume
+    #     target: /downloads
+    #     volume_driver: local
+    #     volume_options:
+    #       - type: 'nfs'
+    #         device: ':/docker/containers/transmission/data/'
+    #         addr: '10.1.1.33'
     networks_cli_compatible: false
     networks:
       - name: theways

@@ -1,0 +1,36 @@
+---
+- hosts: torrents
+  become: true
+  remote_user: joe
+  roles:
+    - basic-server
+    - zsh
+    - geerlingguy.pip
+    # - geerlingguy.docker
+  post_tasks:
+    - name: clean up temp ansible
+      ansible.builtin.file:
+        path: /tmp/ansible
+        state: absent
+  vars:
+    - ansible_python_interpreter: "/usr/bin/python3"
+  vars_files:
+    - vars/main.yml
+    - vars/vault_setup
+
+- hosts: torrents
+  become: true
+  remote_user: ansible
+  roles:
+    - docker-proxy
+    - docker-deluge
+  post_tasks:
+    - name: clean up temp ansible
+      ansible.builtin.file:
+        path: /tmp/ansible
+        state: absent
+  vars:
+    - ansible_python_interpreter: "/usr/bin/python3"
+  vars_files:
+    - vars/main.yml
+    - vars/vault

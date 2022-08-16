@@ -20,6 +20,7 @@
     recurse: yes
   with_items:
     - config
+    - downloads
   tags:
     - deluge
     # - data/downloads/incomplete
@@ -35,20 +36,25 @@
     pull: true
     exposed_ports:
       - "8112"
+      - "58846"
       - "27975"
     published_ports:
       - 8112:8112
       - 27975:27975
       - 27975:27975/udp
+      - 58846:58846
+      - 58846:58846/udp
+      - 6881:6881
+      - 6881:6881/udp
     volumes:
       - "/docker/containers/deluge/config:/config"
-      - "/mnt/usb/docker/deluge/downloads:/downloads"
+      - "/docker/containers/deluge/downloads:/downloads"
     env:
       PGID: "1000"
       PUID: "1000"
       TZ: "America/Chicago"
-      # DELUGE_LOGLEVEL: error
-      VIRTUAL_HOST: "deluge.telaranrhiod.space"
+      DELUGE_LOGLEVEL: error
+      VIRTUAL_HOST: "v-torrents.telaranrhiod.space"
     networks:
       - name: theways
   tags:

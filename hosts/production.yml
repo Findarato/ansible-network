@@ -3,18 +3,18 @@ all:
   children:
     rpi:
       hosts:
-         rpi-docker01.telaranrhiod.space: #raspberry pi os
-         rpi-docker02.telaranrhiod.space: #raspberry pi os
-         rpi-docker03.telaranrhiod.space: #raspberry pi os
+        rpi-docker01.telaranrhiod.space: #raspberry pi os
+        rpi-docker02.telaranrhiod.space: #raspberry pi os
+        rpi-docker03.telaranrhiod.space: #raspberry pi os
     piGetting:
       hosts:
-         rpi-docker01.telaranrhiod.space: #raspberry pi os
-         rpi-docker02.telaranrhiod.space: #raspberry pi os
-         rpi-docker03.telaranrhiod.space: #raspberry pi os
+        rpi-docker01.telaranrhiod.space: #raspberry pi os
+        rpi-docker02.telaranrhiod.space: #raspberry pi os
+        rpi-docker03.telaranrhiod.space: #raspberry pi os
     piBlocks:
       hosts:
-         rpi-docker02.telaranrhiod.space: #raspberry pi os
-         rpi-docker03.telaranrhiod.space: #raspberry pi os
+        rpi-docker02.telaranrhiod.space: #raspberry pi os
+        rpi-docker03.telaranrhiod.space: #raspberry pi os
     getting:
       hosts:
         v-docker02.telaranrhiod.space: #CentOS 7
@@ -28,4 +28,4 @@ all:
         # v-stats.telaranrhiod.space: # CentOS 8
     torrents:
       hosts:
-        v-torrents.telaranrhiod.space: # 
+        v-torrents.telaranrhiod.space: #

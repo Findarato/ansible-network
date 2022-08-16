@@ -1,13 +1,13 @@
 ---
 
-ntp_enabled:         true
-ntp_timezone:        "America/Chicago"
-ntp_manage_config:   true
+ntp_enabled:          true
+ntp_timezone:         "America/Chicago"
+ntp_manage_config:    true
 
-ansible_become_pass: "{{ vault_ansible_become_pass  }}"
-ansible_ssh_pass:    "{{ vault_ansible_ssh_pass  }}"
+ansible_become_pass:  "{{ vault_ansible_become_pass  }}"
+ansible_ssh_pass:     "{{ vault_ansible_ssh_pass  }}"
+ansible_use:          ansible
+docker_network:       theways
 
-docker_network:      theways
-
-piHole_storage:      "/docker/containers/pihole/"
+piHole_storage:       "/docker/containers/pihole/"
 docker_proxy_storage: "/docker/containers/proxy/"

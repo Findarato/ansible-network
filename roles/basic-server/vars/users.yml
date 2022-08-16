@@ -1,10 +1,22 @@
 ---
 
+groups_to_make:
+  - name: family
+    gid: 8888
+    state: present
+  - name: ansible
+    gid: 1000001
+    state: present
+  - name: sudo_no_password
+    gid: 1000002
+    state: present
+
 default_users:
   - name: joe
+    shell: /bin/bash
     state: present
     comment: Account for Joseph Harry
-    uid: 1000
+    uid: 1001
     createhome: yes        # Defaults to yes
     home: /home/joe
     generate_ssh_key: True
@@ -12,11 +24,12 @@ default_users:
     ssh_key_file: .ssh/id_ed25519
     ssh_key_type: ed25519
     update_password: "on_create"
-    groups: ["{{ sudo_group }}","users","family"]
+    groups: ["{{ sudo_group }}","family"]
   - name: alix
+    shell: /bin/bash
     state: present
     comment: Account for Alix Harry
-    uid: 1000
+    uid: 1002
     createhome: yes        # Defaults to yes
     home: /home/alix
     generate_ssh_key: True
@@ -24,11 +37,12 @@ default_users:
     ssh_key_file: .ssh/id_ed25519
     ssh_key_type: ed25519
     update_password: "on_create"
-    groups: ["users","family"]
+    groups: ["family"]
   - name: xander
+    shell: /bin/bash
     state: present
     comment: Account for Xander Harry
-    uid: 1000
+    uid: 1003
     createhome: yes        # Defaults to yes
     home: /home/xander
     generate_ssh_key: True
@@ -36,9 +50,8 @@ default_users:
     ssh_key_file: .ssh/id_ed25519
     ssh_key_type: ed25519
     update_password: "on_create"
-    groups: ["users","family"]
+    groups: ["family"]
 
 sudo_group: wheel
 
-default_password: "{{ vault_default_password | password_hash('sha512','fe46ffed0054679b153688c6848ad7') }}"
-
+default_password: "{{ vault_default_password | password_hash('sha512','fe46ffed005467') }}"

@@ -10,5 +10,7 @@
     - wget
     - python-pip
     - git
+    - tmux
+    # - stow
 
 ...
