@@ -1,14 +1,14 @@
 ---
 
-- name: "Install Docker helpers"
+- name: "Install generic packages Debian"
   apt:
     name: "{{ item }}"
     state: present
   with_items:
-    - fail2ban-all
+    # - fail2ban-all
     - nano
     - wget
-    - python-pip
+    # - python-pip
     - git
     - tmux
     # - stow

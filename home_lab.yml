@@ -1,38 +1,39 @@
 ---
-- hosts: all
-  become: true
-  remote_user: joe
-  roles:
-    - basic-server
-    - zsh
-    - geerlingguy.pip
-    - geerlingguy.docker
-  vars:
-    - ansible_python_interpreter: "/usr/bin/python3"
-  vars_files:
-    - vars/main.yml
-    - vars/vault_setup
+# - hosts: all
+#   become: true
+#   remote_user: joe
+#   roles:
+#     - basic-server
+#     - zsh
+#     - geerlingguy.pip
+#     - geerlingguy.docker
+#   vars:
+#     - ansible_python_interpreter: "/usr/bin/python3"
+#   vars_files:
+#     - vars/main.yml
+#     - vars/vault_setup
 
 - hosts: watching
   become: true
   remote_user: ansible
   roles:
-    - docker-unifi
+    # - docker-unifi
     - docker-proxy
-    # - {
-    #     role: docker-piHole,
-    #     pihole_virtual_hostname: "pihole01",
-    #     pihole_virtual_host: "pihole01.telaranrhiod.space",
-    #   }
-    - docker-librespeed
-    # - docker-vaultwarden
+    - docker-uptime-kuma
+    - docker-dashy
+    - {
+        role: docker-piHole,
+        pihole_virtual_hostname: "pihole01",
+        pihole_virtual_host: "pihole01.telaranrhiod.space",
+      }
+    # - docker-librespeed
+    - docker-vaultwarden
     # - docker-piHole-Influx
-    - docker-grafana
-    # - docker-jackett
+    # - docker-grafana
+    - docker-jackett
     # - docker-minecraft
     # - docker-prometheus
     # - docker-tautlli
-    # - docker-transmission
     # - docker-varken
   vars:
     - ansible_python_interpreter: "/usr/bin/python3"
@@ -45,14 +46,14 @@
   remote_user: ansible
   roles:
     - docker-proxy
-    # - {
-    #   role: docker-piHole,
-    #   pihole_virtual_hostname: "pihole02",
-    #   pihole_virtual_host: "pihole02.telaranrhiod.space",
-    # }
-#     - docker-uptime-kuma
+    - {
+      role: docker-piHole,
+      pihole_virtual_hostname: "pihole02",
+      pihole_virtual_host: "pihole02.telaranrhiod.space",
+    }
+    - docker-overseerr
     - docker-sonarr
-      # - docker-radarr
+    - docker-radarr
 #     - docker-signal-messager
 #     - docker-piHole-Influx
 #     - docker-tautlli
@@ -68,17 +69,6 @@
 #   remote_user: it
 #   roles:
 #     # - docker-proxy
-#     # - {
-#     #   role: docker-piHole,
-#     #   pihole_virtual_hostname: "pihole02",
-#     #   pihole_virtual_host: "pihole02.telaranrhiod.space",
-#     # }
-# #     - docker-uptime-kuma
-# #     - docker-sonarr
-# #     - docker-signal-messager
-# #     - docker-piHole-Influx
-# #     - docker-tautlli
-#     # - docker-transmission
 #     # - docker-influxDB
 #     - docker-LibreNMS
 #   vars:
@@ -92,14 +82,6 @@
   roles:
     - docker-proxy
     - docker-deluge
-#     - docker-uptime-kuma
-#     - docker-sonarr
-#     - docker-signal-messager
-#     - docker-piHole-Influx
-#     - docker-tautlli
-    # - docker-transmission
-    # - docker-influxDB
-    # - docker-LibreNMS
   vars:
     - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:

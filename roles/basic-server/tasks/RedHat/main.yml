@@ -11,7 +11,7 @@
 #     name: "*"
 #     state: latest
 
-- name: Install generic packages
+- name: Install generic packages RHEL
   package:
     name: "{{ item }}"
     state: present

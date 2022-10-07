@@ -20,9 +20,20 @@
     recurse: yes
   with_items:
     - config
+    - config/item-icons
   tags:
-    - deluge
-    # - data/downloads/incomplete
+    - dashy
+
+- name: Copy config file
+  ansible.builtin.copy:
+    src:  conf.yml
+    dest: "/docker/containers/dashy/config/conf.yml"
+    owner: "1000"
+    group: "1000"
+    force: no
+  tags:
+    - dashy
+
 
 - name: Create and Update Dashy Container
   community.docker.docker_container:
@@ -34,17 +45,20 @@
     restart: yes
     pull: true
     exposed_ports:
+      - "4000"
       - "80"
     published_ports: []
       # - 8112:8112
     volumes:
-      - "/docker/containers/dashy/my-local-conf.yml:/app/public/conf.yml"
+      - "/docker/containers/dashy/config/conf.yml:/app/public/conf.yml"
+      # - "/docker/containers/dashy/config:/app/public"
     env:
       PGID: "1000"
       PUID: "1000"
       TZ: "America/Chicago"
       VIRTUAL_HOST: "dashy.telaranrhiod.space"
+      NODE_ENV: production
     networks:
       - name: theways
   tags:
-    - deluge
+    - dashy

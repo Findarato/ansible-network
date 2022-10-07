@@ -12,24 +12,11 @@
 #   tags:
 #     - rpi
 
-# - hosts: piBlocks
-#   become: true
-#   remote_user: pi
-#   roles:
-#     - docker-piHole
-#   vars:
-#     - ansible_python_interpreter: "/usr/bin/python3"
-#   vars_files:
-#     - vars/main.yml
-#     - vars/vault
-#   tags:
-#     - rpi
-
-- hosts: rpi-docker01.telaranrhiod.space
+- hosts: piBlocks
   become: true
   remote_user: pi
   roles:
-    - docker-uptime-kuma
+    - docker-piHole
   vars:
     - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:
@@ -38,17 +25,26 @@
   tags:
     - rpi
 
+# - hosts: rpi-docker01.telaranrhiod.space
+#   become: true
+#   remote_user: pi
+#   roles:
+#     - docker-uptime-kuma
+#   vars:
+#     - ansible_python_interpreter: "/usr/bin/python3"
+#   vars_files:
+#     - vars/main.yml
+#     - vars/vault
+#   tags:
+#     - rpi
+
 - hosts: rpi-docker02.telaranrhiod.space
   become: true
   remote_user: pi
   roles:
     # - docker-pi-alert
-    - {
-        role: docker-deluge,
-        deluge_port: "54856"
-      }
-    - docker-dashy
-    - docker-jackett
+    # - docker-dashy
+    # - docker-jackett
     - docker-signal-messager
   vars:
     - ansible_python_interpreter: "/usr/bin/python3"

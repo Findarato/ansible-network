@@ -6,6 +6,8 @@ all:
         rpi-docker01.telaranrhiod.space: #raspberry pi os
         rpi-docker02.telaranrhiod.space: #raspberry pi os
         rpi-docker03.telaranrhiod.space: #raspberry pi os
+      vars:
+        ansible_user: pi
     piGetting:
       hosts:
         rpi-docker01.telaranrhiod.space: #raspberry pi os

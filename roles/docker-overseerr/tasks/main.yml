@@ -1,5 +1,5 @@
 ---
-# tasks file for docker-sonarr
+# tasks file for docker-overseerr
 
 - name: Install Python tools for docker
   pip:
@@ -12,30 +12,27 @@
 
 - name: Create Docker paths
   file:
-    path: "/docker/containers/radarr/{{ item }}"
+    path: "/docker/containers/overseerr/{{ item }}"
     state: directory
     mode: "0775"
     owner: "1000"
     group: docker
   with_items:
-    - downloads
     - config
 
-- name: Recreate Radarr container
+- name: Recreate overseerr container
   community.docker.docker_container:
-    name: radarr
-    image: linuxserver/radarr
+    name: overseerr
+    image: lscr.io/linuxserver/overseerr
     state: started
     restart_policy: unless-stopped
     recreate: yes
     restart: yes
     pull: true
     exposed_ports:
-      - '7878'
+      - '5055'
     volumes:
-      - /etc/localtime:/ect/localtime:ro
-      - /docker/containers/radarr/downloads:/downloads
-      - /mnt/storage/Movies:/movies
+      - /docker/containers/overseerr/config:/config
     networks_cli_compatible: false
     networks:
       - name: theways
@@ -45,9 +42,4 @@
       PGID: '1000'
       VERSION: latest
   tags:
-    - radarr
-
-# docker service create -d \
-#   --name nfs-service \
-#   --mount 'type=volume,source=nfsvolume,target=/app,volume-driver=local,volume-opt=type=nfs,volume-opt=device=:/var/docker-nfs,volume-opt=o=addr=10.0.0.10' \
-#   nginx:latest
+    - overseerr

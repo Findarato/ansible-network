@@ -1,5 +1,6 @@
 ---
 # tasks file for docker-sonarr
+
 - name: Install Python tools for docker
   pip:
     name: docker
@@ -31,6 +32,7 @@
     exposed_ports:
       - '8989'
     volumes:
+      - /etc/localtime:/ect/localtime:ro
       # - /docker/containers/sonarr/downloads:/downloads
       - /mnt/whitetower/torrents/downloads:/downloads
       - /docker/containers/sonarr/config:/config
