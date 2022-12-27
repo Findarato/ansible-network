@@ -47,8 +47,8 @@
     exposed_ports:
       - "4000"
       - "80"
-    published_ports: []
-      # - 8112:8112
+    published_ports:
+      - "58400:80"
     volumes:
       - "/docker/containers/dashy/config/conf.yml:/app/public/conf.yml"
       # - "/docker/containers/dashy/config:/app/public"

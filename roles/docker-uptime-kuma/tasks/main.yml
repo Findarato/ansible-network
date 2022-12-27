@@ -23,7 +23,7 @@
 - name: Recreate uptime-kuma container
   community.docker.docker_container:
     name: uptime-kuma
-    image: louislam/uptime-kuma:1
+    image: louislam/uptime-kuma
     state: started
     restart_policy: unless-stopped
     recreate: yes
@@ -43,3 +43,10 @@
   tags:
     - uptime-kuma
 
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/uptime-kuma.subdomain.conf.sample
+    dest: "{{ docker_proxy_storage }}/le/config/nginx/proxy-confs/uptime-kuma.subdomain.conf"
+    mode: '0440'
+  tags:
+    - uptime-kuma

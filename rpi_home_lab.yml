@@ -1,16 +1,16 @@
 ---
-# - hosts: rpi
-#   become: true
-#   remote_user: pi
-#   roles:
-#     - docker-proxy
-#   vars:
-#     - ansible_python_interpreter: "/usr/bin/python3"
-#   vars_files:
-#     - vars/main.yml
-#     - vars/vault
-#   tags:
-#     - rpi
+- hosts: rpi
+  become: true
+  remote_user: pi
+  roles:
+    - docker-proxy
+  vars:
+    - ansible_python_interpreter: "/usr/bin/python3"
+  vars_files:
+    - vars/main.yml
+    - vars/vault
+  tags:
+    - rpi
 
 - hosts: piBlocks
   become: true
@@ -45,7 +45,7 @@
     # - docker-pi-alert
     # - docker-dashy
     # - docker-jackett
-    - docker-signal-messager
+    # - docker-signal-messager
   vars:
     - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:
@@ -58,7 +58,6 @@
   become: true
   remote_user: pi
   roles:
-    # - docker-pi-alert
   vars:
     - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:

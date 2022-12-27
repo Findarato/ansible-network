@@ -28,6 +28,7 @@
     pull: true
     ports:
       - "80:80/tcp"
+      - "81:81/tcp"
       - "443:443/tcp"
     volumes:
       - "{{docker_proxy_storage}}/le/config:/config"
@@ -44,6 +45,8 @@
       VALIDATION: "dns"
       EMAIL: "findarato@gmail.com"
       STAGING: "false"
+      DOCKER_MODS: "linuxserver/mods:swag-maxmind|linuxserver/mods:swag-dashboard"
+      MAXMINDDB_LICENSE_KEY: "{{ vault_maxmind_key }}"
 
 - name: Copy in custom configs
   template:

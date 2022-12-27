@@ -6,8 +6,8 @@
   roles:
     - basic-server
     - zsh
-    - geerlingguy.pip
-    - geerlingguy.docker
+    # - geerlingguy.pip
+    # - geerlingguy.docker
   vars_files:
     - vars/main.yml
     - vars/vault_setup

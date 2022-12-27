@@ -1,0 +1,47 @@
+---
+# tasks file for xen_orchestra
+
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: theways
+
+- name: Create Docker paths
+  file:
+    path: "/docker/containers/xen_orchestra/{{ item }}"
+    state: directory
+    mode: "0775"
+    owner: "472"
+    group: "472"
+    recurse: yes
+  with_items:
+    - xo-server
+    - redis
+  tags:
+    - xen_orchestra
+
+- name: Recreate xen_orchestra container
+  docker_container:
+    name: xen_orchestra
+    image: ronivay/xen-orchestra
+    state: started
+    restart_policy: always
+    recreate: yes
+    restart: yes
+    pull: true
+    exposed_ports:
+      - '80'
+    volumes:
+      - /docker/containers/xen_orchestra/xo-server:/var/lib/xo-server
+      - /docker/containers/xen_orchestra/redis:/var/lib/redis
+      - /etc/localtime:/etc/localtime:ro
+    networks_cli_compatible: false
+    networks:
+      - name: theways
+    env:
+  tags:
+    - xen_orchestra

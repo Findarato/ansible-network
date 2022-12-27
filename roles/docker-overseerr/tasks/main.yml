@@ -31,6 +31,8 @@
     pull: true
     exposed_ports:
       - '5055'
+    published_ports:
+      - 5055:5055
     volumes:
       - /docker/containers/overseerr/config:/config
     networks_cli_compatible: false

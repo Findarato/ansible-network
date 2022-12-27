@@ -1,0 +1,58 @@
+---
+# tasks file for smokeping
+
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: theways
+
+- name: Create Docker paths
+  file:
+    path: "/docker/containers/smokeping/{{ item }}"
+    state: directory
+    mode: "0775"
+    owner: "1000"
+    group: "1000"
+    recurse: yes
+  with_items:
+    - config
+    - data
+  tags:
+    - smokeping
+
+- name: Recreate smokeping container
+  docker_container:
+    name: smokeping
+    image: lscr.io/linuxserver/smokeping
+    state: started
+    restart_policy: always
+    recreate: yes
+    restart: yes
+    pull: true
+    hostname: smokeping
+    exposed_ports:
+      - '80'
+    volumes:
+      - /docker/containers/smokeping/config:/config
+      - /docker/containers/smokeping/data:/data
+      - /etc/localtime:/etc/localtime:ro
+    networks_cli_compatible: false
+    networks:
+      - name: theways
+    env:
+      PGID: "1000"
+      PUID: "1000"
+      TZ: "America/Chicago"
+      VIRTUAL_HOST: "smokeping.telaranrhiod.space"
+  tags:
+    - smokeping
+
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/smokeping.subdomain.conf.sample
+    dest: /docker/containers/proxy/le/config/nginx/proxy-confs/smokeping.subdomain.conf
+    mode: '0440'

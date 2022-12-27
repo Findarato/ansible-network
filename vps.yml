@@ -1,0 +1,25 @@
+---
+- hosts: vps
+  become: true
+  remote_user: root
+  roles:
+    - basic-server
+    - zsh
+    - geerlingguy.pip
+    - geerlingguy.docker
+  vars:
+    - ansible_python_interpreter: "/usr/bin/python3"
+  vars_files:
+    - vars/main.yml
+    - vars/vault_setup
+
+- hosts: vps
+  become: true
+  remote_user: root
+  roles:
+    - docker-npm
+  vars:
+    - ansible_python_interpreter: "/usr/bin/python3"
+  vars_files:
+    - vars/main.yml
+    - vars/vault

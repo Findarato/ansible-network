@@ -26,8 +26,7 @@ all:
         # 10.1.1.171: #CentOS 7
     stats:
       hosts:
-        stats.telaranrhiod.space: # CentOS 7
-        # v-stats.telaranrhiod.space: # CentOS 8
+        v-stats.telaranrhiod.space: # CentOS 8
     torrents:
       hosts:
         v-torrents.telaranrhiod.space: #

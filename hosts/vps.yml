@@ -1,0 +1,6 @@
+---
+all:
+  children:
+    vps:
+      hosts:
+        emonds-field.telaranrhiod.space: #

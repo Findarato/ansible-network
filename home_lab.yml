@@ -1,26 +1,26 @@
 ---
-# - hosts: all
-#   become: true
-#   remote_user: joe
-#   roles:
-#     - basic-server
-#     - zsh
-#     - geerlingguy.pip
-#     - geerlingguy.docker
-#   vars:
-#     - ansible_python_interpreter: "/usr/bin/python3"
-#   vars_files:
-#     - vars/main.yml
-#     - vars/vault_setup
+- hosts: all
+  become: true
+  remote_user: joe
+  roles:
+    - basic-server
+    - zsh
+    - geerlingguy.pip
+    - geerlingguy.docker
+  vars:
+    - ansible_python_interpreter: "/usr/bin/python3"
+  vars_files:
+    - vars/main.yml
+    - vars/vault_setup
 
 - hosts: watching
   become: true
   remote_user: ansible
   roles:
-    # - docker-unifi
-    - docker-proxy
+    - docker-unifi
     - docker-uptime-kuma
     - docker-dashy
+    - docker-smokeping
     - {
         role: docker-piHole,
         pihole_virtual_hostname: "pihole01",
@@ -29,12 +29,13 @@
     # - docker-librespeed
     - docker-vaultwarden
     # - docker-piHole-Influx
-    # - docker-grafana
+    - docker-grafana
     - docker-jackett
     # - docker-minecraft
     # - docker-prometheus
     # - docker-tautlli
     # - docker-varken
+    - docker-proxy
   vars:
     - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:
@@ -45,7 +46,6 @@
   become: true
   remote_user: ansible
   roles:
-    - docker-proxy
     - {
       role: docker-piHole,
       pihole_virtual_hostname: "pihole02",
@@ -58,30 +58,18 @@
 #     - docker-piHole-Influx
 #     - docker-tautlli
 #     - docker-varken
+    - docker-proxy
   vars:
     - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:
     - vars/main.yml
     - vars/vault
 
-# - hosts: stats
-#   become: true
-#   remote_user: it
-#   roles:
-#     # - docker-proxy
-#     # - docker-influxDB
-#     - docker-LibreNMS
-#   vars:
-#     - ansible_python_interpreter: "/usr/bin/python"
-#   vars_files:
-#     - vars/main.yml
-#     - vars/vault
 - hosts: torrents
   become: true
   remote_user: ansible
   roles:
     - docker-proxy
-    - docker-deluge
   vars:
     - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:

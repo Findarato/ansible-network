@@ -35,6 +35,7 @@
     volumes:
       - /etc/localtime:/ect/localtime:ro
       - /docker/containers/radarr/downloads:/downloads
+      - /docker/containers/radarr/config:/config
       - /mnt/storage/Movies:/movies
     networks_cli_compatible: false
     networks:

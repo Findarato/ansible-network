@@ -1,0 +1,10 @@
+---
+# vars file for docker-grafana
+
+docker_ports:
+  - 80/tcp
+
+docker_storage: "/docker/containers/"
+
+# nagios_git: ssh://git@gitlab.bitsandbytes.academy/Network/Nagios.git
+#nagios_git: https://gitlab.bitsandbytes.academy/Network/Nagios.git

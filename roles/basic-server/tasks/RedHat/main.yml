@@ -6,10 +6,13 @@
   when:
     - ansible_distribution == 'CentOS'
 
-# - name: Update system
-#   package:
-#     name: "*"
-#     state: latest
+- name: Remove Packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - xe-guest-utilities
+  ignore_errors: true
 
 - name: Install generic packages RHEL
   package:
@@ -22,4 +25,9 @@
     - nfs-utils
     - rsync
     - tmux
+    - xe-guest-utilities-latest
+    - python3-passlib
     # - stow
+  ignore_errors: true
+  notify:
+    - Reboot Host
