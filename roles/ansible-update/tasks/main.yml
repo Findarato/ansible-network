@@ -1,0 +1,16 @@
+---
+# tasks file for update
+
+- name: "{{ ansible_os_family }}: Run Distro specific variables"
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}.yml"
+    - "{{ ansible_os_family }}.yml"
+
+- name: "{{ ansible_os_family }}: Run Distro specific tasks"
+  include_tasks: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}.yml"
+    - "{{ ansible_os_family }}.yml"
+
+...

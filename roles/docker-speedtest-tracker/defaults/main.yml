@@ -1,0 +1,4 @@
+---
+# defaults file for docker-speedtest-tracker
+
+speedtest_tracker_db_password: "test_db_password"

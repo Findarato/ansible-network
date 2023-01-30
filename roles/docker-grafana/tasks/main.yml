@@ -24,9 +24,19 @@
   tags:
     - grafana
 
+# - name: Copy configuration file
+#   copy:
+#     src: defaults.ini
+#     dest: /docker/containers/grafana/config/grafana.ini
+#     mode: '0644'
+#     owner: "472"
+#     group: "472"
+#   tags:
+#     - grafana
+
 - name: Copy configuration file
-  copy:
-    src: defaults.ini
+  template:
+    src: defaults.ini.j2
     dest: /docker/containers/grafana/config/grafana.ini
     mode: '0644'
     owner: "472"
@@ -37,7 +47,7 @@
 - name: Recreate Grafana container
   docker_container:
     name: grafana
-    image: grafana/grafana:latest-ubuntu
+    image: grafana/grafana-oss
     state: started
     restart_policy: always
     recreate: yes
@@ -53,8 +63,6 @@
     networks:
       - name: theways
     env:
-      GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-clock-panel,jdbranham-diagram-panel
-      GF_SECURITY_ADMIN_PASSWORD: "{{ GF_SECURITY_ADMIN_PASSWORD  }}"
-      VIRTUAL_HOST: "{{ GF_virtual_host }}"
+      GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-clock-panel,jdbranham-diagram-panel,grafana-clock-panel,grafana-simple-json-datasource
   tags:
     - grafana

@@ -40,6 +40,7 @@
       PUID: "1000"
       PGID: "1000"
       URL: "telaranrhiod.space"
+      # EXTRA_DOMAINS: ".wled.telaranrhiod.space"
       SUBDOMAINS: "wildcard"
       DNSPLUGIN: "digitalocean"
       VALIDATION: "dns"

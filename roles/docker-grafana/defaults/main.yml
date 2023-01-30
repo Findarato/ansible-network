@@ -1,5 +1,4 @@
 ---
 # defaults file for docker-grafana
 
-GF_virtual_host: "grafana.telaranrhiod.space"
 GF_SECURITY_ADMIN_PASSWORD: secret

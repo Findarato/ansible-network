@@ -1,0 +1,20 @@
+---
+- name: "Install utility plugins"
+  package:
+    name: "{{ apt_utils }}"
+    state: latest
+  register: packageUpdate
+
+- name: "Update cache if needed"
+  apt:
+    update_cache: yes
+    cache_valid_time: 43200
+
+- name: "Upgrade all packages to the latest version"
+  apt:
+    autoclean: yes
+    upgrade: safe
+  notify:
+    - Update MOTD
+
+...

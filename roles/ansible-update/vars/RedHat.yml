@@ -1,0 +1,22 @@
+---
+# set to false to turn off
+enable_yum_cron: true
+
+yum_cron:
+  cmd: security
+  apply: yes
+  hourly_random_sleep: 15
+  hourly_apply_updates: no
+  daily_random_sleep: 360
+  daily_apply_updates: yes
+  email_from: "updates@{{ansible_fqdn}}"
+  email_to: ""
+  email_host: localhost
+
+yum:
+  kernel_count: 2
+  clean_requirements: 1
+
+yum_utils:
+  - yum-utils
+  # - yum-rhn-plugin

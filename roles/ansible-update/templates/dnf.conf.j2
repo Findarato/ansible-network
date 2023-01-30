@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+
+[main]
+gpgcheck=1
+installonly_limit={{yum.kernel_count}}
+clean_requirements_on_remove={{ yum.clean_requirements }}
+best=True
+fastestmirror=true
+deltarpm=true

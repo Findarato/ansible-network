@@ -1,36 +1,36 @@
 ---
-- hosts: all
-  become: true
-  remote_user: joe
-  roles:
-    - basic-server
-    - zsh
-    - geerlingguy.pip
-    - geerlingguy.docker
-  vars:
-    - ansible_python_interpreter: "/usr/bin/python3"
-  vars_files:
-    - vars/main.yml
-    - vars/vault_setup
+# - hosts: all
+#   become: true
+#   remote_user: joe
+#   roles:
+#     - basic-server
+#     - zsh
+#     - geerlingguy.pip
+#     - geerlingguy.docker
+#   vars:
+#     - ansible_python_interpreter: "/usr/bin/python3"
+#   vars_files:
+#     - vars/main.yml
+#     - vars/vault_setup
 
 - hosts: watching
   become: true
   remote_user: ansible
   roles:
-    - docker-unifi
-    - docker-uptime-kuma
-    - docker-dashy
-    - docker-smokeping
-    - {
-        role: docker-piHole,
-        pihole_virtual_hostname: "pihole01",
-        pihole_virtual_host: "pihole01.telaranrhiod.space",
-      }
+    # - docker-unifi
+    # - docker-uptime-kuma
+    # - docker-dashy
+    # - docker-smokeping
+    # - {
+        # role: docker-piHole,
+        # pihole_virtual_hostname: "pihole01",
+        # pihole_virtual_host: "pihole01.telaranrhiod.space",
+      # }
     # - docker-librespeed
-    - docker-vaultwarden
+    # - docker-vaultwarden
     # - docker-piHole-Influx
     - docker-grafana
-    - docker-jackett
+    # - docker-jackett
     # - docker-minecraft
     # - docker-prometheus
     # - docker-tautlli

@@ -6,6 +6,7 @@
   roles:
     - basic-server
     - zsh
+    - ansible-update
     # - geerlingguy.pip
     # - geerlingguy.docker
   vars_files:

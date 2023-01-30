@@ -1,0 +1,30 @@
+---
+# handlers file for update
+
+- name: Restart Yum Cron
+  service:
+    name: yum-cron
+    state: stopped
+    enabled: true
+
+- name: Restart DNF Automatic
+  service:
+    name: "{{ restart_dnf_service }}"
+    state: stopped
+    enabled: true
+  loop:
+    - dnf-automatic.service
+    - dnf-automatic.timer
+  loop_control:
+    loop_var: restart_dnf_service
+
+
+- name: Update MOTD
+  debug:
+    msg: Update MOTD
+
+- name: Install MOTD
+  template:
+    src: "{{ ansible_distribution }}_motd.j2"
+    dest: /etc/motd
+    mode: 0644

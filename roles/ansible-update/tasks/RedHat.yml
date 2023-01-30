@@ -1,0 +1,99 @@
+---
+- name: "Install utility plugins"
+  package:
+    name: "{{ yum_utils }}"
+    state: latest
+  register: packageUpdate
+
+# We need to do things for CentOS 7
+
+- name: "Install Yum Cron"
+  package:
+    state: present
+    name: yum-cron
+  when:
+    - enable_yum_cron == True
+    - ansible_facts['distribution_major_version']|int <= 7
+  notify:
+    - Restart Yum Cron
+
+- name: "Setup Yum Cron"
+  template:
+    src: yum-cron.conf.j2
+    dest: /etc/yum/yum-cron.conf
+  when:
+    - enable_yum_cron == True
+    - ansible_facts['distribution_major_version']|int <= 7
+  notify:
+    - Restart Yum Cron
+
+- name: "Setup Yum"
+  template:
+    src: yum.conf.j2
+    dest: /etc/yum/yum.conf
+  when:
+    - ansible_facts['distribution_major_version']|int <= 7
+  notify:
+    - Restart Yum Cron
+
+- name: "Setup Yum Cron hourly"
+  template:
+    src: yum-cron-hourly.conf.j2
+    dest: /etc/yum/yum-cron-hourly.conf
+  when:
+    - enable_yum_cron == True
+    - ansible_facts['distribution_major_version']|int <= 7
+  notify:
+    - Restart Yum Cron
+
+# We need to do things for CentOS 8 / Fedora
+
+- name: Install DNF Automatic
+  package:
+    state: present
+    name: dnf-automatic
+  when:
+    - enable_yum_cron == True
+    - ansible_facts['distribution_major_version']|int >= 8
+  notify:
+    - Restart DNF Automatic
+
+- name: Setup DNF Automatic
+  template:
+    src: automatic.conf.j2
+    dest: /etc/dnf/automatic.conf
+  when:
+    - enable_yum_cron == True
+    - ansible_facts['distribution_major_version']|int >= 8
+  notify:
+    - Restart DNF Automatic
+
+- name: Setup DNF
+  template:
+    src: dnf.conf.j2
+    dest: /etc/dnf/dnf.conf
+  when:
+    - ansible_facts['distribution_major_version']|int >= 8
+  notify:
+    - Restart DNF Automatic
+
+# Doing this last to make sure all the changes are in
+
+- name: "Upgrade all {{ ansible_os_family }} packages to the latest version"
+  package:
+    name: '*'
+    state: latest
+  notify:
+    - Update MOTD
+
+- name: "Remove Cache files"
+  file:
+    state: absent
+    path: "{{ cache_files }}"
+  loop:
+    - '/var/cache/yum'
+    - '/var/cache/dnf'
+  loop_control:
+    loop_var: cache_files
+
+...

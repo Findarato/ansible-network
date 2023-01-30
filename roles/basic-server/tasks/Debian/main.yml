@@ -9,7 +9,7 @@
     - wget
     - git
     - tmux
-  notify:
-    - Reboot Host
+  # notify:
+  #   - Reboot Host
 
 ...

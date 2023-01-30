@@ -1,0 +1,56 @@
+---
+# tasks file for docker-speedtest-tracker
+
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: "{{ docker_network }}"
+
+
+- name: Create Docker paths
+  file:
+    path: "/docker/containers/speedtest-tracker/{{ item }}"
+    state: directory
+    mode: "0775"
+  with_items:
+    - config
+  tags:
+    - speedtest-tracker
+
+- name: Recreate speedtest-tracker container
+  docker_container:
+    name: speedtest-tracker
+    image: linuxserver/speedtest-tracker
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    exposed_ports:
+      - "80"
+      - "443"
+      - "9000"
+    volumes:
+      - /docker/containers/speedtest-tracker/config:/config
+      - /etc/localtime:/etc/localtime:ro
+    networks_cli_compatible: false
+    networks:
+      - name: theways
+    env:
+      TZ: "America/Chicago"
+      AUTO_UPDATE: 'true'
+      PUID: "1000"
+      PGID: "1000"
+      DB_CONNECTION: "mysql"
+      DB_HOST: "10.1.1.5"
+      DB_PORT: "3306"
+      DB_DATABASE: "speedtest"
+      DB_USERNAME: "speedtest"
+      DB_PASSWORD: "{{ speedtest_tracker_db_password }}"
+  tags:
+    - speedtest-tracker
+
