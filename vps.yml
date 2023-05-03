@@ -3,8 +3,8 @@
   become: true
   remote_user: root
   roles:
-    - basic-server
-    - zsh
+    # - basic-server
+    # - zsh
     - geerlingguy.pip
     - geerlingguy.docker
   vars:

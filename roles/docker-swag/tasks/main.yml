@@ -8,15 +8,26 @@
   community.docker.docker_network:
     name: theways
 
+- name: Debug
+  debug:
+    msg: "{{docker_proxy_storage}}"
+
 - name: Create Docker paths
   file:
-    path: "{{docker_proxy_storage}}{{ item }}"
+    path: "{{docker_proxy_storage}}/{{ item }}"
     state: directory
     mode: "0775"
     group: "1000"
     owner: "1000"
   with_items:
     - le/config
+
+- name: Copy in custom configs
+  template:
+    src: digitalocean.ini.j2
+    dest: "{{docker_proxy_storage}}/le/config/dns-conf/digitalocean.ini"
+  notify:
+    - Restart SWAG
 
 - name: Create SWAG
   community.docker.docker_container:
@@ -40,7 +51,6 @@
       PUID: "1000"
       PGID: "1000"
       URL: "telaranrhiod.space"
-      # EXTRA_DOMAINS: ".wled.telaranrhiod.space"
       SUBDOMAINS: "wildcard"
       DNSPLUGIN: "digitalocean"
       VALIDATION: "dns"
@@ -49,9 +59,3 @@
       DOCKER_MODS: "linuxserver/mods:swag-maxmind|linuxserver/mods:swag-dashboard"
       MAXMINDDB_LICENSE_KEY: "{{ vault_maxmind_key }}"
 
-- name: Copy in custom configs
-  template:
-    src: digitalocean.ini.j2
-    dest: "{{docker_proxy_storage}}/le/config/dns-conf/digitalocean.ini"
-  notify:
-    - Restart SWAG

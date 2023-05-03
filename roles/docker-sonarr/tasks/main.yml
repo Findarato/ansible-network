@@ -57,3 +57,9 @@
       VERSION: latest
   tags:
     - sonarr
+
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/sonarr.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/sonarr.subdomain.conf"
+    mode: '0440'

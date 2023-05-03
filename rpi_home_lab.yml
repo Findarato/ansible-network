@@ -1,9 +1,9 @@
 ---
-- hosts: rpi
+- hosts: rpi:new_rpi
   become: true
-  remote_user: pi
   roles:
-    - docker-proxy
+    - geerlingguy.docker
+    - docker-swag
   vars:
     - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:
@@ -12,18 +12,18 @@
   tags:
     - rpi
 
-- hosts: piBlocks
-  become: true
-  remote_user: pi
-  roles:
-    - docker-piHole
-  vars:
-    - ansible_python_interpreter: "/usr/bin/python3"
-  vars_files:
-    - vars/main.yml
-    - vars/vault
-  tags:
-    - rpi
+# - hosts: piBlocks
+#   become: true
+#   remote_user: pi
+#   roles:
+#     - docker-piHole
+#   vars:
+#     - ansible_python_interpreter: "/usr/bin/python3"
+#   vars_files:
+#     - vars/main.yml
+#     - vars/vault
+#   tags:
+#     - rpi
 
 # - hosts: rpi-docker01.telaranrhiod.space
 #   become: true
@@ -40,12 +40,14 @@
 
 - hosts: rpi-docker02.telaranrhiod.space
   become: true
-  remote_user: pi
+  remote_user: joe
   roles:
     # - docker-pi-alert
     # - docker-dashy
     # - docker-jackett
     # - docker-signal-messager
+    - docker-swag
+    - docker-piHole
   vars:
     - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:
@@ -58,6 +60,8 @@
   become: true
   remote_user: pi
   roles:
+    - docker-swag
+    - docker-piHole
   vars:
     - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:

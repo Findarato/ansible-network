@@ -46,7 +46,8 @@
 - name: Download SWAG Config
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/uptime-kuma.subdomain.conf.sample
-    dest: "{{ docker_proxy_storage }}/le/config/nginx/proxy-confs/uptime-kuma.subdomain.conf"
+    dest: "{{ docker_proxy_config_storage }}/uptime-kuma.subdomain.conf"
     mode: '0440'
   tags:
     - uptime-kuma
+    - SWAG

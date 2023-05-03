@@ -8,6 +8,13 @@ all:
         rpi-docker03.telaranrhiod.space: #raspberry pi os
       vars:
         ansible_user: pi
+    new_rpi:
+      hosts:
+        rpi-docker01.telaranrhiod.space: #raspberry pi os
+        rpi-docker02.telaranrhiod.space: #raspberry pi os
+        rpi-docker03.telaranrhiod.space: #raspberry pi os
+      vars:
+        ansible_user: joe
     piGetting:
       hosts:
         rpi-docker01.telaranrhiod.space: #raspberry pi os
@@ -20,10 +27,11 @@ all:
     getting:
       hosts:
         v-docker02.telaranrhiod.space: #CentOS 7
+        v-docker03.telaranrhiod.space: # Rocky Linux 8
     watching:
       hosts:
         v-docker01.telaranrhiod.space: #CentOS 7
-        # 10.1.1.171: #CentOS 7
+        v-docker03.telaranrhiod.space: # Rocky Linux 8
     stats:
       hosts:
         v-stats.telaranrhiod.space: # CentOS 8

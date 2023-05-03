@@ -45,3 +45,9 @@
       DATABASE_URL: "mysql://{{ vault_docker_vaultwarden_mysql_user }}:{{ vault_docker_vaultwarden_mysql_password }}@10.1.1.5:3306/vaultwarden"
   tags:
     - vaultwarden
+
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/vaultwarden.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/vaultwarden.subdomain.conf"
+    mode: '0440'

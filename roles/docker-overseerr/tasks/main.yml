@@ -45,3 +45,12 @@
       VERSION: latest
   tags:
     - overseerr
+
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/overseerr.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/overseerr.subdomain.conf"
+    mode: '0440'
+  tags:
+    - overseerr
+    - SWAG

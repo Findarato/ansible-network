@@ -57,3 +57,12 @@
       - 1.1.1.1
   tags:
     - pihole
+
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/pihole.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/pihole.subdomain.conf"
+    mode: '0440'
+  tags:
+    - pihole
+    - SWAG

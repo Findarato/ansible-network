@@ -66,3 +66,12 @@
   when: ansible_distribution == "CentOS"
   tags:
     - transmission
+
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/transmission.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/transmission.subdomain.conf.sample"
+    mode: '0440'
+  tags:
+    - transmission
+    - SWAG

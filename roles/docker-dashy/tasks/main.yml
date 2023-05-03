@@ -13,7 +13,7 @@
 
 - name: Create Docker paths
   file:
-    path: "/docker/containers/dashy/{{ item }}"
+    path: "{{ docker_dashy_storage }}/{{ item }}"
     state: directory
     owner: "1000"
     group: "1000"
@@ -27,7 +27,7 @@
 - name: Copy config file
   ansible.builtin.copy:
     src:  conf.yml
-    dest: "/docker/containers/dashy/config/conf.yml"
+    dest: "{{ docker_dashy_storage }}/config/conf.yml"
     owner: "1000"
     group: "1000"
     force: no
@@ -45,12 +45,11 @@
     restart: yes
     pull: true
     exposed_ports:
-      - "4000"
       - "80"
     published_ports:
-      - "58400:80"
+      - "4000:80"
     volumes:
-      - "/docker/containers/dashy/config/conf.yml:/app/public/conf.yml"
+      - "{{ docker_dashy_storage }}/config/conf.yml:/app/public/conf.yml"
       # - "/docker/containers/dashy/config:/app/public"
     env:
       PGID: "1000"
@@ -58,7 +57,31 @@
       TZ: "America/Chicago"
       VIRTUAL_HOST: "dashy.telaranrhiod.space"
       NODE_ENV: production
+    networks_cli_compatible: false
     networks:
       - name: theways
+    container_default_behavior: no_defaults
   tags:
     - dashy
+
+# this assumes it is on port 4000 when 80 is set
+# - name: Download SWAG Config
+#   ansible.builtin.get_url:
+#     url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/dashy.subdomain.conf.sample
+#     dest: "{{ docker_proxy_config_storage }}/dashy.subdomain.conf"
+#     mode: '0440'
+#   tags:
+#     - dashy
+#     - SWAG
+
+# - name: Correct port to be 80
+#   ansible.builtin.lineinfile:
+#     path: "{{ docker_proxy_config_storage }}/dashy.subdomain.conf"
+#     # regexp: '^       set \$upstream_port'
+#     # line: '       set $upstream_port 80;'
+#     search_string: '\$upstream_port 4000'
+#     line: 'set $upstream_port 80;'
+#     # backrefs: yes
+#   tags:
+#     - dashy
+#     - SWAG

@@ -53,3 +53,12 @@
       # MEM_STARTUP: "2048M"
   tags:
     - unifi
+
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/unifi-controller.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/unifi-controller.subdomain.conf"
+    mode: '0440'
+  tags:
+    - unifi
+    - SWAG

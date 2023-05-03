@@ -1,5 +1,6 @@
 ---
-# defaults file for docker-grafana
+# defaults file for smokeping
 
-GF_virtual_host: "grafana.telaranrhiod.space"
-GF_SECURITY_ADMIN_PASSWORD: secret
+smokeping_dns_domains: example.com
+smokeping_dns_servers: ['1.1.1.1','8.8.8.8']
+docker_smokeping_storage: /docker/

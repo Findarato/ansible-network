@@ -1,6 +1,7 @@
 ---
 
 docker_uptime_kuma_storage: "/docker/containers/uptime-kuma/"
+docker_proxy_storage: "/docker/containers/proxy/le/config/nginx/proxy-confs"
 
 
 # defaults file for docker-uptime_kuma

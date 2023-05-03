@@ -20,22 +20,22 @@
     # - docker-unifi
     # - docker-uptime-kuma
     # - docker-dashy
-    # - docker-smokeping
+    - docker-smokeping
     # - {
         # role: docker-piHole,
         # pihole_virtual_hostname: "pihole01",
         # pihole_virtual_host: "pihole01.telaranrhiod.space",
       # }
     # - docker-librespeed
-    # - docker-vaultwarden
+    - docker-vaultwarden
     # - docker-piHole-Influx
     - docker-grafana
-    # - docker-jackett
+    - docker-jackett
     # - docker-minecraft
     # - docker-prometheus
     # - docker-tautlli
     # - docker-varken
-    - docker-proxy
+    - docker-swag
   vars:
     - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:
@@ -46,11 +46,12 @@
   become: true
   remote_user: ansible
   roles:
-    - {
-      role: docker-piHole,
-      pihole_virtual_hostname: "pihole02",
-      pihole_virtual_host: "pihole02.telaranrhiod.space",
-    }
+    # - {
+    #   role: docker-piHole,
+    #   pihole_virtual_hostname: "pihole02",
+    #   pihole_virtual_host: "pihole02.telaranrhiod.space",
+    # }
+    - docker-jackett
     - docker-overseerr
     - docker-sonarr
     - docker-radarr
@@ -58,7 +59,7 @@
 #     - docker-piHole-Influx
 #     - docker-tautlli
 #     - docker-varken
-    - docker-proxy
+    - docker-swag
   vars:
     - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:
@@ -69,7 +70,7 @@
   become: true
   remote_user: ansible
   roles:
-    - docker-proxy
+    - docker-swag
   vars:
     - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:

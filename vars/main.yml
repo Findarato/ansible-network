@@ -9,6 +9,19 @@ ansible_ssh_pass:     "{{ vault_ansible_ssh_pass  }}"
 ansible_use:          ansible
 docker_network:       theways
 
+
+# Storage Paths
 docker_storage_path: "/docker/containers"
-piHole_storage:       "{{ docker_storage_path }}/pihole/"
+
+docker_piHole_storage: "{{ docker_storage_path }}/pihole/"
 docker_proxy_storage: "{{ docker_storage_path }}/proxy/"
+docker_proxy_config_storage: "{{ docker_proxy_storage }}/le/config/nginx/proxy-confs"
+docker_dashy_storage: "{{ docker_storage_path }}/dashy"
+docker_smokeping_storage: "{{ docker_storage_path }}/smokeping/"
+
+# DNS stuff
+dns_servers: ['10.1.1.12', '10.1.1.1']
+dns_domains: telaranrhiod.space
+
+smokeping_dns_domains: "{{ dns_domains }}"
+smokeping_dns_servers: "{{ dns_servers }}"

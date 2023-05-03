@@ -12,7 +12,7 @@
 
 - name: Create Docker paths
   file:
-    path: "/docker/containers/smokeping/{{ item }}"
+    path: "{{ docker_smokeping_storage }}/{{ item }}"
     state: directory
     mode: "0775"
     owner: "1000"
@@ -25,7 +25,7 @@
     - smokeping
 
 - name: Recreate smokeping container
-  docker_container:
+  community.general.docker_container :
     name: smokeping
     image: lscr.io/linuxserver/smokeping
     state: started
@@ -37,22 +37,26 @@
     exposed_ports:
       - '80'
     volumes:
-      - /docker/containers/smokeping/config:/config
-      - /docker/containers/smokeping/data:/data
+      - "{{ docker_smokeping_storage }}/config:/config"
+      - "{{ docker_smokeping_storage }}/data:/data"
       - /etc/localtime:/etc/localtime:ro
     networks_cli_compatible: false
     networks:
       - name: theways
+    dns_search_domains: "{{ smokeping_dns_domains }}"
+    dns_servers: "{{ smokeping_dns_servers }}"
     env:
       PGID: "1000"
       PUID: "1000"
       TZ: "America/Chicago"
-      VIRTUAL_HOST: "smokeping.telaranrhiod.space"
   tags:
     - smokeping
 
 - name: Download SWAG Config
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/smokeping.subdomain.conf.sample
-    dest: /docker/containers/proxy/le/config/nginx/proxy-confs/smokeping.subdomain.conf
+    dest: "{{ docker_proxy_config_storage }}/smokeping.subdomain.conf"
     mode: '0440'
+  tags:
+    - smokeping
+    - SWAG

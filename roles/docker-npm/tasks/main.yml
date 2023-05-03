@@ -18,7 +18,6 @@
   with_items:
     - data
     - letsencrypt
-    - ssl
 
 - name: Create Nginx Proxy Manager
   community.docker.docker_container:
@@ -35,7 +34,6 @@
     volumes:
       - "{{docker_proxy_storage}}/data:/data"
       - "{{docker_proxy_storage}}/letsencrypt:/etc/letsencrypt"
-      - "{{docker_proxy_storage}}/ssl:/etc/ssl"
 
     networks_cli_compatible: false
     networks:

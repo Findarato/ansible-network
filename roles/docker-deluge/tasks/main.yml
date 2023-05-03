@@ -59,3 +59,12 @@
       - name: theways
   tags:
     - deluge
+
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/deluge.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/deluge.subdomain.conf.sample"
+    mode: '0440'
+  tags:
+    - deluge
+    - SWAG

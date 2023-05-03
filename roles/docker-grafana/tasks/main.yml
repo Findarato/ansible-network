@@ -24,16 +24,6 @@
   tags:
     - grafana
 
-# - name: Copy configuration file
-#   copy:
-#     src: defaults.ini
-#     dest: /docker/containers/grafana/config/grafana.ini
-#     mode: '0644'
-#     owner: "472"
-#     group: "472"
-#   tags:
-#     - grafana
-
 - name: Copy configuration file
   template:
     src: defaults.ini.j2
@@ -66,3 +56,12 @@
       GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-clock-panel,jdbranham-diagram-panel,grafana-clock-panel,grafana-simple-json-datasource
   tags:
     - grafana
+
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/grafana.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/grafana.subdomain.conf"
+    mode: '0440'
+  tags:
+    - grafana
+    - SWAG

@@ -1,18 +1,5 @@
 ---
 # defaults file for docker-transmission
 
-docker_storage: "/docker/"
-docker_ports:
-    - 3000/tcp
-    - 9091/tcp
-    - 27975/tcp
-    - 27975/udp
-docker_portsUFW:
-    - 3000
-    - 9091
-    - 27975
-
-docker_transmission_blacklist: "http://john.bitsurge.net/public/biglist.p2p.gz"
-docker_transmission_blocklist_enabled: true
-docker_transmission_folders:
-    - download_dir: "/downloads/complete"
+docker_dashy_storage: "/docker/containers/dashy"
+docker_proxy_storage: "/docker/containers/proxy/le/config/nginx/proxy-confs"

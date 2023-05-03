@@ -54,3 +54,12 @@
   tags:
     - speedtest-tracker
 
+# There is no configuration yet
+# - name: Download SWAG Config
+#   ansible.builtin.get_url:
+#     url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/librespeed.subdomain.conf.sample
+#     dest: /docker/containers/proxy/le/config/nginx/proxy-confs/librespeed.subdomain.conf
+#     mode: '0440'
+#   tags:
+#     - speedtest-tracker
+#     - SWAG

@@ -48,6 +48,14 @@
   tags:
     - radarr
 
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/radarr.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/radarr.subdomain.conf"
+    mode: '0440'
+  tags:
+    - radarr
+    - SWAG
 # docker service create -d \
 #   --name nfs-service \
 #   --mount 'type=volume,source=nfsvolume,target=/app,volume-driver=local,volume-opt=type=nfs,volume-opt=device=:/var/docker-nfs,volume-opt=o=addr=10.0.0.10' \

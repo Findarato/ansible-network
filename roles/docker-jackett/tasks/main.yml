@@ -49,3 +49,12 @@
       AUTO_UPDATE: 'true'
   tags:
     - jackett
+
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/jackett.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/jackett.subdomain.conf"
+    mode: '0440'
+  tags:
+    - jackett
+    - SWAG
