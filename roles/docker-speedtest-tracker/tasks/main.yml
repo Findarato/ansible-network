@@ -22,7 +22,7 @@
     - speedtest-tracker
 
 - name: Recreate speedtest-tracker container
-  docker_container:
+  community.docker.docker_container:
     name: speedtest-tracker
     image: linuxserver/speedtest-tracker
     state: started

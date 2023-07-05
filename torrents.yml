@@ -6,7 +6,7 @@
     - basic-server
     - zsh
     - geerlingguy.pip
-    # - geerlingguy.docker
+    - geerlingguy.docker
   post_tasks:
     - name: clean up temp ansible
       ansible.builtin.file:
@@ -16,13 +16,14 @@
     - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:
     - vars/main.yml
+    - vars/vault
     - vars/vault_setup
 
 - hosts: torrents
   become: true
   remote_user: ansible
   roles:
-    - docker-proxy
+    - docker-swag
     - docker-deluge
   post_tasks:
     - name: clean up temp ansible

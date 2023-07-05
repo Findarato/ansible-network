@@ -1,15 +1,18 @@
 ---
 # run a bunch of things with things
 
-- include_vars:
+- ansible.builtin.include_vars:
     file: "{{ item }}"
   with_items:
     - users.yml
     - vault
 
-- include_tasks: "{{ansible_os_family}}/main.yml"
-# - import_tasks: "dotfiles.yml"
+- ansible.builtin.include_tasks: "{{ansible_os_family}}/main.yml"
 
-- include_tasks: users.yml
+- ansible.builtin.include_tasks: users.yml
 
-
+- name: Install Python Packages
+  ansible.builtin.pip:
+    state: present
+    name: passlib
+    extra_args: --user

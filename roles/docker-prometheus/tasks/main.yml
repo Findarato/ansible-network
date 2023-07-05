@@ -23,7 +23,7 @@
     mode: "0644"
 
 - name: "Start prometheus container {{inventory_hostname}}"
-  docker_container:
+  community.docker.docker_container:
     name: prometheus
     image: prom/prometheus
     state: started

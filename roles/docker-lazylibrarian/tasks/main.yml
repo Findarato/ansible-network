@@ -15,7 +15,7 @@
 
 
 - name: Recreate lazylibrarian container
-  docker_container:
+  community.docker.docker_container:
     name: lazylibrarian
     image: linuxserver/lazylibrarian
     state: started

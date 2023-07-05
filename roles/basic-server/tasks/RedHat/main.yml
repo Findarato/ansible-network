@@ -25,16 +25,9 @@
     - nfs-utils
     - rsync
     - tmux
-    - xe-guest-utilities-latest
+    # - xe-guest-utilities-latest
     - python3-passlib
-    # - stow
+    - stow
   ignore_errors: true
   # notify:
   #   - Reboot Host
-
-- name: Start XE Guest Utilities
-  service:
-    name: xe-linux-distribution
-    state: started
-    enable: true
-    daemon: reloaded

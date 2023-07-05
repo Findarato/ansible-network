@@ -23,7 +23,7 @@
     - jackett
 
 - name: Recreate jackett container
-  docker_container:
+  community.docker.docker_container:
     name: jackett
     image: linuxserver/jackett
     state: started

@@ -1,0 +1,4 @@
+---
+# defaults file for docker-grafana
+docker_storage_path: /docker/
+docker_syncthing_storage: "{{ docker_storage_path }}/syncthing/"

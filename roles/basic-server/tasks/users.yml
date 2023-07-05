@@ -34,6 +34,21 @@
       - "{{ sudo_group }}"
       - ansible
 
+
+- name: Create docker User
+  user:
+    name: dockerUser
+    comment: Account for running remote UNIX commands
+    uid: "1000002"
+    createhome: yes        # Defaults to yes
+    home: /home/dockerUser
+    password: "{{ vault_docker_password | password_hash('sha512','fe46ffed005467') }}"
+    generate_ssh_key: yes
+    ssh_key_bits: 4096
+    ssh_key_file: .ssh/id_ed25519
+    ssh_key_type: "ed25519"
+    groups: []
+
 - name: Create Users
   user:
     name: "{{ item.name }}"

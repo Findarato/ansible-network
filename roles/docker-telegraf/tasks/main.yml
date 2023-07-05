@@ -13,7 +13,7 @@
     - data/dataCollection/
 
 - name: Recreate telegraf container
-  docker_container:
+  community.docker.docker_container:
     name: bind
     image: telegraf
     state: started

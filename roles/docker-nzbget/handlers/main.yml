@@ -6,6 +6,6 @@
     state: restarted
 
 - name: Restart grafana
-  docker_container:
+  community.docker.docker_container:
     name: grafana
     restart: true

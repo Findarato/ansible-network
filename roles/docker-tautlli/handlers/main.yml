@@ -5,7 +5,3 @@
     name: firewalld
     state: restarted
 
-- name: Restart grafana
-  docker_container:
-    name: grafana
-    restart: true

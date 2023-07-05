@@ -52,7 +52,7 @@
     - libreNMS
 
 - name: Create and Update LibreNMS_db Container
-  docker_container:
+  community.docker.docker_container:
     name: libreNMS_db
     image: mariadb
     state: started
@@ -88,7 +88,7 @@
 
 
 - name: Create and Update LibreNMS Container
-  docker_container:
+  community.docker.docker_container:
     name: libreNMS
     image: jarischaefer/docker-librenms
     state: started

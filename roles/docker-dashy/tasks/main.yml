@@ -64,24 +64,11 @@
   tags:
     - dashy
 
-# this assumes it is on port 4000 when 80 is set
-# - name: Download SWAG Config
-#   ansible.builtin.get_url:
-#     url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/dashy.subdomain.conf.sample
-#     dest: "{{ docker_proxy_config_storage }}/dashy.subdomain.conf"
-#     mode: '0440'
-#   tags:
-#     - dashy
-#     - SWAG
-
-# - name: Correct port to be 80
-#   ansible.builtin.lineinfile:
-#     path: "{{ docker_proxy_config_storage }}/dashy.subdomain.conf"
-#     # regexp: '^       set \$upstream_port'
-#     # line: '       set $upstream_port 80;'
-#     search_string: '\$upstream_port 4000'
-#     line: 'set $upstream_port 80;'
-#     # backrefs: yes
-#   tags:
-#     - dashy
-#     - SWAG
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/dashy.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/dashy.subdomain.conf"
+    mode: '0440'
+  tags:
+    - dashy
+    - SWAG

@@ -19,7 +19,7 @@
     - config
 
 - name: Recreate librespeed container
-  docker_container:
+  community.docker.docker_container:
     name: librespeed
     image: ghcr.io/linuxserver/librespeed
     state: started

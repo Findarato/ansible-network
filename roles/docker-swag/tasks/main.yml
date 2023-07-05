@@ -8,9 +8,9 @@
   community.docker.docker_network:
     name: theways
 
-- name: Debug
-  debug:
-    msg: "{{docker_proxy_storage}}"
+# - name: Debug
+#   debug:
+#     msg: "{{docker_proxy_storage}}"
 
 - name: Create Docker paths
   file:
@@ -21,13 +21,6 @@
     owner: "1000"
   with_items:
     - le/config
-
-- name: Copy in custom configs
-  template:
-    src: digitalocean.ini.j2
-    dest: "{{docker_proxy_storage}}/le/config/dns-conf/digitalocean.ini"
-  notify:
-    - Restart SWAG
 
 - name: Create SWAG
   community.docker.docker_container:
@@ -59,3 +52,16 @@
       DOCKER_MODS: "linuxserver/mods:swag-maxmind|linuxserver/mods:swag-dashboard"
       MAXMINDDB_LICENSE_KEY: "{{ vault_maxmind_key }}"
 
+
+- name: Copy in custom configs
+  template:
+    src: digitalocean.ini.j2
+    dest: "{{docker_proxy_storage}}/le/config/dns-conf/digitalocean.ini"
+  notify:
+    - Restart SWAG
+
+- name: Restart SWAG
+  community.docker.docker_container:
+    name: swag
+    state: started
+    restart: yes

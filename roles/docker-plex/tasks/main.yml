@@ -9,7 +9,7 @@
     - transcode
 
 - name: Recreate Plex container
-  docker_container:
+  community.docker.docker_container:
     name: plex
     image: linuxserver/plex
     state: started

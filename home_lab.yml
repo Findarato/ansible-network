@@ -1,25 +1,26 @@
 ---
 # - hosts: all
-#   become: true
-#   remote_user: joe
-#   roles:
-#     - basic-server
-#     - zsh
-#     - geerlingguy.pip
-#     - geerlingguy.docker
-#   vars:
-#     - ansible_python_interpreter: "/usr/bin/python3"
-#   vars_files:
-#     - vars/main.yml
-#     - vars/vault_setup
+- hosts: v-docker03.telaranrhiod.space
+  become: true
+  remote_user: joe
+  roles:
+    - basic-server
+    - zsh
+    - geerlingguy.pip
+    - geerlingguy.docker
+  vars:
+    - ansible_python_interpreter: "/usr/bin/python3"
+  vars_files:
+    - vars/main.yml
+    - vars/vault_setup
 
 - hosts: watching
   become: true
   remote_user: ansible
   roles:
-    # - docker-unifi
-    # - docker-uptime-kuma
-    # - docker-dashy
+    - docker-unifi
+    - docker-uptime-kuma
+    - docker-dashy
     - docker-smokeping
     # - {
         # role: docker-piHole,
@@ -32,9 +33,6 @@
     - docker-grafana
     - docker-jackett
     # - docker-minecraft
-    # - docker-prometheus
-    # - docker-tautlli
-    # - docker-varken
     - docker-swag
   vars:
     - ansible_python_interpreter: "/usr/bin/python3"
@@ -55,7 +53,7 @@
     - docker-overseerr
     - docker-sonarr
     - docker-radarr
-#     - docker-signal-messager
+    - docker-signal-messager
 #     - docker-piHole-Influx
 #     - docker-tautlli
 #     - docker-varken
@@ -71,6 +69,8 @@
   remote_user: ansible
   roles:
     - docker-swag
+  tags:
+    - torrents
   vars:
     - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:

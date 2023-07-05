@@ -16,7 +16,7 @@
     - data
 
 - name: Recreate Bind container
-  docker_container:
+  community.docker.docker_container:
     name: bind
     image: sameersbn/bind:latest
     state: started
