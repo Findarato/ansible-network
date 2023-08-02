@@ -8,6 +8,10 @@
   community.docker.docker_network:
     name: theways
 
+# - name: Test for raspberry pi
+
+
+
 # - name: Debug
 #   debug:
 #     msg: "{{docker_proxy_storage}}"
@@ -25,7 +29,7 @@
 - name: Create SWAG
   community.docker.docker_container:
     name: swag
-    image: ghcr.io/linuxserver/swag
+    image: ghcr.io/linuxserver/swag:latest
     state: started
     restart_policy: unless-stopped
     recreate: true
@@ -52,6 +56,10 @@
       DOCKER_MODS: "linuxserver/mods:swag-maxmind|linuxserver/mods:swag-dashboard"
       MAXMINDDB_LICENSE_KEY: "{{ vault_maxmind_key }}"
 
+- name: Wait for container to start
+  ansible.builtin.wait_for:
+    path: "{{docker_proxy_storage}}/le/config/dns-conf/"
+    state: present
 
 - name: Copy in custom configs
   template:

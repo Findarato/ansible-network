@@ -1,38 +1,41 @@
 ---
-- hosts: rpi:new_rpi
-  become: true
-  roles:
-    - geerlingguy.pip
-    # - geerlingguy.docker
-    # - docker-swag
-  vars:
-    - ansible_python_interpreter: "/usr/bin/python3"
-  vars_files:
-    - vars/main.yml
-    - vars/vault
-  tags:
-    - rpi
-
-# - hosts: piBlocks
+# - hosts: rpi-docker02.telaranrhiod.space
+# # - hosts: rpi:new_rpi
 #   become: true
-#   remote_user: pi
 #   roles:
-#     - docker-piHole
-#   vars:
-#     - ansible_python_interpreter: "/usr/bin/python3"
+#     # - geerlingguy.pip
+#     - role: geerlingguy.docker
+#       docker_edition: 'ce'
+#       docker_packages:
+#         - "docker-{{ docker_edition }}"
+#         - "docker-{{ docker_edition }}-cli"
+#         - "docker-{{ docker_edition }}-rootless-extras"
+#         - "containerd.io"
+#       docker_users:
+#         - joe
+#     # - docker-swag
 #   vars_files:
 #     - vars/main.yml
 #     - vars/vault
 #   tags:
 #     - rpi
 
+- hosts: piBlocks
+  become: true
+  remote_user: pi
+  roles:
+    - docker-piHole
+  vars_files:
+    - vars/main.yml
+    - vars/vault
+  tags:
+    - rpi
+
 # - hosts: rpi-docker01.telaranrhiod.space
 #   become: true
 #   remote_user: pi
 #   roles:
 #     - docker-uptime-kuma
-#   vars:
-#     - ansible_python_interpreter: "/usr/bin/python3"
 #   vars_files:
 #     - vars/main.yml
 #     - vars/vault
@@ -43,14 +46,9 @@
   become: true
   remote_user: joe
   roles:
-    # - docker-pi-alert
-    # - docker-dashy
-    # - docker-jackett
     # - docker-signal-messager
     - docker-swag
     - docker-piHole
-  vars:
-    - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:
     - vars/main.yml
     - vars/vault
@@ -63,8 +61,6 @@
   roles:
     - docker-swag
     - docker-piHole
-  vars:
-    - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:
     - vars/main.yml
     - vars/vault

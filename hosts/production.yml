@@ -1,5 +1,7 @@
 ---
 all:
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3"
   children:
     rpi:
       hosts:
@@ -7,11 +9,13 @@ all:
         rpi-docker03.telaranrhiod.space: #raspberry pi os
       vars:
         ansible_user: pi
+        ansible_python_interpreter: "/usr/bin/python3"
     new_rpi:
       hosts:
         rpi-docker02.telaranrhiod.space: #raspberry pi os
       vars:
         ansible_user: joe
+        ansible_python_interpreter: "/usr/bin/python3"
     piGetting:
       hosts:
         rpi-docker01.telaranrhiod.space: #raspberry pi os

@@ -12,7 +12,7 @@
 
 - name: Create Docker paths
   file:
-    path: "/docker/containers/sonarr/{{ item }}"
+    path: "/docker/containers/syncthing/{{ item }}"
     state: directory
     # mode: 0775
     # group: docker
@@ -20,10 +20,10 @@
     - downloads
     - config
 
-- name: Recreate sonarr container
+- name: Recreate syncthing container
   community.docker.docker_container:
-    name: sonarr
-    image: linuxserver/sonarr
+    name: syncthing
+    image: linuxserver/syncthing
     state: started
     restart_policy: unless-stopped
     recreate: yes
@@ -33,10 +33,6 @@
       - '8989'
     volumes:
       - /etc/localtime:/ect/localtime:ro
-      # - /docker/containers/sonarr/downloads:/downloads
-      - /mnt/whitetower/torrents/downloads:/downloads
-      - /docker/containers/sonarr/config:/config
-      - /mnt/storage/TV/:/tv/
     networks_cli_compatible: false
     networks:
       - name: theways
@@ -46,7 +42,7 @@
       PGID: '1000'
       VERSION: latest
   tags:
-    - sonarr
+    - syncthing
 
 - name: Download SWAG Config
   ansible.builtin.get_url:
