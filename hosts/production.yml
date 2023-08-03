@@ -3,6 +3,17 @@ all:
   vars:
     ansible_python_interpreter: "/usr/bin/python3"
   children:
+    blink:
+      hosts:
+        rpi-docker01:
+          ansible_host: rpi-docker01.telaranrhiod.space #raspberry pi os
+          serial: BS036976-3.0
+        rpi-docker02:
+          ansible_host: rpi-docker01.telaranrhiod.space #raspberry pi os
+          serial: BS036976-3.0
+        rpi-docker03:
+          ansible_host: rpi-docker01.telaranrhiod.space #raspberry pi os
+          serial: BS036976-3.0
     rpi:
       hosts:
         rpi-docker01.telaranrhiod.space: #raspberry pi os

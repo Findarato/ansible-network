@@ -9,6 +9,10 @@ roles:
     version: "6.1.0"
   - name: geerlingguy.pip
   - name: acimadamore.raspberry_pi
+  # - name: gregnrobinson.blinkstick
+  #   src: https://github.com/gregnrobinson/blinkstick-ansible.git
+  # - name: findarato.blinkstick
+  #   src: https://github.com/Findarato/blinkstick-ansible.git
 
 collections:
   - name: community.general
