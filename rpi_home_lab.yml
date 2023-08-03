@@ -22,7 +22,7 @@
     # - docker-swag
   vars_files:
     - vars/main.yml
-    - vars/vault
+    - vars/main.vault
   tags:
     - rpi
 
@@ -33,7 +33,7 @@
     - docker-piHole
   vars_files:
     - vars/main.yml
-    - vars/vault
+    - vars/main.vault
   tags:
     - rpi
 
@@ -44,7 +44,7 @@
 #     - docker-uptime-kuma
 #   vars_files:
 #     - vars/main.yml
-#     - vars/vault
+#     - vars/main.vault
 #   tags:
 #     - rpi
 
@@ -57,7 +57,7 @@
     - docker-piHole
   vars_files:
     - vars/main.yml
-    - vars/vault
+    - vars/main.vault
   tags:
     - rpi
 
@@ -69,6 +69,6 @@
     - docker-piHole
   vars_files:
     - vars/main.yml
-    - vars/vault
+    - vars/main.vault
   tags:
     - rpi

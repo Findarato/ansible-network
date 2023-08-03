@@ -11,5 +11,5 @@
     # - geerlingguy.docker
   vars_files:
     - vars/main.yml
-    - vars/vault_setup
+    - vars/setup.vault
 

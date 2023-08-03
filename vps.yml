@@ -11,7 +11,7 @@
     - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:
     - vars/main.yml
-    - vars/vault_setup
+    - vars/setup.vault
 
 - hosts: vps
   become: true
@@ -22,4 +22,4 @@
     - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:
     - vars/main.yml
-    - vars/vault
+    - vars/main.vault
