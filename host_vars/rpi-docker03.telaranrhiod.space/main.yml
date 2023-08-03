@@ -1,6 +1,6 @@
 ---
 
-include_vars:            vault
+include_vars:            main.vault
 remote_user:             pi
 ansible_become_pass:     "{{vault_user_pass}}"
 pip_package:             python3-pip
