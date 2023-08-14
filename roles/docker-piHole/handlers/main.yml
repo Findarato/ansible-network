@@ -1,2 +1,7 @@
 ---
 # handlers file for docker-piHole
+
+    - name: restart SWAG
+      community.docker.docker_container:
+        name: swag
+        restart: True

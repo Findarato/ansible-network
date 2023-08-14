@@ -21,6 +21,28 @@
   tags:
     - pihole
 
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/pihole.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/pihole.subdomain.conf"
+    mode: '0440'
+  tags:
+    - pihole
+    - SWAG
+  notify:
+    - restart SWAG
+
+- name: Fix configs for the piHOLE
+  ansible.builtin.lineinfile:
+    # backup: true
+    state: present
+    path: "{{ docker_proxy_config_storage }}/pihole.subdomain.conf"
+    regexp: '^    server_name pihole.\*;'
+    line: '    server_name {{docker_pihole_virtual_hostname}}.*;'
+    backrefs: yes
+  notify:
+    - restart SWAG
+
 - name: Recreate pihole container
   community.docker.docker_container:
     name: pihole
@@ -58,20 +80,3 @@
   tags:
     - pihole
 
-- name: Download SWAG Config
-  ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/pihole.subdomain.conf.sample
-    dest: "{{ docker_proxy_config_storage }}/pihole.subdomain.conf"
-    mode: '0440'
-  tags:
-    - pihole
-    - SWAG
-
-- name: Fix configs for the piHOLE
-  ansible.builtin.lineinfile:
-    # backup: true
-    state: present
-    path: "{{ docker_proxy_config_storage }}/pihole.subdomain.conf"
-    regexp: '^    server_name pihole.\*;'
-    line: '    server_name {{docker_pihole_virtual_hostname}}.*;'
-    backrefs: yes
