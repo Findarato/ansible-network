@@ -5,3 +5,8 @@
     name: firewalld
     state: restarted
 
+
+- name: restart SWAG
+  community.docker.docker_container:
+    name: swag
+    restart: True

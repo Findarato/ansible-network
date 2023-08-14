@@ -19,6 +19,17 @@
   tags:
     - unifi
 
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/unifi-controller.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/unifi-controller.subdomain.conf"
+    mode: '0440'
+  tags:
+    - unifi
+    - SWAG
+  notify:
+    - restart SWAG
+
 - name: Recreate Unifi container
   community.docker.docker_container:
     name: unifi-controller
@@ -30,16 +41,14 @@
     restart: yes
     pull: true
     exposed_ports:
-      - "8080"
       - "8443"
+      - "8080"
       - "3478/udp"
-      - "10001/udp"
     published_ports:
-      - "8080:8080"
-      - "8443:8443"
       - "3478:3478/udp"
       - "10001:10001/udp"
       - "1900:1900/udp"
+      - "8080:8080/tcp"
     volumes:
       - "{{ docker_unifi_storage }}/config:/config"
     networks_cli_compatible: false
@@ -49,16 +58,5 @@
       TZ: America/Chicago
       PUID: "1000"
       PGID: "1000"
-      # MEM_LIMIT: "1024M"
-      # MEM_STARTUP: "2048M"
   tags:
     - unifi
-
-- name: Download SWAG Config
-  ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/unifi-controller.subdomain.conf.sample
-    dest: "{{ docker_proxy_config_storage }}/unifi-controller.subdomain.conf"
-    mode: '0440'
-  tags:
-    - unifi
-    - SWAG
