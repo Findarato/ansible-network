@@ -12,31 +12,27 @@
 
 - name: Create Docker paths
   file:
-    path: "{{ docker_syncthing_storage }}{{ item }}"
+    path: "{{ docker_sonarr_storage }}{{ item }}"
     state: directory
   with_items:
-    - data
+    - downloads
     - config
 
-- name: Recreate syncthing container
+- name: Recreate Sonarr container
   community.docker.docker_container:
-    name: syncthing
-    image: lscr.io/linuxserver/syncthing:latest
+    name: Syncthing
+    image: lscr.io/linuxserver/sonarr:latest
     state: started
     restart_policy: unless-stopped
     recreate: yes
     restart: yes
     pull: true
     exposed_ports:
-      - '8384'
-      - '22000/tcp'
-      - '22000/udp'
-      - '21027/udp'
+      - '8989'
     volumes:
       - /etc/localtime:/ect/localtime:ro
-      # - /docker/containers/sonarr/downloads:/downloads
-      - "{{ docker_syncthing_storage }}/config:/config"
-      - "{{ docker_syncthing_storage }}/data/:/data/"
+      - "{{ docker_sonarr_storage }}/downloads:/downloads"
+      - "{{ docker_sonarr_storage }}/config:/config"
     networks_cli_compatible: false
     networks:
       - name: theways
@@ -50,6 +46,6 @@
 
 - name: Download SWAG Config
   ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/syncthing.subdomain.conf.sample
-    dest: "{{ docker_proxy_config_storage }}/syncthing.subdomain.conf"
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/sonarr.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/sonarr.subdomain.conf"
     mode: '0440'

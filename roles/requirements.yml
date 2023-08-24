@@ -13,6 +13,7 @@ roles:
   #   src: https://github.com/gregnrobinson/blinkstick-ansible.git
   # - name: findarato.blinkstick
   #   src: https://github.com/Findarato/blinkstick-ansible.git
+  # - name: gregnrobinson.blinkstick
 
 collections:
   - name: community.general

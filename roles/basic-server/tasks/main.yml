@@ -1,12 +1,6 @@
 ---
 # run a bunch of things with things
 
-- ansible.builtin.include_vars:
-    file: "{{ item }}"
-  with_items:
-    - users.yml
-    - vault
-
 - ansible.builtin.include_tasks: "{{ansible_os_family}}/main.yml"
 
 - ansible.builtin.include_tasks: users.yml

@@ -19,6 +19,9 @@ docker_proxy_config_storage: "{{ docker_proxy_storage }}/le/config/nginx/proxy-c
 docker_dashy_storage: "{{ docker_storage_path }}/dashy"
 docker_smokeping_storage: "{{ docker_storage_path }}/smokeping/"
 docker_syncthing_storage: "{{ docker_storage_path }}/syncthing/"
+docker_sonarr_storage: "{{ docker_storage_path }}/sonarr/"
+docker_signal_storage: "{{ docker_storage_path }}/signal/"
+
 
 # DNS stuff
 dns_servers: ['10.1.1.12', '10.1.1.1']

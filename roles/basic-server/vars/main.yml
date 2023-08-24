@@ -1,0 +1,9 @@
+---
+
+groups_to_make: []
+
+default_users: []
+
+sudo_group: wheel
+
+default_password: "{{ vault_default_password | password_hash('sha512','fe46ffed005467') }}"

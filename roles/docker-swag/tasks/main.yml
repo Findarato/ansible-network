@@ -61,10 +61,17 @@
     path: "{{docker_proxy_storage}}/le/config/dns-conf/"
     state: present
 
-- name: Copy in custom configs
+- name: Copy in custom configs Digital Ocean
   template:
     src: digitalocean.ini.j2
     dest: "{{docker_proxy_storage}}/le/config/dns-conf/digitalocean.ini"
+  notify:
+    - Restart SWAG
+
+- name: Copy in custom configs Cloudflare
+  template:
+    src: cloudflare.ini.j2
+    dest: "{{docker_proxy_storage}}/le/config/dns-conf/cloudflare.ini"
   notify:
     - Restart SWAG
 

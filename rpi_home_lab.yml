@@ -1,39 +1,40 @@
 ---
-- hosts: rpi-docker02.telaranrhiod.space
-# - hosts: rpi:new_rpi
-  become: true
-  tasks:
-    - name: Make sure python is ready
-      package:
-        state: present
-        name: python3-venv
-  roles:
-    # - geerlingguy.pip
-    - gregnrobinson.blinkstick
-    - role: geerlingguy.docker
-      docker_edition: 'ce'
-      docker_packages:
-        - "docker-{{ docker_edition }}"
-        - "docker-{{ docker_edition }}-cli"
-        - "docker-{{ docker_edition }}-rootless-extras"
-        - "containerd.io"
-      docker_users:
-        - joe
-    # - docker-swag
-  vars_files:
-    - vars/main.yml
-    - vars/main.vault
-  tags:
-    - rpi
+# - hosts: rpi-docker02.telaranrhiod.space
+# # - hosts: rpi:new_rpi
+#   become: true
+#   tasks:
+#     - name: Make sure python is ready
+#       package:
+#         state: present
+#         name: python3-venv
+#   roles:
+#     # - geerlingguy.pip
+#     # - gregnrobinson.blinkstick
+#     - role: geerlingguy.docker
+#       docker_edition: 'ce'
+#       docker_packages:
+#         - "docker-{{ docker_edition }}"
+#         - "docker-{{ docker_edition }}-cli"
+#         - "docker-{{ docker_edition }}-rootless-extras"
+#         - "containerd.io"
+#       docker_users:
+#         - joe
+#     # - docker-swag
+#   vars_files:
+#     - vars/main.yml
+#     - vars/main.vault.yml
+#   tags:
+#     - rpi
 
 - hosts: piBlocks
   become: true
   remote_user: pi
   roles:
     - docker-piHole
+    - docker-swag
   vars_files:
     - vars/main.yml
-    - vars/main.vault
+    - vars/main.vault.yml
   tags:
     - rpi
 
@@ -44,7 +45,7 @@
 #     - docker-uptime-kuma
 #   vars_files:
 #     - vars/main.yml
-#     - vars/main.vault
+#     - vars/main.vault.yml
 #   tags:
 #     - rpi
 
@@ -53,11 +54,11 @@
   remote_user: joe
   roles:
     # - docker-signal-messager
-    - docker-swag
-    - docker-piHole
+    # - docker-swag
+    # - docker-piHole
   vars_files:
     - vars/main.yml
-    - vars/main.vault
+    - vars/main.vault.yml
   tags:
     - rpi
 
@@ -65,10 +66,10 @@
   become: true
   remote_user: pi
   roles:
-    - docker-swag
-    - docker-piHole
+    # - docker-swag
+    # - docker-piHole
   vars_files:
     - vars/main.yml
-    - vars/main.vault
+    - vars/main.vault.yml
   tags:
     - rpi

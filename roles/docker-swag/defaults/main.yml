@@ -1,3 +1,6 @@
 ---
 # defaults file for docker-proxy
 docker_proxy_storage: "/docker/containers/proxy/"
+dns_digitalocean_token: "FAKE TOKEN"
+
+dns_cloudflare_api_token: 0123456789abcdef0123456789abcdef01234567

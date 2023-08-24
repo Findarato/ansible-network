@@ -38,17 +38,13 @@ all:
         rpi-docker03.telaranrhiod.space: #raspberry pi os
     getting:
       hosts:
-        # v-docker02.telaranrhiod.space: #CentOS 7
         v-docker03.telaranrhiod.space: # Rocky Linux 8
     watching:
       hosts:
-        v-docker01.telaranrhiod.space: #CentOS 7
         v-docker03.telaranrhiod.space: # Rocky Linux 8
     stats:
       hosts:
-        # v-stats.telaranrhiod.space: # CentOS 8
         v-docker03.telaranrhiod.space: # Rocky Linux 8
     torrents:
       hosts:
         v-torrents.telaranrhiod.space: #
-        v-torrents02.telaranrhiod.space: #

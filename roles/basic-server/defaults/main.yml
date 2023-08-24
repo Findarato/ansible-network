@@ -1,0 +1,2 @@
+vault_ansible_password: ansible.password
+vault_docker_password: docker.password

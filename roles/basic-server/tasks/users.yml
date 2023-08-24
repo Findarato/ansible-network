@@ -1,15 +1,3 @@
-# - name: Ensure ansible group exsists
-#   ansible.builtin.group:
-#     name: ansible
-#     state: present
-#     gid: 1000001
-
-# - name: Ensure sudo no password group exsists
-#   ansible.builtin.group:
-#     name: sudo_no_password
-#     state: present
-#     gid: 1000002
-
 - name: Create groups
   ansible.builtin.group:
     name: "{{ item.name }}"

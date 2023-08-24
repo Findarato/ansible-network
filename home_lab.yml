@@ -1,44 +1,43 @@
 ---
 # - hosts: all
-- hosts: v-docker03.telaranrhiod.space
-  become: true
-  remote_user: joe
-  roles:
-    - basic-server
-    - zsh
-    - geerlingguy.pip
-    - geerlingguy.docker
-  vars:
-    - ansible_python_interpreter: "/usr/bin/python3"
-  vars_files:
-    - vars/main.yml
-    - vars/setup.vault
+# - hosts: v-docker03.telaranrhiod.space
+#   become: true
+#   remote_user: joe
+#   roles:
+#     - basic-server
+#     - zsh
+#     - geerlingguy.pip
+#     - geerlingguy.docker
+#   vars_files:
+#     - vars/main.vault.yml
+#     - vars/setup.vault
+#     - vars/main.yml
 
 - hosts: watching
   become: true
   remote_user: ansible
   roles:
+    - docker-dashy
     - docker-unifi
     - docker-uptime-kuma
-    - docker-dashy
     - docker-smokeping
-    # - {
-        # role: docker-piHole,
-        # pihole_virtual_hostname: "pihole01",
-        # pihole_virtual_host: "pihole01.telaranrhiod.space",
-      # }
-    # - docker-librespeed
-    - docker-vaultwarden
-    # - docker-piHole-Influx
-    - docker-grafana
     - docker-jackett
+    - docker-overseerr
+    - docker-sonarr
+    - docker-radarr
+    - {
+        role: docker-piHole,
+        pihole_virtual_hostname: "pihole",
+        pihole_virtual_host: "pihole.telaranrhiod.space",
+      }
+    - docker-vaultwarden
+    - docker-grafana
+    - docker-syncthing
     # - docker-minecraft
     - docker-swag
-  vars:
-    - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:
+    - vars/main.vault.yml
     - vars/main.yml
-    - vars/main.vault
 
 - hosts: getting
   become: true
@@ -49,20 +48,15 @@
     #   pihole_virtual_hostname: "pihole02",
     #   pihole_virtual_host: "pihole02.telaranrhiod.space",
     # }
-    - docker-jackett
-    - docker-overseerr
-    - docker-sonarr
-    - docker-radarr
-    - docker-signal-messager
-#     - docker-piHole-Influx
-#     - docker-tautlli
-#     - docker-varken
-    - docker-swag
-  vars:
-    - ansible_python_interpreter: "/usr/bin/python3"
+
+#     - docker-signal-messager
+# #     - docker-piHole-Influx
+# #     - docker-tautlli
+# #     - docker-varken
+#     - docker-swag
   vars_files:
+    - vars/main.vault.yml
     - vars/main.yml
-    - vars/main.vault
 
 - hosts: torrents
   become: true
@@ -71,8 +65,6 @@
     - docker-swag
   tags:
     - torrents
-  vars:
-    - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:
+    - vars/main.vault.yml
     - vars/main.yml
-    - vars/main.vault
