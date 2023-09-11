@@ -2,3 +2,8 @@
 # defaults file for docker-grafana
 
 GF_SECURITY_ADMIN_PASSWORD: secret
+
+docker_log_driver: "json-file"
+docker_log_options:
+  max-file: "3"   # number of files or file count
+  max-size: "10m" # file size

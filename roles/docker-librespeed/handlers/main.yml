@@ -1,11 +1,3 @@
----
-# handlers file for docker-grafana
-
-- name: Restart grafana
-  community.docker.docker_container:
-    name: grafana
-    restart: true
-
 - name: Restart firewalld
   service:
     name: firewalld

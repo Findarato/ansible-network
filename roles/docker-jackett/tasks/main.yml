@@ -42,6 +42,8 @@
     networks_cli_compatible: false
     networks:
       - name: theways
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
     env:
       TZ: "America/Chicago"
       PUID: "1000"
@@ -55,6 +57,8 @@
     url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/jackett.subdomain.conf.sample
     dest: "{{ docker_proxy_config_storage }}/jackett.subdomain.conf"
     mode: '0440'
+  notify:
+    - Restart SWAG
   tags:
     - jackett
     - SWAG

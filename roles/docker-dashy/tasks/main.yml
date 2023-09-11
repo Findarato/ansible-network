@@ -59,15 +59,18 @@
     networks:
       - name: theways
     container_default_behavior: no_defaults
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
   tags:
     - dashy
 
 - name: Download SWAG Config
   ansible.builtin.get_url:
-    # url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/dashy.subdomain.conf.sample
-    url: https://raw.githubusercontent.com/Findarato/reverse-proxy-confs/master/dashy.subdomain.conf.sample
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/dashy.subdomain.conf.sample
     dest: "{{ docker_proxy_config_storage }}/dashy.subdomain.conf"
     mode: '0440'
+  notify:
+    - Restart SWAG
   tags:
     - dashy
     - SWAG

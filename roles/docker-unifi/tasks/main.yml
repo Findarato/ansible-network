@@ -49,6 +49,8 @@
       - "10001:10001/udp"
       - "1900:1900/udp"
       - "8080:8080/tcp"
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
     volumes:
       - "{{ docker_unifi_storage }}/config:/config"
     networks_cli_compatible: false

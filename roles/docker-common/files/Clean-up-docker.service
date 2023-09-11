@@ -1,0 +1,8 @@
+[Unit]
+Description=Clean up docker
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/cleanup_docker.sh
+WorkingDirectory=/usr/local/bin/
+  

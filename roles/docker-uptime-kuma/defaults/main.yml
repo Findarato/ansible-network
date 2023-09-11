@@ -1,5 +1,11 @@
 ---
 
+docker_log_driver: "json-file"
+docker_log_options:
+  max-file: "3"   # number of files or file count
+  max-size: "10m" # file size
+
+
 docker_uptime_kuma_storage: "/docker/containers/uptime-kuma/"
 docker_proxy_storage: "/docker/containers/proxy/le/config/nginx/proxy-confs"
 

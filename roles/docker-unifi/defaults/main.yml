@@ -1,2 +1,6 @@
 ---
-# defaults file for docker-grafana
+# defaults file for docker-unifi
+docker_log_driver: "json-file"
+docker_log_options:
+  max-file: "3"   # number of files or file count
+  max-size: "10m" # file size

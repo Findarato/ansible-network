@@ -2,18 +2,19 @@
 # Adding my own monitoring software in.
 # @TODO: Fully add in this role
 roles:
-  - name: geerlingguy.repo-epel
-    version: "3.1.1"
-  - name: geerlingguy.ntp
-  - name: geerlingguy.docker
-    version: "6.1.0"
-  - name: geerlingguy.pip
-  - name: acimadamore.raspberry_pi
+  # - name: geerlingguy.repo-epel
+  #   version: "3.1.1"
+  # - name: geerlingguy.ntp
+  # - name: geerlingguy.docker
+  #   version: "6.1.0"
+  # - name: geerlingguy.pip
+  # - name: acimadamore.raspberry_pi
   # - name: gregnrobinson.blinkstick
   #   src: https://github.com/gregnrobinson/blinkstick-ansible.git
   # - name: findarato.blinkstick
   #   src: https://github.com/Findarato/blinkstick-ansible.git
-  # - name: gregnrobinson.blinkstick
+  - name: findarato.docker-semaphore
+    src: https://github.com/Findarato/docker-semaphore.git
 
 collections:
   - name: community.general

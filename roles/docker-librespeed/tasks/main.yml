@@ -55,6 +55,8 @@
     url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/librespeed.subdomain.conf.sample
     dest: "{{ docker_proxy_config_storage }}/librespeed.subdomain.conf"
     mode: '0440'
+  notify:
+    - Restart SWAG
   tags:
     - librespeed
     - SWAG

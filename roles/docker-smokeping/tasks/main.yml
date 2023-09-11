@@ -45,6 +45,8 @@
       - name: theways
     dns_search_domains: "{{ smokeping_dns_domains }}"
     dns_servers: "{{ smokeping_dns_servers }}"
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
     env:
       PGID: "1000"
       PUID: "1000"
@@ -57,6 +59,8 @@
     url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/smokeping.subdomain.conf.sample
     dest: "{{ docker_proxy_config_storage }}/smokeping.subdomain.conf"
     mode: '0440'
+  notify:
+    - Restart SWAG
   tags:
     - smokeping
     - SWAG

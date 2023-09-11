@@ -49,3 +49,5 @@
     url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/sonarr.subdomain.conf.sample
     dest: "{{ docker_proxy_config_storage }}/sonarr.subdomain.conf"
     mode: '0440'
+  notify:
+    - Restart SWAG

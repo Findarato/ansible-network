@@ -75,8 +75,8 @@
   notify:
     - Restart SWAG
 
-- name: Restart SWAG
-  community.docker.docker_container:
-    name: swag
-    state: started
-    restart: yes
+# - name: Restart SWAG
+#   community.docker.docker_container:
+#     name: swag
+#     state: started
+#     restart: yes

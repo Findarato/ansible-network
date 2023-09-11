@@ -7,7 +7,15 @@ ntp_manage_config:    true
 ansible_become_pass:  "{{ vault_ansible_become_pass  }}"
 ansible_ssh_pass:     "{{ vault_ansible_ssh_pass  }}"
 ansible_use:          ansible
+
+
+#General Docker stuff
+
 docker_network:       theways
+docker_log_driver: "json-file"
+docker_log_options:
+  max-file: "3"   # number of files or file count
+  max-size: "10m" # file size
 
 
 # Storage Paths

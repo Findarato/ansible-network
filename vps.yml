@@ -7,6 +7,8 @@
     # - zsh
     # - geerlingguy.pip
     - geerlingguy.docker
+    - role: docker-common
+      tags: [setup, docker-common]
   vars:
     - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:

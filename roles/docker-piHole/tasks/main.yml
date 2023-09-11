@@ -69,6 +69,8 @@
     networks_cli_compatible: false
     networks:
       - name: theways
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
     env:
       TZ: "America/Chicago"
       WEBPASSWORD: password

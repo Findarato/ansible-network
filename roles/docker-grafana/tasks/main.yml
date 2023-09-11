@@ -53,6 +53,8 @@
     networks_cli_compatible: false
     networks:
       - name: theways
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
     env:
       GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-clock-panel,jdbranham-diagram-panel,grafana-clock-panel,grafana-simple-json-datasource
   tags:
@@ -63,6 +65,8 @@
     url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/grafana.subdomain.conf.sample
     dest: "{{ docker_proxy_config_storage }}/grafana.subdomain.conf"
     mode: '0440'
+  notify:
+    - Restart SWAG
   tags:
     - grafana
     - SWAG

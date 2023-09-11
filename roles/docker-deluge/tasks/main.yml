@@ -1,5 +1,5 @@
 ---
-# tasks file for docker-transmission
+# tasks file for docker-deluge
 
 - name: Install Python tools for docker
   pip:
@@ -55,6 +55,8 @@
       PUID: "1000"
       TZ: "America/Chicago"
       DELUGE_LOGLEVEL: error
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
     networks:
       - name: theways
   tags:
@@ -65,6 +67,8 @@
     url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/deluge.subdomain.conf.sample
     dest: "{{ docker_proxy_config_storage }}/deluge.subdomain.conf.sample"
     mode: '0440'
+  notify:
+    - Restart SWAG
   tags:
     - deluge
     - SWAG

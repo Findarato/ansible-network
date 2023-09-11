@@ -51,3 +51,14 @@
   tags:
     - lazylibrarian
 
+
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/grafana.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/grafana.subdomain.conf"
+    mode: '0440'
+  notify:
+    - Restart SWAG
+  tags:
+    - grafana
+    - SWAG

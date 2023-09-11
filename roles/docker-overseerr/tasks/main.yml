@@ -30,7 +30,7 @@
     restart: yes
     pull: true
     exposed_ports:
-      - '5055'
+      - "5055"
     published_ports:
       - 5055:5055
     volumes:
@@ -38,10 +38,12 @@
     networks_cli_compatible: false
     networks:
       - name: theways
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
     env:
       TZ: "America/Chicago"
-      PUID: '1000'
-      PGID: '1000'
+      PUID: "1000"
+      PGID: "1000"
       VERSION: latest
   tags:
     - overseerr
@@ -50,7 +52,9 @@
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/overseerr.subdomain.conf.sample
     dest: "{{ docker_proxy_config_storage }}/overseerr.subdomain.conf"
-    mode: '0440'
+    mode: "0440"
+  notify:
+    - Restart SWAG
   tags:
     - overseerr
     - SWAG

@@ -30,8 +30,13 @@
   become: true
   remote_user: pi
   roles:
-    - docker-piHole
-    - docker-swag
+    - role: docker-piHole
+      vars:
+        pihole_virtual_hostname: "pihole"
+        pihole_virtual_host: "pihole.telaranrhiod.space"
+      tags: [ pihole, dns ]
+    - role: docker-swag
+      tags: [ setup, proxy ]
   vars_files:
     - vars/main.yml
     - vars/main.vault.yml
