@@ -48,7 +48,6 @@
       - "80"
     volumes:
       - "{{ docker_dashy_storage }}/config/conf.yml:/app/public/conf.yml"
-      # - "/docker/containers/dashy/config:/app/public"
     env:
       PGID: "1000"
       PUID: "1000"

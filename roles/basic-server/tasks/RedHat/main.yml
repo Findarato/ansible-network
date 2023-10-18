@@ -25,9 +25,6 @@
     - nfs-utils
     - rsync
     - tmux
-    # - xe-guest-utilities-latest
     - python3-passlib
     - stow
   ignore_errors: true
-  # notify:
-  #   - Reboot Host

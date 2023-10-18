@@ -1,2 +1,20 @@
-vault_ansible_password: ansible.password
-vault_docker_password: docker.password
+groups_to_make: []
+
+default_users: []
+
+sudo_group: wheel
+
+ansible_password: "{{ vault_ansible_user_password }}"
+ansible_become_pass: "{{ vault_ansible_user_password }}"
+ansible_ssh_pass: "{{ vault_ansible_password }}"
+## Some translations to make sure vault passwords are not required in the playbook
+
+# Password for the remote user
+ansible_remote_user_password: "{{ vault_ansible_remote_user_password }}"
+
+
+default_password: "{{ vault_default_password_password }}"
+
+docker_password: "{{ vault_docker_user_password }}"
+
+

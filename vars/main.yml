@@ -4,7 +4,7 @@ ntp_enabled:          true
 ntp_timezone:         "America/Chicago"
 ntp_manage_config:    true
 
-ansible_become_pass:  "{{ vault_ansible_become_pass  }}"
+ansible_become_password:  "{{ vault_ansible_become_pass  }}"
 ansible_ssh_pass:     "{{ vault_ansible_ssh_pass  }}"
 ansible_use:          ansible
 
@@ -16,6 +16,10 @@ docker_log_driver: "json-file"
 docker_log_options:
   max-file: "3"   # number of files or file count
   max-size: "10m" # file size
+
+
+docker_users:
+  - joe
 
 
 # Storage Paths
@@ -30,10 +34,19 @@ docker_syncthing_storage: "{{ docker_storage_path }}/syncthing/"
 docker_sonarr_storage: "{{ docker_storage_path }}/sonarr/"
 docker_signal_storage: "{{ docker_storage_path }}/signal/"
 
+# semaphore
+
+docker_semaphore_db_pass: "{{ vault_docker_semaphore_db_pass }}"
+docker_semaphore_access_key_encryption: "{{ vault_docker_semaphore_access_key_encryption }}"
+docker_semaphore_ldap_activated: no
+docker_semaphore_db_dialect: mysql
+docker_semaphore_db_user: semaphore
+docker_semaphore_db_host: 10.1.1.5 # for postgres, change to: postgres
 
 # DNS stuff
 dns_servers: ['10.1.1.12', '10.1.1.1']
-dns_domains: telaranrhiod.space
+# dns_domains: telaranrhiod.space
+dns_domains: mcharryville.space
 
 smokeping_dns_domains: "{{ dns_domains }}"
 smokeping_dns_servers: "{{ dns_servers }}"

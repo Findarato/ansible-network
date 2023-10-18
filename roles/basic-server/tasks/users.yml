@@ -7,38 +7,39 @@
     - "{{ groups_to_make }}"
 
 - name: Create ansible User
-  user:
+  ansible.builtin.user:
     name: ansible
-    comment: Account for running remote UNIX commands
+    comment: Account for running Ansible
     uid: "1000001"
     createhome: yes        # Defaults to yes
     home: /home/ansible
-    password: "{{ vault_ansible_password | password_hash('sha512','fe46ffed005467') }}"
+    password: "{{ vault_ansible_user_password | password_hash('sha512') }}"
     generate_ssh_key: yes
     ssh_key_bits: 4096
     ssh_key_file: .ssh/id_ed25519
     ssh_key_type: "ed25519"
+    update_password: "always"
     groups:
       - "{{ sudo_group }}"
       - ansible
 
-
 - name: Create docker User
-  user:
+  ansible.builtin.user:
     name: dockerUser
-    comment: Account for running remote UNIX commands
+    comment: Account for doing Docker things
     uid: "1000002"
     createhome: yes        # Defaults to yes
     home: /home/dockerUser
-    password: "{{ vault_docker_password | password_hash('sha512','fe46ffed005467') }}"
+    password: "{{ docker_password | password_hash('sha512') }}"
     generate_ssh_key: yes
     ssh_key_bits: 4096
     ssh_key_file: .ssh/id_ed25519
     ssh_key_type: "ed25519"
+    update_password: "on_create"
     groups: []
 
 - name: Create Users
-  user:
+  ansible.builtin.user:
     name: "{{ item.name }}"
     comment: "{{ item.comment }}"
     state: present
@@ -46,7 +47,7 @@
     shell: "{{ item.shell }}"
     createhome: "{{ item.createhome }}"
     home: "{{ item.home }}"
-    password: "{{ vault_default_password | password_hash('sha512','fe46ffed005467') }}"
+    password: "{{ default_password | password_hash('sha512') }}"
     update_password: "{{ item.update_password }}"
     generate_ssh_key: "{{ item.generate_ssh_key }}"
     ssh_key_bits: "{{ item.ssh_key_bits }}"
@@ -60,7 +61,7 @@
     label: "{{ item.name  }}"
 
 - name: Set authorized key for Important Accounts
-  authorized_key:
+  ansible.builtin.authorized_key:
     user: "{{ item }}"
     state: present
     key: "{{ lookup('file', 'files/'+item+'.pub') }}"
@@ -69,7 +70,7 @@
     - joe
 
 - name: Set NEW authorized key for Important Accounts
-  authorized_key:
+  ansible.builtin.authorized_key:
     user: "{{ item }}"
     state: present
     key: "{{ lookup('file', 'files/'+item+'_ed25519.pub') }}"

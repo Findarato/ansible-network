@@ -1,5 +1,5 @@
 ---
-# - hosts: rpi-docker02.telaranrhiod.space
+# - hosts: rpi-docker02.mcharryville.space
 # # - hosts: rpi:new_rpi
 #   become: true
 #   tasks:
@@ -33,7 +33,7 @@
     - role: docker-piHole
       vars:
         pihole_virtual_hostname: "pihole"
-        pihole_virtual_host: "pihole.telaranrhiod.space"
+        pihole_virtual_host: "pihole.mcharryville.space"
       tags: [ pihole, dns ]
     - role: docker-swag
       tags: [ setup, proxy ]
@@ -43,7 +43,7 @@
   tags:
     - rpi
 
-# - hosts: rpi-docker01.telaranrhiod.space
+# - hosts: rpi-docker01.mcharryville.space
 #   become: true
 #   remote_user: pi
 #   roles:
@@ -54,7 +54,7 @@
 #   tags:
 #     - rpi
 
-- hosts: rpi-docker02.telaranrhiod.space
+- hosts: rpi-docker02.mcharryville.space
   become: true
   remote_user: joe
   roles:
@@ -67,7 +67,7 @@
   tags:
     - rpi
 
-- hosts: rpi-docker03.telaranrhiod.space
+- hosts: rpi-docker03.mcharryville.space
   become: true
   remote_user: pi
   roles:

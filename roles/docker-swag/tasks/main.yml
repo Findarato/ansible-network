@@ -8,14 +8,6 @@
   community.docker.docker_network:
     name: theways
 
-# - name: Test for raspberry pi
-
-
-
-# - name: Debug
-#   debug:
-#     msg: "{{docker_proxy_storage}}"
-
 - name: Create Docker paths
   file:
     path: "{{docker_proxy_storage}}/{{ item }}"
@@ -47,9 +39,9 @@
       TZ: "America/Chicago"
       PUID: "1000"
       PGID: "1000"
-      URL: "telaranrhiod.space"
+      URL: "mcharryville.space"
       SUBDOMAINS: "wildcard"
-      DNSPLUGIN: "digitalocean"
+      DNSPLUGIN: "cloudflare"
       VALIDATION: "dns"
       EMAIL: "findarato@gmail.com"
       STAGING: "false"
@@ -61,12 +53,12 @@
     path: "{{docker_proxy_storage}}/le/config/dns-conf/"
     state: present
 
-- name: Copy in custom configs Digital Ocean
-  template:
-    src: digitalocean.ini.j2
-    dest: "{{docker_proxy_storage}}/le/config/dns-conf/digitalocean.ini"
-  notify:
-    - Restart SWAG
+# - name: Copy in custom configs Digital Ocean
+#   template:
+#     src: digitalocean.ini.j2
+#     dest: "{{docker_proxy_storage}}/le/config/dns-conf/digitalocean.ini"
+#   notify:
+#     - Restart SWAG
 
 - name: Copy in custom configs Cloudflare
   template:

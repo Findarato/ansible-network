@@ -6,45 +6,47 @@ all:
     blink:
       hosts:
         rpi-docker01:
-          ansible_host: rpi-docker01.telaranrhiod.space #raspberry pi os
+          ansible_host: rpi-docker01.mcharryville.space #raspberry pi os
           serial: BS036976-3.0
         rpi-docker02:
-          ansible_host: rpi-docker01.telaranrhiod.space #raspberry pi os
+          ansible_host: rpi-docker01.mcharryville.space #raspberry pi os
           serial: BS036976-3.0
         rpi-docker03:
-          ansible_host: rpi-docker01.telaranrhiod.space #raspberry pi os
+          ansible_host: rpi-docker01.mcharryville.space #raspberry pi os
           serial: BS036976-3.0
     rpi:
       hosts:
-        rpi-docker01.telaranrhiod.space: #raspberry pi os
-        rpi-docker03.telaranrhiod.space: #raspberry pi os
+        rpi-docker01.mcharryville.space: #raspberry pi os
+        rpi-docker03.mcharryville.space: #raspberry pi os
       vars:
         ansible_user: pi
         ansible_python_interpreter: "/usr/bin/python3"
     new_rpi:
       hosts:
-        rpi-docker02.telaranrhiod.space: #raspberry pi os
+        rpi-docker02.mcharryville.space: #raspberry pi os
       vars:
         ansible_user: joe
         ansible_python_interpreter: "/usr/bin/python3"
     piGetting:
       hosts:
-        rpi-docker01.telaranrhiod.space: #raspberry pi os
-        rpi-docker02.telaranrhiod.space: #raspberry pi os
-        rpi-docker03.telaranrhiod.space: #raspberry pi os
+        rpi-docker01.mcharryville.space: #raspberry pi os
+        rpi-docker02.mcharryville.space: #raspberry pi os
+        rpi-docker03.mcharryville.space: #raspberry pi os
     piBlocks:
       hosts:
-        rpi-docker02.telaranrhiod.space: #raspberry pi os
-        rpi-docker03.telaranrhiod.space: #raspberry pi os
+        rpi-docker02.mcharryville.space: #raspberry pi os
+        rpi-docker03.mcharryville.space: #raspberry pi os
+        pihole.mcharryville.space: #RHEL 8.8
     getting:
       hosts:
-        v-docker03.telaranrhiod.space: # Rocky Linux 8
+        v-docker03.mcharryville.space: # Rocky Linux 8
     watching:
       hosts:
-        v-docker03.telaranrhiod.space: # Rocky Linux 8
+        v-docker03.mcharryville.space: # Rocky Linux 8
     stats:
       hosts:
-        v-docker03.telaranrhiod.space: # Rocky Linux 8
+        v-docker03.mcharryville.space: # Rocky Linux 8
     torrents:
       hosts:
-        v-torrents.telaranrhiod.space: #
+        # v-torrents.mcharryville.space: #
+        v-torrents.mcharryville.space: #

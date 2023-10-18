@@ -1,27 +1,49 @@
 ---
-# - hosts: all
 - name: Setup the servers basic
-  hosts: v-docker03.telaranrhiod.space,torrents
+  hosts: all
   become: true
   remote_user: joe
   roles:
-    # - basic-server
+    # - geerlingguy.docker
+    - basic-server
     # - zsh
     # - geerlingguy.pip
-    # - geerlingguy.docker
-    - role: docker-common
-      tags: [setup, docker-common]
+    # - role: docker-common
+    #   tags: [setup, docker-common]
   vars_files:
     - vars/main.vault.yml
-    - vars/setup.vault
+    - vars/setup.vault.yml
+    - vars/main.yml
+  vars:
+    ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
+  tags:
+    setup
+
+- hosts: pihole.mcharryville.space
+  become: true
+  remote_user: ansible
+  roles:
+    - role: docker-swag
+      tags: [ setup, proxy, docker-swag ]
+    - role: docker-piHole
+      vars:
+        pihole_virtual_hostname: "pihole"
+        pihole_virtual_host: "pihole.mcharryville.space"
+      tags: [ pihole, dns ]
+  vars:
+    ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
+  vars_files:
+    - vars/main.vault.yml
     - vars/main.yml
 
 - hosts: watching
   become: true
   remote_user: ansible
   roles:
-    - role: findarato.docker-semaphore
+    - role: docker-semaphore
       tags: [ semaphore, docker-semaphore ]
+    # - role: findarato.docker-semaphore
+    #   tags: [ semaphore, docker-semaphore ]
     - role: docker-dashy
       tags: [ dashy ]
     - docker-unifi
@@ -31,19 +53,14 @@
     - docker-overseerr
     - docker-sonarr
     - docker-radarr
-    - role: docker-piHole
-      vars:
-        pihole_virtual_hostname: "pihole"
-        pihole_virtual_host: "pihole.telaranrhiod.space"
-      tags: [ pihole, dns ]
-
     - docker-vaultwarden
     - docker-grafana
     - docker-syncthing
     # - docker-minecraft
     - role: docker-swag
       tags: [ setup, proxy ]
-
+  vars:
+    ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
   vars_files:
     - vars/main.vault.yml
     - vars/main.yml
@@ -78,6 +95,8 @@
       tags: [ deluge, docker-deluge]
   tags:
     - torrents
+  vars:
+    ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
   vars_files:
     - vars/main.vault.yml
     - vars/main.yml

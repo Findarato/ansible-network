@@ -10,9 +10,9 @@ set -u
 if git rev-parse --verify HEAD >/dev/null 2>&1
 then
 	against=HEAD
-else
-	# Initial commit: diff against an empty tree object
-	against=acb6120426578b854d7d454a37fdac47ea6561fa
+# else
+# 	# Initial commit: diff against an empty tree object
+# 	against=acb6120426578b854d7d454a37fdac47ea6561fa
 fi
 
 # Redirect output to stderr.
