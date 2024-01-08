@@ -27,7 +27,7 @@
 - name: Recreate smokeping container
   community.general.docker_container :
     name: smokeping
-    image: lscr.io/linuxserver/smokeping
+    image: linuxserver/smokeping
     state: started
     restart_policy: always
     recreate: yes

@@ -1,23 +1,23 @@
 ---
-- name: Setup the servers basic
-  hosts: all
-  become: true
-  remote_user: joe
-  roles:
-    # - geerlingguy.docker
-    - basic-server
-    # - zsh
-    # - geerlingguy.pip
-    # - role: docker-common
-    #   tags: [setup, docker-common]
-  vars_files:
-    - vars/main.vault.yml
-    - vars/setup.vault.yml
-    - vars/main.yml
-  vars:
-    ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
-  tags:
-    setup
+# - name: Setup the servers basic
+#   hosts: all
+#   become: true
+#   remote_user: joe
+#   roles:
+#     # - geerlingguy.docker
+#     - basic-server
+#     # - zsh
+#     # - geerlingguy.pip
+#     # - role: docker-common
+#     #   tags: [setup, docker-common]
+#   vars_files:
+#     - vars/main.vault.yml
+#     - vars/setup.vault.yml
+#     - vars/main.yml
+#   vars:
+#     ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
+#   tags:
+#     setup
 
 - hosts: pihole.mcharryville.space
   become: true
@@ -40,63 +40,46 @@
   become: true
   remote_user: ansible
   roles:
-    - role: docker-semaphore
-      tags: [ semaphore, docker-semaphore ]
+    # - role: docker-semaphore
+    #   tags: [ semaphore, docker-semaphore ]
     # - role: findarato.docker-semaphore
     #   tags: [ semaphore, docker-semaphore ]
-    - role: docker-dashy
-      tags: [ dashy ]
+    # - role: docker-dashy
+    #   tags: [ dashy ]
     - docker-unifi
     - docker-uptime-kuma
     - docker-smokeping
-    - docker-jackett
-    - docker-overseerr
-    - docker-sonarr
-    - docker-radarr
+    # Moved away from this to prowlarr
+    # - docker-jackett
+    # - docker-prowlarr
+    # - docker-overseerr
+    # - docker-sonarr
+    # - docker-radarr
+    # - docker-lidarr
     - docker-vaultwarden
-    - docker-grafana
-    - docker-syncthing
+    # - docker-grafana
+    # - docker-syncthing
     # - docker-minecraft
-    - role: docker-swag
-      tags: [ setup, proxy ]
+    # - role: docker-swag
+    #   tags: [ setup, proxy ]
   vars:
     ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
   vars_files:
     - vars/main.vault.yml
     - vars/main.yml
 
-# - hosts: getting
+# - hosts: torrents
 #   become: true
 #   remote_user: ansible
 #   roles:
-#     # - {
-#     #   role: docker-piHole,
-#     #   pihole_virtual_hostname: "pihole02",
-#     #   pihole_virtual_host: "pihole02.telaranrhiod.space",
-#     # }
-
-# #     - docker-signal-messager
-# # #     - docker-piHole-Influx
-# # #     - docker-tautlli
-# # #     - docker-varken
-#     # - role: docker-swag
-#     #   tags: [ setup, proxy ]
+#     - role: docker-swag
+#       tags: [ setup, proxy, docker-swag ]
+#     - role: docker-deluge
+#       tags: [ deluge, docker-deluge]
+#   tags:
+#     - torrents
+#   vars:
+#     ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
 #   vars_files:
 #     - vars/main.vault.yml
 #     - vars/main.yml
-
-- hosts: torrents
-  become: true
-  remote_user: ansible
-  roles:
-    - role: docker-swag
-      tags: [ setup, proxy, docker-swag ]
-    - role: docker-deluge
-      tags: [ deluge, docker-deluge]
-  tags:
-    - torrents
-  vars:
-    ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
-  vars_files:
-    - vars/main.vault.yml
-    - vars/main.yml

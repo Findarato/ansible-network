@@ -45,8 +45,8 @@
       VALIDATION: "dns"
       EMAIL: "findarato@gmail.com"
       STAGING: "false"
-      DOCKER_MODS: "linuxserver/mods:swag-maxmind|linuxserver/mods:swag-dashboard"
-      MAXMINDDB_LICENSE_KEY: "{{ vault_maxmind_key }}"
+      # DOCKER_MODS: "linuxserver/mods:swag-maxmind|linuxserver/mods:swag-dashboard"
+      # MAXMINDDB_LICENSE_KEY: "{{ vault_maxmind_key }}"
 
 - name: Wait for container to start
   ansible.builtin.wait_for:
@@ -66,9 +66,3 @@
     dest: "{{docker_proxy_storage}}/le/config/dns-conf/cloudflare.ini"
   notify:
     - Restart SWAG
-
-# - name: Restart SWAG
-#   community.docker.docker_container:
-#     name: swag
-#     state: started
-#     restart: yes

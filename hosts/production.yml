@@ -5,13 +5,13 @@ all:
   children:
     blink:
       hosts:
-        rpi-docker01:
+        rpi-docker01.mcharryville.space:
           ansible_host: rpi-docker01.mcharryville.space #raspberry pi os
           serial: BS036976-3.0
-        rpi-docker02:
+        rpi-docker02.mcharryville.space:
           ansible_host: rpi-docker01.mcharryville.space #raspberry pi os
           serial: BS036976-3.0
-        rpi-docker03:
+        rpi-docker03.mcharryville.space:
           ansible_host: rpi-docker01.mcharryville.space #raspberry pi os
           serial: BS036976-3.0
     rpi:

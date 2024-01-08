@@ -31,20 +31,32 @@ docker_proxy_config_storage: "{{ docker_proxy_storage }}/le/config/nginx/proxy-c
 docker_dashy_storage: "{{ docker_storage_path }}/dashy"
 docker_smokeping_storage: "{{ docker_storage_path }}/smokeping/"
 docker_syncthing_storage: "{{ docker_storage_path }}/syncthing/"
-docker_sonarr_storage: "{{ docker_storage_path }}/sonarr/"
-docker_signal_storage: "{{ docker_storage_path }}/signal/"
 
+
+
+# ARR variables
+
+# Sonar Variables
+docker_sonarr_storage: "{{ docker_storage_path }}/sonarr/"
+docker_sonarr_storage_tv: "/mnt/storage/TV/"
+
+docker_prowlarr_storage: "{{ docker_storage_path }}/prowlarr/"
+docker_radarr_storage: "{{ docker_storage_path }}/radarr/"
+docker_lidarr_storage: "{{ docker_storage_path }}/lidarr/"
+
+
+docker_signal_storage: "{{ docker_storage_path }}/signal/"
 # semaphore
 
-docker_semaphore_db_pass: "{{ vault_docker_semaphore_db_pass }}"
 docker_semaphore_access_key_encryption: "{{ vault_docker_semaphore_access_key_encryption }}"
 docker_semaphore_ldap_activated: no
-docker_semaphore_db_dialect: mysql
+docker_semaphore_db_dialect: mysql # for postgres, change to: postgres
 docker_semaphore_db_user: semaphore
-docker_semaphore_db_host: 10.1.1.5 # for postgres, change to: postgres
+docker_semaphore_db_host: 10.1.1.5
+docker_semaphore_db_pass: "{{ vault_docker_semaphore_db_pass }}"
 
 # DNS stuff
-dns_servers: ['10.1.1.12', '10.1.1.1']
+dns_servers: ['10.1.1.1','10.1.1.6']
 # dns_domains: telaranrhiod.space
 dns_domains: mcharryville.space
 
@@ -62,43 +74,4 @@ groups_to_make:
     gid: 1000002
     state: present
 
-default_users:
-  - name: joe
-    shell: /bin/bash
-    state: present
-    comment: Account for Joseph Harry
-    uid: 1001
-    createhome: yes        # Defaults to yes
-    home: /home/joe
-    generate_ssh_key: True
-    ssh_key_bits: 4096
-    ssh_key_file: .ssh/id_ed25519
-    ssh_key_type: ed25519
-    update_password: "on_create"
-    groups: ["{{ sudo_group }}","family"]
-  - name: alix
-    shell: /bin/bash
-    state: present
-    comment: Account for Alix Harry
-    uid: 1002
-    createhome: yes        # Defaults to yes
-    home: /home/alix
-    generate_ssh_key: True
-    ssh_key_bits: 4096
-    ssh_key_file: .ssh/id_ed25519
-    ssh_key_type: ed25519
-    update_password: "on_create"
-    groups: ["family"]
-  - name: xander
-    shell: /bin/bash
-    state: present
-    comment: Account for Xander Harry
-    uid: 1003
-    createhome: yes        # Defaults to yes
-    home: /home/xander
-    generate_ssh_key: True
-    ssh_key_bits: 4096
-    ssh_key_file: .ssh/id_ed25519
-    ssh_key_type: ed25519
-    update_password: "on_create"
-    groups: ["family"]
+default_users: "{{ vault_default_users }}"

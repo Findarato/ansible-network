@@ -12,32 +12,25 @@
 
 - name: Create Docker paths
   file:
-    path: "/docker/containers/radarr/{{ item }}"
+    path: "{{ docker_prowlarr_storage }}{{ item }}"
     state: directory
-    mode: "0775"
-    owner: "1000"
-    group: docker
   with_items:
-    - downloads
     - config
 
-- name: Recreate Radarr container
+- name: Recreate prowlarr container
   community.docker.docker_container:
-    name: radarr
-    image: lscr.io/linuxserver/radarr
+    name: prowlarr
+    image: lscr.io/linuxserver/prowlarr:latest
     state: started
     restart_policy: unless-stopped
     recreate: yes
     restart: yes
     pull: true
     exposed_ports:
-      - '7878'
+      - '9696'
     volumes:
       - /etc/localtime:/ect/localtime:ro
-      - "{{ docker_radarr_storage }}/downloads:/downloads"
-      - "{{ docker_radarr_storage }}/config:/config"
-      - /mnt/storage/Movies:/movies
-
+      - "{{ docker_prowlarr_storage }}/config:/config"
     networks_cli_compatible: false
     networks:
       - name: theways
@@ -47,15 +40,12 @@
       PGID: '1000'
       VERSION: latest
   tags:
-    - radarr
+    - prowlarr
 
 - name: Download SWAG Config
   ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/radarr.subdomain.conf.sample
-    dest: "{{ docker_proxy_config_storage }}/radarr.subdomain.conf"
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/prowlarr.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/prowlarr.subdomain.conf"
     mode: '0440'
   notify:
     - Restart SWAG
-  tags:
-    - radarr
-    - SWAG

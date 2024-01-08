@@ -12,7 +12,7 @@
 
 - name: Create Docker paths
   file:
-    path: "/docker/containers/radarr/{{ item }}"
+    path: "{{ docker_lidarr_storage }}/{{ item }}"
     state: directory
     mode: "0775"
     owner: "1000"
@@ -21,22 +21,21 @@
     - downloads
     - config
 
-- name: Recreate Radarr container
+- name: Recreate lidarr container
   community.docker.docker_container:
-    name: radarr
-    image: lscr.io/linuxserver/radarr
+    name: lidarr
+    image: lscr.io/linuxserver/lidarr
     state: started
     restart_policy: unless-stopped
     recreate: yes
     restart: yes
     pull: true
     exposed_ports:
-      - '7878'
+      - '8686'
     volumes:
-      - /etc/localtime:/ect/localtime:ro
-      - "{{ docker_radarr_storage }}/downloads:/downloads"
-      - "{{ docker_radarr_storage }}/config:/config"
-      - /mnt/storage/Movies:/movies
+      - "{{ docker_lidarr_storage }}/downloads:/downloads"
+      - "{{ docker_lidarr_storage }}/config:/config"
+      - /mnt/storage/Music/download:/music
 
     networks_cli_compatible: false
     networks:
@@ -47,15 +46,15 @@
       PGID: '1000'
       VERSION: latest
   tags:
-    - radarr
+    - lidarr
 
 - name: Download SWAG Config
   ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/radarr.subdomain.conf.sample
-    dest: "{{ docker_proxy_config_storage }}/radarr.subdomain.conf"
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/lidarr.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/lidarr.subdomain.conf"
     mode: '0440'
   notify:
     - Restart SWAG
   tags:
-    - radarr
+    - lidarr
     - SWAG

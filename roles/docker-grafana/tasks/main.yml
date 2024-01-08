@@ -56,7 +56,9 @@
     log_driver: "{{ docker_log_driver }}"
     log_options: "{{ docker_log_options}}"
     env:
-      GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-clock-panel,jdbranham-diagram-panel,grafana-clock-panel,grafana-simple-json-datasource
+      GF_INSTALL_PLUGINS: "snuids-trafficlights-panel,natel-discrete-panel"
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      # GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
   tags:
     - grafana
 
