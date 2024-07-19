@@ -1,0 +1,77 @@
+---
+# tasks file for docker-transmission
+
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
+
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: "{{ docker_network }}"
+
+- name: Create Docker paths
+  file:
+    path: "{{ docker_audiobookshelf_storage }}/{{ item }}"
+    state: directory
+    # owner: "1000"
+    # group: "1000"
+    # recurse: yes
+  with_items:
+    - data/audiobooks
+    - data/podcasts
+    - config
+    - metadata
+  tags:
+    - dashy
+
+- name: Create and Update audiobookshelf Container
+  community.docker.docker_container:
+    name: audiobookshelf
+    image: ghcr.io/advplyr/audiobookshelf
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    exposed_ports:
+      - "13378"
+    volumes:
+      - "{{ docker_audiobookshelf_storage }}/data/audiobooks:/audiobooks"
+      - "{{ docker_audiobookshelf_storage }}/data/podcasts:/podcasts"
+      - "{{ docker_audiobookshelf_storage }}/metadata:/metadata"
+      - "{{ docker_audiobookshelf_storage }}/config:/config"
+    env:
+      PGID: "1000"
+      PUID: "1000"
+      TZ: "America/Chicago"
+      VIRTUAL_HOST: "audiobookshelf.mcharryville.space"
+    networks_cli_compatible: false
+    networks:
+      - name: theways
+    container_default_behavior: no_defaults
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
+  tags:
+    - dashy
+
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/audiobookshelf.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/audiobookshelf.subdomain.conf"
+    mode: '0440'
+  notify:
+    - Restart SWAG
+  tags:
+    - dashy
+    - SWAG
+
+# - name: Fix configs for the dashy
+#   ansible.builtin.lineinfile:
+#     # backup: true
+#     state: present
+#     path: "{{ docker_proxy_config_storage }}/dashy.subdomain.conf"
+#     regexp: '^        set $upstream_port 4000;'
+#     line: '        set $upstream_port 80;'
+#     backrefs: yes

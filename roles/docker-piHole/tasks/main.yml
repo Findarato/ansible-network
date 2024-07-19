@@ -71,14 +71,15 @@
       - name: theways
     log_driver: "{{ docker_log_driver }}"
     log_options: "{{ docker_log_options}}"
+    dns_servers:
+      - 127.0.0.1
+      - 10.1.1.1
+      - 1.0.0.1
     env:
       TZ: "America/Chicago"
       WEBPASSWORD: password
       VIRTUAL_HOST: "{{ docker_pihole_virtual_host }}"
       hostname: "{{docker_pihole_virtual_hostname}}"
-    dns_servers:
-      - 10.1.1.1
-      - 1.1.1.1
   tags:
     - pihole
 

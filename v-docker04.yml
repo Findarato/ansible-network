@@ -1,0 +1,29 @@
+---
+- name: Setup the servers basic
+  hosts: v-docker04.mcharryville.space
+  become: true
+  remote_user: root
+  roles:
+    - geerlingguy.pip
+  vars_files:
+    - vars/main.vault.yml
+    - vars/setup.vault.yml
+    - vars/main.yml
+  vars:
+    ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
+  tags:
+    setup
+
+- hosts: v-docker04.mcharryville.space
+  become: true
+  remote_user: root
+  roles:
+    - role: docker-minecraft
+      tags: [ minecraft]
+  tags:
+    - minecraft
+  vars:
+    ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
+  vars_files:
+    - vars/main.vault.yml
+    - vars/main.yml

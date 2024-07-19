@@ -45,6 +45,7 @@
       VALIDATION: "dns"
       EMAIL: "findarato@gmail.com"
       STAGING: "false"
+      EXTRA_DOMAINS: "*.wled.mcharryville.space"
       # DOCKER_MODS: "linuxserver/mods:swag-maxmind|linuxserver/mods:swag-dashboard"
       # MAXMINDDB_LICENSE_KEY: "{{ vault_maxmind_key }}"
 

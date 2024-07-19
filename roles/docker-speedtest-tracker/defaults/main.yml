@@ -2,3 +2,4 @@
 # defaults file for docker-speedtest-tracker
 
 speedtest_tracker_db_password: "test_db_password"
+speedtest_tracker_key: base64:BOIz3upgio+/Yc8Bm3QyVJ0c3UfOV6fUONC7EBalHeE= # Random Generated key Not actually used https://speedtest-tracker.dev/ 

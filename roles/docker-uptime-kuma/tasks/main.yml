@@ -19,7 +19,6 @@
   tags:
     - uptime-kuma
 
-
 - name: Recreate uptime-kuma container
   community.docker.docker_container:
     name: uptime-kuma
@@ -31,8 +30,6 @@
     pull: true
     exposed_ports:
       - "3001"
-    published_ports:
-      - "3001:3001"
     volumes:
       - "{{ docker_uptime_kuma_storage }}/data:/app/data"
     networks_cli_compatible: false
@@ -55,3 +52,5 @@
   tags:
     - uptime-kuma
     - SWAG
+  when:
+    - using_swag is true

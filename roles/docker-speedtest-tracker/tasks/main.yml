@@ -24,7 +24,7 @@
 - name: Recreate speedtest-tracker container
   community.docker.docker_container:
     name: speedtest-tracker
-    image: linuxserver/speedtest-tracker
+    image: lscr.io/linuxserver/speedtest-tracker:latest
     state: started
     restart_policy: unless-stopped
     recreate: yes
@@ -51,15 +51,22 @@
       DB_DATABASE: "speedtest"
       DB_USERNAME: "speedtest"
       DB_PASSWORD: "{{ speedtest_tracker_db_password }}"
+      APP_KEY: "{{ vault_speedtest_tracker_key }}"
+      SPEEDTEST_SCHEDULE: "0 * * * *"
+      APP_TIMEZONE: "America/Chicago"
+      DISPLAY_TIMEZONE: "America/Chicago"
   tags:
     - speedtest-tracker
 
-# There is no configuration yet
-# - name: Download SWAG Config
-#   ansible.builtin.get_url:
-#     url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/librespeed.subdomain.conf.sample
-#     dest: /docker/containers/proxy/le/config/nginx/proxy-confs/librespeed.subdomain.conf
-#     mode: '0440'
-#   tags:
-#     - speedtest-tracker
-#     - SWAG
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/speedtest-tracker.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/speedtest-tracker.subdomain.conf"
+    mode: '0440'
+    owner: 1000
+    group: 1000
+  tags:
+    - speedtest-tracker
+    - SWAG
+  when:
+    - using_swag is true

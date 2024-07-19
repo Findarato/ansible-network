@@ -1,0 +1,74 @@
+---
+# tasks file for docker-transmission
+
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
+
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: "{{ docker_network }}"
+
+- name: Create Docker paths
+  file:
+    path: "{{ docker_homepage_storage }}/{{ item }}"
+    state: directory
+    owner: "1000"
+    group: "1000"
+    recurse: yes
+  with_items:
+    - config
+    - images
+  tags:
+    - homepage
+
+- name: Create and Update homepage Container
+  community.docker.docker_container:
+    name: homepage
+    image: ghcr.io/gethomepage/homepage:latest
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    exposed_ports:
+      - "3000"
+    volumes:
+      - "{{ docker_homepage_storage }}/config/:/app/config/"
+      - "{{ docker_homepage_storage }}/images/:/app/public/images/"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro" # optional, for docker integrations
+    env:
+      PGID: "1000"
+      PUID: "1000"
+      TZ: "America/Chicago"
+    networks_cli_compatible: false
+    networks:
+      - name: theways
+    container_default_behavior: no_defaults
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
+  tags:
+    - homepage
+
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    # url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/homepage.subdomain.conf.sample
+    url: https://raw.githubusercontent.com/Findarato/reverse-proxy-confs/homepage/homepage.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/homepage.subdomain.conf"
+    mode: '0440'
+  notify:
+    - Restart SWAG
+  tags:
+    - homepage
+    - SWAG
+
+# - name: Fix configs for the homepage
+#   ansible.builtin.lineinfile:
+#     # backup: true
+#     state: present
+#     path: "{{ docker_proxy_config_storage }}/homepage.subdomain.conf"
+#     regexp: '^        set $upstream_port 4000;'
+#     line: '        set $upstream_port 80;'
+#     backrefs: yes

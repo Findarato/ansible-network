@@ -23,14 +23,18 @@
 - name: Recreate syncthing container
   community.docker.docker_container:
     name: syncthing
-    image: linuxserver/syncthing
+    image: lscr.io/linuxserver/syncthing:latest
     state: started
     restart_policy: unless-stopped
     recreate: yes
     restart: yes
     pull: true
     exposed_ports:
-      - '8989'
+      - 8384
+      - 22000
+      - 22000
+      - 21027
+
     volumes:
       - /etc/localtime:/ect/localtime:ro
     networks_cli_compatible: false

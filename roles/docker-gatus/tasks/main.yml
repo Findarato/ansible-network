@@ -1,0 +1,70 @@
+---
+# tasks file for roles/docker-gatus
+
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+  tags: pip
+
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: theways
+
+- name: Create Docker paths
+  file:
+    path: "{{docker_gatus_storage}}{{ item }}"
+    state: directory
+    mode: "0775"
+  with_items:
+    - config
+    - data
+  tags:
+    - gatus
+
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    # url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/gatus.subdomain.conf.sample
+    url: https://raw.githubusercontent.com/Findarato/reverse-proxy-confs/gatus/gatus.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/gatus.subdomain.conf"
+    mode: '0440'
+  tags:
+    - gatus
+    - SWAG
+  when:
+    - using_swag is true
+  notify:
+    - restart SWAG
+
+- name: Recreate gatus container
+  community.docker.docker_container:
+    name: gatus
+    hostname: gatus
+    image: twinproduction/gatus
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    shm_size: 500MB
+    exposed_ports:
+      - "8080/udp"
+    volumes:
+      - "{{docker_gatus_storage}}/config:/config"
+      - "{{docker_gatus_storage}}/data:/data"
+      - /etc/localtime:/etc/localtime:ro
+    networks_cli_compatible: false
+    networks:
+      - name: theways
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
+    dns_servers:
+      - 127.0.0.1
+      - 10.1.1.1
+      - 1.0.0.1
+    env:
+      TZ: "America/Chicago"
+      GATUS_CONFIG_PATH: "/config"
+  tags:
+    - gatus
+...

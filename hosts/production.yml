@@ -37,12 +37,16 @@ all:
         rpi-docker02.mcharryville.space: #raspberry pi os
         rpi-docker03.mcharryville.space: #raspberry pi os
         pihole.mcharryville.space: #RHEL 8.8
+        10.1.1.6: #RHEL 8.8
     getting:
       hosts:
         v-docker03.mcharryville.space: # Rocky Linux 8
     watching:
       hosts:
         v-docker03.mcharryville.space: # Rocky Linux 8
+    minecraft:
+      hosts:
+        v-docker04.mcharryville.space: # Debian 12 Container
     stats:
       hosts:
         v-docker03.mcharryville.space: # Rocky Linux 8

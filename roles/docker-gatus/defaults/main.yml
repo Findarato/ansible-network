@@ -1,0 +1,4 @@
+---
+# defaults file for roles/docker-gatus
+
+docker_gatus_storage: "/docker/containers/gatus/"

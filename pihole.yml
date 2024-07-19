@@ -1,0 +1,18 @@
+---
+# - hosts: pihole.mcharryville.space
+- hosts: 10.1.1.6
+  become: true
+  remote_user: ansible
+  roles:
+    # - role: docker-swag
+    #   tags: [ setup, proxy, docker-swag, pihole ]
+    - role: docker-piHole
+      vars:
+        docker_pihole_virtual_hostname: "pihole"
+        docker_pihole_virtual_host: "pihole.mcharryville.space"
+      tags: [ pihole, dns ]
+  vars:
+    ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
+  vars_files:
+    - vars/main.vault.yml
+    - vars/main.yml

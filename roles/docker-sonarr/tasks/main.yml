@@ -21,7 +21,8 @@
 - name: Recreate Sonarr container
   community.docker.docker_container:
     name: sonarr
-    image: linuxserver/sonarr
+    # image: linuxserver/sonarr
+    image: lscr.io/linuxserver/sonarr:latest
     state: started
     restart_policy: unless-stopped
     recreate: yes

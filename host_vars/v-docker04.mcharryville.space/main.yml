@@ -1,0 +1,7 @@
+---
+
+include_vars:            main.vault.yml
+remote_user:             root
+ansible_become_pass:     "{{vault_user_pass}}"
+pip_package:             python3-pip
+

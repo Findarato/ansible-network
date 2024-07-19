@@ -34,8 +34,8 @@
     volumes:
       - "{{docker_proxy_storage}}/data:/data"
       - "{{docker_proxy_storage}}/letsencrypt:/etc/letsencrypt"
-
     networks_cli_compatible: false
     networks:
       - name: theways
+    #   - name: container:tailscale-ha
     # env:

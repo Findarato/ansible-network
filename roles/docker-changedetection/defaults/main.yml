@@ -1,0 +1,11 @@
+---
+# defaults file for docker-transmission
+
+docker_storage_path: "/docker/containers/"
+docker_changedetection_storage: "{{docker_storage_path}/changedetection/"
+docker_proxy_storage: "{{docker_storage_path}/proxy/le/config/nginx/proxy-confs"
+
+docker_log_driver: "json-file"
+docker_log_options:
+  max-file: "3"   # number of files or file count
+  max-size: "10m" # file size

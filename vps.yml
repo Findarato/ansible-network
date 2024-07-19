@@ -1,27 +1,34 @@
 ---
-- hosts: vps
-  become: true
-  remote_user: root
-  roles:
-    # - basic-server
-    # - zsh
-    # - geerlingguy.pip
-    - geerlingguy.docker
-    - role: docker-common
-      tags: [setup, docker-common]
-  vars:
-    - ansible_python_interpreter: "/usr/bin/python3"
-  vars_files:
-    - vars/main.yml
-    - vars/setup.vault
+# - hosts: vps
+#   become: true
+#   remote_user: root
+#   roles:
+#     # - basic-server
+#     # - zsh
+#     # - geerlingguy.pip
+#     - geerlingguy.docker
+#     - role: docker-common
+#       tags: [setup, docker-common]
+#   vars:
+#     - ansible_python_interpreter: "/usr/bin/python3"
+#   vars_files:
+#     - vars/main.yml
+#     - vars/main.vault.yml
+#     - vars/setup.vault
 
 - hosts: vps
   become: true
   remote_user: root
   roles:
-    - docker-npm
+    # - role: docker-tailscale
+    # - role: docker-npm
+      # aditional_network: tailscale-ha
+    # - docker-uptime-kuma
+    - docker-ntfy
+    - docker-website
   vars:
     - ansible_python_interpreter: "/usr/bin/python3"
+    - using_swag: false
   vars_files:
     - vars/main.yml
     - vars/main.vault.yml

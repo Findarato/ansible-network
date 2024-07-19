@@ -44,8 +44,8 @@
     restart: yes
     pull: true
     container_default_behavior: no_defaults
-    ports:
-      - 3000:3000
+    exposed_ports:
+      - 3000
     volumes:
       - /docker/containers/grafana/data:/var/lib/grafana
       - /docker/containers/grafana/config:/etc/grafana

@@ -1,0 +1,91 @@
+---
+# tasks file for roles/docker-ntfy
+
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+  tags: pip
+
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: theways
+
+- name: Create Docker paths
+  file:
+    path: "{{docker_ntfy_storage}}{{ item }}"
+    state: directory
+    mode: "0775"
+  with_items:
+    - data/cache/ntfy
+    - data/etc/ntfy
+    - data/var/lib/ntfy
+  tags:
+    - ntfy
+
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/ntfy.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/ntfy.subdomain.conf"
+    mode: '0440'
+  tags:
+    - ntfy
+    - SWAG
+  when:
+    - using_swag is true
+  notify:
+    - restart SWAG
+
+- name: Recreate ntfy container
+  community.docker.docker_container:
+    name: ntfy
+    hostname: ntfy
+    image: binwiederhier/ntfy
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    shm_size: 500MB
+    exposed_ports:
+      - "80/tcp"
+    command: serve
+    volumes:
+      - "{{docker_ntfy_storage}}/data/cache/ntfy:/var/cache/ntfy"
+      - "{{docker_ntfy_storage}}/data/etc/ntfy:/etc/ntfy"
+      - "{{docker_ntfy_storage}}/data/var/lib/ntfy:/var/lib/ntfy"
+      - /etc/localtime:/etc/localtime:ro
+    networks_cli_compatible: false
+    networks:
+      - name: theways
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
+    dns_servers:
+      - 127.0.0.1
+      - 10.1.1.1
+      - 1.0.0.1
+    env:
+      TZ: "America/Chicago"
+      NTFY_BASE_URL: "http://ntfy.mcharryville.space"
+      NTFY_CACHE_FILE: "/var/lib/ntfy/cache.db"
+      NTFY_AUTH_FILE: "/var/lib/ntfy/auth.db"
+      NTFY_AUTH_DEFAULT_ACCESS: "deny-all"
+      NTFY_BEHIND_PROXY: "true"
+      NTFY_ATTACHMENT_CACHE_DIR: "/var/lib/ntfy/attachments"
+      NTFY_ENABLE_LOGIN: "true"
+      # NTFY_UPSTREAM_BASE_URL: "https://ntfy.sh"
+      # NTFY_WEB_PUSH_PUBLIC_KEY: "<public_key>"
+      # NTFY_WEB_PUSH_PRIVATE_KEY: ""{{ vault_ntfy_private_key}}""
+      NTFY_WEB_PUSH_FILE: "/var/lib/ntfy/webpush.db"
+      NTFY_WEB_PUSH_EMAIL_ADDRESS: "findarato@gmail.com"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --tries=1 http://localhost:80/v1/health -O - | grep -Eo '\"healthy\"\\s*:\\s*true' || exit 1"]
+      interval: 60s
+      start_period: 40s
+      timeout: 10s
+      retries: 3
+  tags:
+    - gatus
+...
+
+

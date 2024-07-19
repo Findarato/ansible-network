@@ -31,8 +31,9 @@ docker_proxy_config_storage: "{{ docker_proxy_storage }}/le/config/nginx/proxy-c
 docker_dashy_storage: "{{ docker_storage_path }}/dashy"
 docker_smokeping_storage: "{{ docker_storage_path }}/smokeping/"
 docker_syncthing_storage: "{{ docker_storage_path }}/syncthing/"
-
-
+docker_gatus_storage: "{{ docker_storage_path }}/gatus/"
+docker_homepage_storage: "{{ docker_storage_path }}/homepage/"
+docker_ntfy_storage: "{{ docker_storage_path }}/ntfy/"
 
 # ARR variables
 
@@ -46,7 +47,13 @@ docker_lidarr_storage: "{{ docker_storage_path }}/lidarr/"
 
 
 docker_signal_storage: "{{ docker_storage_path }}/signal/"
+docker_audiobookshelf_storage: "{{ docker_storage_path }}/audiobookshelf/"
+docker_website_storage: "{{ docker_storage_path }}/website/"
+
 # semaphore
+
+#speed test tracker
+speedtest_tracker_key: "{{ vault_speedtest_tracker_key }}"
 
 docker_semaphore_access_key_encryption: "{{ vault_docker_semaphore_access_key_encryption }}"
 docker_semaphore_ldap_activated: no

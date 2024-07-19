@@ -1,0 +1,44 @@
+---
+# tasks file for docker-transmission
+
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: theways
+
+- name: Create and Update tailscale Container
+  community.docker.docker_container:
+    name: tailscale-ha
+    hostname: tailscale-ha
+    image: tailscale/tailscale:latest
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    volumes:
+      - /dev/net/tun:/dev/net/tun
+    env:
+      TS_AUTHKEY="{{ tailscale_auth_key }}"
+    networks_cli_compatible: false
+    container_default_behavior: no_defaults
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
+    networks:
+      - name: theways
+  tags:
+    - tailscale
+
+
+# - name: Fix configs for the homepage
+#   ansible.builtin.lineinfile:
+#     # backup: true
+#     state: present
+#     path: "{{ docker_proxy_config_storage }}/homepage.subdomain.conf"
+#     regexp: '^        set $upstream_port 4000;'
+#     line: '        set $upstream_port 80;'
+#     backrefs: yes

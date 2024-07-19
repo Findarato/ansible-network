@@ -1,0 +1,92 @@
+---
+# tasks file for docker-transmission
+
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
+
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: "{{ docker_network }}"
+
+- name: Create Docker paths
+  file:
+    path: "{{ docker_changedetection_storage }}/{{ item }}"
+    state: directory
+    owner: "1000"
+    group: "1000"
+    # recurse: yes
+  with_items:
+    - config
+  tags:
+    - changedetection
+
+- name: Create and Update playwright Container
+  community.docker.docker_container:
+    name: playwright
+    image: dgtlmoon/sockpuppetbrowser:latest
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    exposed_ports:
+      - "3000"
+    volumes:
+      - "{{ docker_changedetection_storage }}/config:/config"
+    shm-size: 2G
+    env:
+      TZ: "America/Chicago"
+      DEFAULT_LAUNCH_ARGS: "[\"--window-size=1920,1080\"]"
+    networks_cli_compatible: false
+    networks:
+      - name: theways
+    container_default_behavior: no_defaults
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
+  tags:
+    - changedetection
+
+- name: Create and Update changedetection Container
+  community.docker.docker_container:
+    name: changedetection
+    image: lscr.io/linuxserver/changedetection.io:latest
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    exposed_ports:
+      - "5000"
+    volumes:
+      - "{{ docker_changedetection_storage }}/config:/config"
+    env:
+      PGID: "1000"
+      PUID: "1000"
+      TZ: "America/Chicago"
+      VIRTUAL_HOST: "changedetection.mcharryville.space"
+      PLAYWRIGHT_DRIVER_URL: playwright
+    networks_cli_compatible: false
+    networks:
+      - name: theways
+    container_default_behavior: no_defaults
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
+  tags:
+    - changedetection
+
+
+
+
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/changedetection.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/changedetection.subdomain.conf"
+    mode: '0440'
+  notify:
+    - Restart SWAG
+  tags:
+    - changedetection
+    - SWAG
