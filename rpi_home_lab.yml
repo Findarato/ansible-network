@@ -1,47 +1,47 @@
 ---
-# - hosts: rpi-docker02.mcharryville.space
-# # - hosts: rpi:new_rpi
-#   become: true
-#   tasks:
-#     - name: Make sure python is ready
-#       package:
-#         state: present
-#         name: python3-venv
-#   roles:
-#     # - geerlingguy.pip
-#     # - gregnrobinson.blinkstick
-#     - role: geerlingguy.docker
-#       docker_edition: 'ce'
-#       docker_packages:
-#         - "docker-{{ docker_edition }}"
-#         - "docker-{{ docker_edition }}-cli"
-#         - "docker-{{ docker_edition }}-rootless-extras"
-#         - "containerd.io"
-#       docker_users:
-#         - joe
-#     # - docker-swag
-#   vars_files:
-#     - vars/main.yml
-#     - vars/main.vault.yml
-#   tags:
-#     - rpi
-
-- hosts: piBlocks
+- hosts: rpi-docker02.mcharryville.space
+# - hosts: rpi:new_rpi
   become: true
-  remote_user: pi
+  tasks:
+    - name: Make sure python is ready
+      package:
+        state: present
+        name: python3-venv
   roles:
-    - role: docker-piHole
-      vars:
-        pihole_virtual_hostname: "pihole"
-        pihole_virtual_host: "pihole.mcharryville.space"
-      tags: [ pihole, dns ]
-    - role: docker-swag
-      tags: [ setup, proxy ]
+    # - geerlingguy.pip
+    # - gregnrobinson.blinkstick
+    - role: geerlingguy.docker
+      docker_edition: 'ce'
+      docker_packages:
+        - "docker-{{ docker_edition }}"
+        - "docker-{{ docker_edition }}-cli"
+        - "docker-{{ docker_edition }}-rootless-extras"
+        - "containerd.io"
+      docker_users:
+        - joe
+    # - docker-swag
   vars_files:
     - vars/main.yml
     - vars/main.vault.yml
   tags:
     - rpi
+
+# - hosts: piBlocks
+#   become: true
+#   remote_user: pi
+#   roles:
+#     - role: docker-piHole
+#       vars:
+#         pihole_virtual_hostname: "pihole"
+#         pihole_virtual_host: "pihole.mcharryville.space"
+#       tags: [ pihole, dns ]
+#     - role: docker-swag
+#       tags: [ setup, proxy ]
+#   vars_files:
+#     - vars/main.yml
+#     - vars/main.vault.yml
+#   tags:
+#     - rpi
 
 # - hosts: rpi-docker01.mcharryville.space
 #   become: true
@@ -54,27 +54,27 @@
 #   tags:
 #     - rpi
 
-- hosts: rpi-docker02.mcharryville.space
-  become: true
-  remote_user: joe
-  roles:
-    # - docker-signal-messager
-    # - docker-swag
-    # - docker-piHole
-  vars_files:
-    - vars/main.yml
-    - vars/main.vault.yml
-  tags:
-    - rpi
+# - hosts: rpi-docker02.mcharryville.space
+#   become: true
+#   remote_user: joe
+#   roles:
+#     # - docker-signal-messager
+#     # - docker-swag
+#     # - docker-piHole
+#   vars_files:
+#     - vars/main.yml
+#     - vars/main.vault.yml
+#   tags:
+#     - rpi
 
-- hosts: rpi-docker03.mcharryville.space
-  become: true
-  remote_user: pi
-  roles:
-    # - docker-swag
-    # - docker-piHole
-  vars_files:
-    - vars/main.yml
-    - vars/main.vault.yml
-  tags:
-    - rpi
+# - hosts: rpi-docker03.mcharryville.space
+#   become: true
+#   remote_user: pi
+#   roles:
+#     # - docker-swag
+#     # - docker-piHole
+#   vars_files:
+#     - vars/main.yml
+#     - vars/main.vault.yml
+#   tags:
+#     - rpi

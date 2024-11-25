@@ -1,27 +1,27 @@
 ---
-- name: Install Python tools for docker
-  pip:
-    name: docker
-    state: latest
+# - name: Install Python tools for docker
+#   pip:
+#     name: docker
+#     state: latest
 
-- name: Grow the Ways
-  community.docker.docker_network:
-    name: theways
+# - name: Grow the Ways
+#   community.docker.docker_network:
+#     name: theways
 
-- name: Create Docker paths
-  file:
-    path: "{{docker_proxy_storage}}/{{ item }}"
-    state: directory
-    mode: "0775"
-    group: "1000"
-    owner: "1000"
-  with_items:
-    - le/config
+# - name: Create Docker paths
+#   file:
+#     path: "{{docker_proxy_storage}}/{{ item }}"
+#     state: directory
+#     mode: "0775"
+#     group: "1000"
+#     owner: "1000"
+#   with_items:
+#     - le/config
 
 - name: Create SWAG
   community.docker.docker_container:
     name: swag
-    image: ghcr.io/linuxserver/swag:latest
+    image: lscr.io/linuxserver/swag:latest
     state: started
     restart_policy: unless-stopped
     recreate: true
@@ -46,8 +46,9 @@
       EMAIL: "findarato@gmail.com"
       STAGING: "false"
       EXTRA_DOMAINS: "*.wled.mcharryville.space"
-      # DOCKER_MODS: "linuxserver/mods:swag-maxmind|linuxserver/mods:swag-dashboard"
       # MAXMINDDB_LICENSE_KEY: "{{ vault_maxmind_key }}"
+      # MAXMINDDB_USER_ID: "562816"
+      DOCKER_MODS: "linuxserver/mods:swag-dashboard|linuxserver/mods:universal-wait-for-internet"
 
 - name: Wait for container to start
   ansible.builtin.wait_for:

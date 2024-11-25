@@ -22,20 +22,6 @@
   tags:
     - gatus
 
-- name: Download SWAG Config
-  ansible.builtin.get_url:
-    # url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/gatus.subdomain.conf.sample
-    url: https://raw.githubusercontent.com/Findarato/reverse-proxy-confs/gatus/gatus.subdomain.conf.sample
-    dest: "{{ docker_proxy_config_storage }}/gatus.subdomain.conf"
-    mode: '0440'
-  tags:
-    - gatus
-    - SWAG
-  when:
-    - using_swag is true
-  notify:
-    - restart SWAG
-
 - name: Recreate gatus container
   community.docker.docker_container:
     name: gatus
@@ -67,4 +53,17 @@
       GATUS_CONFIG_PATH: "/config"
   tags:
     - gatus
+
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/gatus.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/gatus.subdomain.conf"
+    mode: '0440'
+  tags:
+    - gatus
+    - SWAG
+  when:
+    - using_swag is true
+  notify:
+    - Restart SWAG
 ...

@@ -54,8 +54,7 @@
 
 - name: Download SWAG Config
   ansible.builtin.get_url:
-    # url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/homepage.subdomain.conf.sample
-    url: https://raw.githubusercontent.com/Findarato/reverse-proxy-confs/homepage/homepage.subdomain.conf.sample
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/homepage.subdomain.conf.sample
     dest: "{{ docker_proxy_config_storage }}/homepage.subdomain.conf"
     mode: '0440'
   notify:

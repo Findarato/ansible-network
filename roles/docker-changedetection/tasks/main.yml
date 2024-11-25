@@ -26,20 +26,21 @@
 - name: Create and Update playwright Container
   community.docker.docker_container:
     name: playwright
-    image: dgtlmoon/sockpuppetbrowser:latest
+    # image: dgtlmoon/sockpuppetbrowser:latest
+    image: browserless/chrome
     state: started
     restart_policy: unless-stopped
     recreate: yes
     restart: yes
     pull: true
+    shm_size: 2G
     exposed_ports:
       - "3000"
     volumes:
       - "{{ docker_changedetection_storage }}/config:/config"
-    shm-size: 2G
     env:
       TZ: "America/Chicago"
-      DEFAULT_LAUNCH_ARGS: "[\"--window-size=1920,1080\"]"
+      DEFAULT_LAUNCH_ARGS: "[\"--window-size=1440,2560\"]"
     networks_cli_compatible: false
     networks:
       - name: theways
@@ -67,7 +68,12 @@
       PUID: "1000"
       TZ: "America/Chicago"
       VIRTUAL_HOST: "changedetection.mcharryville.space"
-      PLAYWRIGHT_DRIVER_URL: playwright
+      LC_ALL: "en_US.UTF-8"
+      PLAYWRIGHT_DRIVER_URL: "ws://playwright:3000"
+      HIDE_REFERER: "true"
+      FETCH_WORKERS: "10"
+      # DOCKER_MODS: "linuxserver/mods:universal-wait-for-internet|linuxserver/mods:swag-auto-uptime-kuma"
+      DOCKER_MODS: "linuxserver/mods:universal-wait-for-internet"
     networks_cli_compatible: false
     networks:
       - name: theways

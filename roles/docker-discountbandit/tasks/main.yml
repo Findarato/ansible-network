@@ -1,0 +1,74 @@
+---
+# tasks file for docker-transmission
+
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
+
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: "{{ docker_network }}"
+
+# - name: Create Docker paths
+#   file:
+#     path: "{{ docker_discountbandit_storage }}/{{ item }}"
+#     state: directory
+#     owner: "1000"
+#     group: "1000"
+#     # recurse: yes
+#   with_items:
+#     - config
+#   tags:
+#     - discountbandit
+
+- name: Create and Update discountbandit Container
+  community.docker.docker_container:
+    name: discountbandit
+    image: cybrarist/discount-bandit
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    exposed_ports:
+      - "5000"
+    volumes:
+      - "{{ docker_discountbandit_storage }}/config:/config"
+    env:
+      PGID: "1000"
+      PUID: "1000"
+      TZ: "America/Chicago"
+      VIRTUAL_HOST: "discountbandit.mcharryville.space"
+      NTFY_CHANNEL_ID: "discount-bandit"
+      NTFY_BASE_URL: "https://ntfy.mcharryville.space/"
+      DB_CONNECTION: mysql
+      DB_HOST: host
+      DB_PORT: 3306
+      DB_DATABASE: discountbandit
+      DB_USERNAME: discountbandit
+      DB_PASSWORD: "{{ vault_discount_bandit }}"
+      THEME_COLOR: "Stone"
+    networks_cli_compatible: false
+    networks:
+      - name: theways
+    container_default_behavior: no_defaults
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
+  tags:
+    - discountbandit
+
+
+
+
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/discountbandit.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/discountbandit.subdomain.conf"
+    mode: '0440'
+  notify:
+    - Restart SWAG
+  tags:
+    - discountbandit
+    - SWAG

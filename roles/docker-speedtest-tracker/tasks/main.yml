@@ -70,3 +70,5 @@
     - SWAG
   when:
     - using_swag is true
+  notify:
+    - Restart SWAG

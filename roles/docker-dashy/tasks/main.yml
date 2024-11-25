@@ -45,14 +45,14 @@
     restart: yes
     pull: true
     exposed_ports:
-      - "80"
+      - "8080"
     volumes:
       - "{{ docker_dashy_storage }}/config/conf.yml:/app/public/conf.yml"
     env:
       PGID: "1000"
       PUID: "1000"
       TZ: "America/Chicago"
-      VIRTUAL_HOST: "dashy.telaranrhiod.space"
+      VIRTUAL_HOST: "dashy.mcharryville.space"
       NODE_ENV: production
     networks_cli_compatible: false
     networks:

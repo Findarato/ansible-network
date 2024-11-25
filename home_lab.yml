@@ -19,24 +19,6 @@
 #   tags:
 #     setup
 
-# - hosts: pihole.mcharryville.space
-#   become: true
-#   remote_user: ansible
-#   roles:
-#     - role: docker-swag
-#       tags: [ setup, proxy, docker-swag, pihole ]
-#     - role: docker-piHole
-#       vars:
-#         docker_pihole_virtual_hostname: "pihole"
-#         docker_pihole_virtual_host: "pihole.mcharryville.space"
-#       tags: [ pihole, dns ]
-#   tags: [ pihole, dns ]
-#   vars:
-#     ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
-#   vars_files:
-#     - vars/main.vault.yml
-#     - vars/main.yml
-
 - hosts: watching
   become: true
   remote_user: ansible
@@ -45,14 +27,16 @@
     #   tags: [ semaphore, docker-semaphore ]
     # - role: findarato.docker-semaphore
     #   tags: [ semaphore, docker-semaphore ]
-    # - role: docker-dashy
-    #   tags: [ dashy ]
-    # - role: docker-homepage
-    #   tags: [ homepage ]
+    - role: docker-dashy
+      tags: [ dashy ]
+    - role: docker-homepage
+      tags: [ homepage ]
     - role: docker-audiobookshelf
       tags: [ audiobookshelf ]
     - role: docker-speedtest-tracker
       tags: [ speedtest-tracker ]
+    - role: docker-changedetection
+      tags: [ changedetection ]
     - docker-gatus
     - docker-unifi
     - docker-uptime-kuma
@@ -64,12 +48,13 @@
     - docker-lidarr
     - docker-vaultwarden
     - docker-grafana
-    - docker-syncthing
+    # - docker-syncthing
     # - docker-minecraft
     - role: docker-swag
-    #   tags: [ setup, proxy ]
+      tags: [ setup, proxy ]
   vars:
     ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
+    using_swag: true
   vars_files:
     - vars/main.vault.yml
     - vars/main.yml

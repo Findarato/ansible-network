@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include docker-transmission"
+      include_role:
+        name: "docker-transmission"
