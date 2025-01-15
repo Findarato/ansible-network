@@ -19,22 +19,24 @@
 #   tags:
 #     setup
 
-- hosts: watching
+- hosts: rk1-cluster02.mcharryville.space
   become: true
-  remote_user: ansible
+  remote_user: ubuntu
   roles:
+    - role: docker-swag
+      tags: [ setup, proxy ]
     # - role: docker-semaphore
     #   tags: [ semaphore, docker-semaphore ]
     # - role: findarato.docker-semaphore
     #   tags: [ semaphore, docker-semaphore ]
-    - role: docker-dashy
-      tags: [ dashy ]
-    - role: docker-homepage
-      tags: [ homepage ]
+    # - role: docker-dashy
+    #   tags: [ dashy ]
+    # - role: docker-homepage
+    #   tags: [ homepage ]
     # - role: docker-audiobookshelf
     #   tags: [ audiobookshelf ]
-    - role: docker-speedtest-tracker
-      tags: [ speedtest-tracker ]
+    # - role: docker-speedtest-tracker
+    #   tags: [ speedtest-tracker ]
     - role: docker-apt-cacher-ng
       tags: [ apt-cacher-ng ]
     - role: docker-piHole
@@ -61,8 +63,7 @@
     # - docker-grafana
     # - docker-syncthing
     # - docker-minecraft
-    - role: docker-swag
-      tags: [ setup, proxy ]
+
   vars:
     ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
     using_swag: true

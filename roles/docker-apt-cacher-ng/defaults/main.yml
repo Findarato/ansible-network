@@ -1,0 +1,14 @@
+---
+# defaults file for docker-transmission
+
+docker_storage_path: "/docker/containers/"
+docker_apt_cacher_ng_storage: "{{ docker_storage_path }}/aptcacherng/"
+docker_proxy_storage: "{{ docker_storage_path }}/proxy/le/config/nginx/proxy-confs"
+
+vault_discount_bandit: change-this-in-a-vault
+
+
+docker_log_driver: "json-file"
+docker_log_options:
+  max-file: "3"   # number of files or file count
+  max-size: "10m" # file size

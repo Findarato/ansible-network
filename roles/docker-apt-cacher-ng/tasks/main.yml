@@ -1,0 +1,73 @@
+---
+# tasks file for docker-sonarr
+
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: theways
+
+- name: Create Docker paths
+  file:
+    path: "{{ docker_apt_cacher_ng_storage }}{{ item }}"
+    state: directory
+  with_items:
+    - config
+
+- name: 🛑 Stop apt-cacher-ng container
+  community.docker.docker_container:
+    name: apt-cacher-ng
+    image: sameersbn/apt-cacher-ng
+    state: stopped
+  tags:
+    - apt-cacher-ng
+
+- name: 🔥 Remove apt-cacher-ng container
+  community.docker.docker_container:
+    name: apt-cacher-ng
+    image: sameersbn/apt-cacher-ng
+    state: absent
+  tags:
+    - sonapt-cacher-ngarr
+
+- name: Create NFS mount
+  community.docker.docker_volume:
+    name: nfs-apt-cacher-ng
+    state: present
+    driver: local
+    recreate: options-changed
+    driver_options:
+      type: nfs
+      o: "addr=10.1.1.5,rw"
+      device: :/volume3/m2.docker/nfs/aptcacherng
+
+- name: Recreate apt-cacher-ng container
+  community.docker.docker_container:
+    name: apt-cacher-ng
+    image: sameersbn/apt-cacher-ng
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    exposed_ports:
+      - '3142'
+    published_ports:
+      - '3142:3142'
+    volumes:
+      - /etc/localtime:/ect/localtime:ro
+      - nfs-apt-cacher-ng:/var/cache/apt-cacher-ng
+      - "{{ docker_apt_cacher_ng_storage }}/config:/config"
+    networks_cli_compatible: false
+    networks:
+      - name: theways
+    env:
+      TZ: "America/Chicago"
+      PUID: '1000'
+      PGID: '1000'
+      VERSION: latest
+  tags:
+    - apt-cacher-ng

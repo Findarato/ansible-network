@@ -18,8 +18,48 @@
     owner: "1000"
     group: docker
   with_items:
-    - downloads
     - config
+
+- name: 🛑 Stop Radarr container
+  community.docker.docker_container:
+    name: radarr
+    state: stopped
+  tags:
+    - radarr
+
+- name: 🔥 Remove Radarr container
+  community.docker.docker_container:
+    name: radarr
+    state: absent
+  tags:
+    - radarr
+
+- name: 🎥 Create NFS mount movies
+  community.docker.docker_volume:
+    name: nfs-movies
+    state: present
+    driver: local
+    recreate: options-changed
+    driver_options:
+      type: nfs
+      o: "addr=10.1.1.7,rw"
+      device: :/mnt/Dedicated/Storage/Movies/
+
+- name: Remove Old Download
+  community.docker.docker_volume:
+    name: radarr-downloads
+    state: absent
+
+- name: Create NFS mount downloads
+  community.docker.docker_volume:
+    name: arr-downloads
+    state: present
+    driver: local
+    recreate: options-changed
+    driver_options:
+      type: nfs
+      o: "addr=10.1.1.5,rw"
+      device: :/volume2/ssd.docker/torrents/downloads/complete/
 
 - name: Recreate Radarr container
   community.docker.docker_container:
@@ -34,9 +74,9 @@
       - '7878'
     volumes:
       - /etc/localtime:/ect/localtime:ro
-      - "{{ docker_radarr_storage }}/downloads:/downloads"
+      - arr-downloads:/downloads
+      - "nfs-movies:/movies"
       - "{{ docker_radarr_storage }}/config:/config"
-      - /mnt/storage/Movies:/movies
 
     networks_cli_compatible: false
     networks:

@@ -52,9 +52,12 @@
       DB_USERNAME: "speedtest"
       DB_PASSWORD: "{{ speedtest_tracker_db_password }}"
       APP_KEY: "{{ vault_speedtest_tracker_key }}"
-      SPEEDTEST_SCHEDULE: "0 * * * *"
+      # SPEEDTEST_SCHEDULE: "0 * * * *" # Every Minuite
+      SPEEDTEST_SCHEDULE: "0 */1 * * *" # Every Hour
       APP_TIMEZONE: "America/Chicago"
       DISPLAY_TIMEZONE: "America/Chicago"
+      SPEEDTEST_SERVERS: "64413,64415,53398"
+      PRUNE_RESULTS_OLDER_THAN: "730"
   tags:
     - speedtest-tracker
 

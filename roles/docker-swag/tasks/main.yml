@@ -48,7 +48,7 @@
       EXTRA_DOMAINS: "*.wled.mcharryville.space"
       # MAXMINDDB_LICENSE_KEY: "{{ vault_maxmind_key }}"
       # MAXMINDDB_USER_ID: "562816"
-      DOCKER_MODS: "linuxserver/mods:swag-dashboard|linuxserver/mods:universal-wait-for-internet"
+      # DOCKER_MODS: "linuxserver/mods:swag-dashboard|linuxserver/mods:universal-wait-for-internet"
 
 - name: Wait for container to start
   ansible.builtin.wait_for:

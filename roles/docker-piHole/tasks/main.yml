@@ -32,17 +32,6 @@
   notify:
     - restart SWAG
 
-- name: Fix configs for the piHOLE
-  ansible.builtin.lineinfile:
-    # backup: true
-    state: present
-    path: "{{ docker_proxy_config_storage }}/pihole.subdomain.conf"
-    regexp: '^    server_name pihole.\*;'
-    line: '    server_name {{docker_pihole_virtual_hostname}}.*;'
-    backrefs: yes
-  notify:
-    - restart SWAG
-
 - name: Recreate pihole container
   community.docker.docker_container:
     name: pihole

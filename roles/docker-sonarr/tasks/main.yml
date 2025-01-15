@@ -15,13 +15,52 @@
     path: "{{ docker_sonarr_storage }}{{ item }}"
     state: directory
   with_items:
-    - downloads
     - config
+
+- name: 🛑 Stop Sonarr container
+  community.docker.docker_container:
+    name: sonarr
+    state: stopped
+  tags:
+    - sonarr
+
+- name: 🔥 Remove Sonarr container
+  community.docker.docker_container:
+    name: sonarr
+    state: absent
+  tags:
+    - sonarr
+
+- name: 📺 Create NFS mount TV
+  community.docker.docker_volume:
+    name: nfs-tv
+    state: present
+    driver: local
+    recreate: options-changed
+    driver_options:
+      type: nfs
+      o: "addr=10.1.1.7,rw"
+      device: :/mnt/Dedicated/Storage/TV/
+
+- name: Create NFS mount downloads
+  community.docker.docker_volume:
+    name: arr-downloads
+    state: present
+    driver: local
+    recreate: options-changed
+    driver_options:
+      type: nfs
+      o: "addr=10.1.1.5,rw"
+      device: :/volume2/ssd.docker/torrents/downloads/complete/
+
+- name: Remove Old Download
+  community.docker.docker_volume:
+    name: sonarr-downloads
+    state: absent
 
 - name: Recreate Sonarr container
   community.docker.docker_container:
     name: sonarr
-    # image: linuxserver/sonarr
     image: lscr.io/linuxserver/sonarr:latest
     state: started
     restart_policy: unless-stopped
@@ -32,10 +71,9 @@
       - '8989'
     volumes:
       - /etc/localtime:/ect/localtime:ro
-      - "{{ docker_sonarr_storage }}/downloads:/downloads"
+      - arr-downloads:/downloads
+      - "nfs-tv:/tv"
       - "{{ docker_sonarr_storage }}/config:/config"
-      - "{{ docker_sonarr_storage_tv }}:/tv/"
-      # - /mnt/storage/TV/:/tv/
     networks_cli_compatible: false
     networks:
       - name: theways
