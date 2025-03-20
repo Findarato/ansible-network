@@ -1,0 +1,4 @@
+---
+# defaults file for roles/docker-gatus
+docker_storage_path: "/docker/containers"
+docker_xmrig_proxy_storage: "{{ docker_storage_path }}/xmrig_proxy/"

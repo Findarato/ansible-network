@@ -1,9 +1,4 @@
 ---
-- name: Install Python tools for docker
-  pip:
-    name: docker
-    state: latest
-
 - name: Grow the Ways
   community.docker.docker_network:
     name: theways
@@ -31,6 +26,8 @@
       - "80:80/tcp"
       - "81:81/tcp"
       - "443:443/tcp"
+      - "8080:8080/tcp"
+      - "3333:3333/tcp"
     volumes:
       - "{{docker_proxy_storage}}/data:/data"
       - "{{docker_proxy_storage}}/letsencrypt:/etc/letsencrypt"

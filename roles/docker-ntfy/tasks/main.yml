@@ -1,12 +1,6 @@
 ---
 # tasks file for roles/docker-ntfy
 
-- name: Install Python tools for docker
-  pip:
-    name: docker
-    state: latest
-  tags: pip
-
 - name: Grow the Ways
   community.docker.docker_network:
     name: theways

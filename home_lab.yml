@@ -29,36 +29,39 @@
     #   tags: [ semaphore, docker-semaphore ]
     - role: docker-dashy
       tags: [ dashy ]
-    - role: docker-homepage
-      tags: [ homepage ]
+    # - role: docker-homepage
+    #   tags: [ homepage ]
     # - role: docker-audiobookshelf
     #   tags: [ audiobookshelf ]
     - role: docker-speedtest-tracker
       tags: [ speedtest-tracker ]
-    - role: docker-apt-cacher-ng
-      tags: [ apt-cacher-ng ]
+    # - role: docker-apt-cacher-ng
+    #   tags: [ apt-cacher-ng ]
     - role: docker-piHole
       tags: [ pihole ]
-    # # - role: docker-changedetection
-    # #   tags: [ changedetection ]
-    - role: docker-discountbandit
-      tags: [ discountbandit ]
+    # - role: docker-changedetection
+    #   tags: [ changedetection ]
+    # - role: docker-discountbandit
+    #   tags: [ discountbandit ]
     # - docker-gatus
-    # - docker-unifi
-    # - docker-uptime-kuma
-    # - docker-smokeping
-    # - role: docker-prowlarr
-    #   tags: [ prowlarr, arr]
-    # - role: docker-overseerr
-    #   tags: [ overseerr, arr]
-    # - role: docker-sonarr
-    #   tags: [ sonarr,arr ]
-    # - role: docker-radarr
-    #   tags: [ radarr,arr ]
+    - role: docker-unifi
+      tags: [ unifi]
+    - role: docker-uptime-kuma
+      tags: [ uptime-kuma, monitoring]
+    - role: docker-smokeping
+      tags: [ smokeping, monitoring]
+    - role: docker-prowlarr
+      tags: [ prowlarr, arr]
+    - role: docker-overseerr
+      tags: [ overseerr, arr]
+    - role: docker-sonarr
+      tags: [ sonarr,arr ]
+    - role: docker-radarr
+      tags: [ radarr,arr ]
     - role: docker-lidarr
       tags: [ lidarr,arr ]
-    # - docker-vaultwarden
-    # - docker-grafana
+    - docker-vaultwarden
+    - docker-grafana
     # - docker-syncthing
     # - docker-minecraft
     - role: docker-swag

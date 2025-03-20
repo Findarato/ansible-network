@@ -1,4 +1,6 @@
 ---
+# handlers file for roles/docker-gatus
+
 - name: Restart firewalld
   service:
     name: firewalld
@@ -14,3 +16,5 @@
     name: swag
     state: started
     restart: true
+
+...

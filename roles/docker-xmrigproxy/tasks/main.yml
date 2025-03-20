@@ -1,0 +1,57 @@
+---
+# tasks file for roles/docker-ntfy
+
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: theways
+
+- name: Create Docker paths
+  file:
+    path: "{{ docker_xmrig_proxy_storage }}{{ item }}"
+    state: directory
+    mode: "0775"
+  with_items:
+    - data
+  tags:
+    - xmrig_proxy
+
+- name: Copy config file
+  ansible.builtin.copy:
+    src: config.json
+    dest: "{{ docker_xmrig_proxy_storage }}/data/config.json"
+
+- name: Recreate xmrig-proxy container
+  community.docker.docker_container:
+    name: xmrig-proxy
+    hostname: xmrig-proxy
+    image: toomas633/xmrig-proxy:latest
+    # image: xmrig/xmrig-proxy
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    exposed_ports:
+      - "80/tcp"
+      - "8080/tcp"
+      - "3333/tcp"
+    env:
+      POOL_URL: gulf.moneroocean.stream:10512
+      USER: 89JanVx7TAvMGRTvCe2UvdGnxrdNmwW4jNbfYgzhS6cMLKBFnsiFJMwXWzNuoQMDQB6UtPm8QzA2w4wczVgVGZqQ7JrGfri
+      PASS: proxy
+    dns_servers:
+      - 1.1.1.1
+      - 1.0.0.1
+    volumes:
+      - "{{ docker_xmrig_proxy_storage }}/data/config.json:/xmrig-proxy/config.json"
+      - /etc/localtime:/etc/localtime:ro
+    networks_cli_compatible: false
+    networks:
+      - name: theways
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
+  tags:
+    - xmrig_proxy
+...
+
+

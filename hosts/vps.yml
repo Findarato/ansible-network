@@ -3,4 +3,5 @@ all:
   children:
     vps:
       hosts:
-        manage.mcharryville.space: #
+        # emonds-field.mcharryville.space: #
+        two-rivers.mcharryville.space: #

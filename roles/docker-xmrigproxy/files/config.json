@@ -1,0 +1,27 @@
+{
+    "coin": "xmr",
+    "background": false,
+    "colors": true,
+    "retries": 5,
+    "retry-pause": 5,
+    "donate-level": 0,
+    "syslog": false,
+    "log-file": null,
+    "access-log-file": null,
+    "verbose": false,
+    "pools": [
+        {
+            "url": "gulf.moneroocean.stream:10512",
+            "user": "89JanVx7TAvMGRTvCe2UvdGnxrdNmwW4jNbfYgzhS6cMLKBFnsiFJMwXWzNuoQMDQB6UtPm8QzA2w4wczVgVGZqQ7JrGfri",
+            "pass": ""
+        }
+    ],
+    "api": {},
+    "http": {
+        "enabled": true,
+        "host": "127.0.0.1",
+        "port": 12345,
+        "access-token": null,
+        "restricted": true
+    }
+}

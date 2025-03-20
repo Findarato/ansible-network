@@ -1,34 +1,39 @@
 ---
-# - hosts: vps
-#   become: true
-#   remote_user: root
-#   roles:
-#     # - basic-server
-#     # - zsh
-#     # - geerlingguy.pip
-#     - geerlingguy.docker
-#     - role: docker-common
-#       tags: [setup, docker-common]
-#   vars:
-#     - ansible_python_interpreter: "/usr/bin/python3"
-#   vars_files:
-#     - vars/main.yml
-#     - vars/main.vault.yml
-#     - vars/setup.vault
-
 - hosts: vps
   become: true
+  gather_facts: true
   remote_user: root
+  pre_tasks:
+    - name: install pip
+      package:
+        name: "{{ package_name }}"
+        state: latest
+      loop:
+        - python3-pip
+        - python3-docker
+      loop_control:
+        loop_var: 'package_name'
+
   roles:
+    # - geerlingguy.pip
+    # - geerlingguy.docker
     # - role: docker-tailscale
-    # - role: docker-npm
-      # aditional_network: tailscale-ha
-    # - docker-uptime-kuma
+    - role: docker-npm
+      tags: [ npm ]
+    - docker-uptime-kuma
     - docker-ntfy
     - docker-website
+    - role: docker-xmrigproxy
+      tags: [ xmrigproxy ]
+    - role: artis3n.tailscale
+      tags: [ tailscale ]
+      vars:
+        tailscale_up_skip: true
+        # tailscale_tags: "vps"
+        # tailscale_authkey: "{{ vault_tailscale_auth_key }}"
   vars:
-    - ansible_python_interpreter: "/usr/bin/python3"
-    - using_swag: false
+    ansible_python_interpreter: "/usr/bin/python3"
+    using_swag: false
   vars_files:
     - vars/main.yml
     - vars/main.vault.yml

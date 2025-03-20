@@ -58,6 +58,8 @@
       DISPLAY_TIMEZONE: "America/Chicago"
       SPEEDTEST_SERVERS: "64413,64415,53398"
       PRUNE_RESULTS_OLDER_THAN: "730"
+    dns_search_domains: "{{ dns_domains }}"
+    dns_servers: "{{ dns_servers }}"
   tags:
     - speedtest-tracker
 

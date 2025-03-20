@@ -1,16 +1,12 @@
 ---
 # tasks file for docker-dns
-- name: Install Python tools for docker
-  pip:
-    name: docker
-    state: latest
 
 - name: Grow the Ways
   community.docker.docker_network:
     name: theways
 
 - name: Create Docker paths
-  file:
+  ansible.builtin.file:
     path: "{{ docker_uptime_kuma_storage }}/{{ item }}"
     state: directory
     mode: 0775
@@ -39,6 +35,9 @@
     log_options: "{{ docker_log_options}}"
     env:
       TZ: America/Chicago
+    dns_search_domains: "{{ dns_domains }}"
+    dns_servers: "{{ dns_servers }}"
+
   tags:
     - uptime-kuma
 

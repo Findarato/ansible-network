@@ -52,6 +52,8 @@ docker_website_storage: "{{ docker_storage_path }}/website/"
 docker_changedetection_storage: "{{ docker_storage_path }}/changedetection/"
 
 
+docker_xmrig_proxy_storage: "{{ docker_storage_path }}/xmrig_proxy/"
+
 # semaphore
 
 #speed test tracker
@@ -65,7 +67,7 @@ docker_semaphore_db_host: 10.1.1.5
 docker_semaphore_db_pass: "{{ vault_docker_semaphore_db_pass }}"
 
 # DNS stuff
-dns_servers: ['10.1.1.1','10.1.1.6']
+dns_servers: ['10.1.1.1','10.1.1.21','10.1.1.6']
 dns_domains: mcharryville.space
 
 smokeping_dns_domains: "{{ dns_domains }}"

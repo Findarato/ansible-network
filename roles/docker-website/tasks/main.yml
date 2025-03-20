@@ -1,12 +1,5 @@
 ---
 # tasks file for docker-transmission
-
-- name: Install Python tools for docker
-  pip:
-    name: docker
-    state: latest
-
-
 - name: Grow the Ways
   community.docker.docker_network:
     name: "{{ docker_network }}"
@@ -42,6 +35,9 @@
       PGID: "1000"
       PUID: "1000"
       TZ: "America/Chicago"
+    dns_servers:
+      - 1.1.1.1
+      - 1.0.0.1
     networks_cli_compatible: false
     networks:
       - name: theways
