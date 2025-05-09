@@ -64,10 +64,10 @@
     dns_servers: "{{ dns_servers }}"
     env:
       TZ: "America/Chicago"
-      WEBPASSWORD: "{{ vault_pohole_webserver_password }}" # <= v6
+      WEBPASSWORD: "{{ vault_pihole_webserver_password }}" # <= v6
       VIRTUAL_HOST: "{{ docker_pihole_virtual_host }}"
       hostname: "{{docker_pihole_virtual_hostname}}"
-      FTLCONF_webserver_api_password: "{{ vault_pohole_webserver_password }}" # >= V6
+      FTLCONF_webserver_api_password: "{{ vault_pihole_webserver_password }}" # >= V6
       FTLCONF_dns_upstreams: "10.1.1.1" # >= V6
       FTLCONF_dns_listeningMode: 'all' # >= V6
       PIHOLE_UID: '1000' # >= V6

@@ -1,4 +1,3 @@
 ---
-# vars file for docker-grafana
+# vars file for docker-unifi
 
-docker_unifi_storage: "/docker/containers/unifi/"

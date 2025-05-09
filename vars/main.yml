@@ -54,6 +54,10 @@ docker_changedetection_storage: "{{ docker_storage_path }}/changedetection/"
 
 docker_xmrig_proxy_storage: "{{ docker_storage_path }}/xmrig_proxy/"
 
+# Unifi Storage
+docker_unifi_storage: "{{ docker_storage_path }}/unifi/"
+docker_unifi_version: "9.0.114"
+
 # semaphore
 
 #speed test tracker

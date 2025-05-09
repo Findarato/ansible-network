@@ -29,10 +29,10 @@
     #   tags: [ semaphore, docker-semaphore ]
     - role: docker-dashy
       tags: [ dashy ]
-    # - role: docker-homepage
-    #   tags: [ homepage ]
-    # - role: docker-audiobookshelf
-    #   tags: [ audiobookshelf ]
+    - role: docker-homepage
+      tags: [ homepage ]
+    - role: docker-audiobookshelf
+      tags: [ audiobookshelf ]
     - role: docker-speedtest-tracker
       tags: [ speedtest-tracker ]
     # - role: docker-apt-cacher-ng
@@ -45,15 +45,15 @@
     #   tags: [ discountbandit ]
     # - docker-gatus
     - role: docker-unifi
-      tags: [ unifi]
+      tags: [ unifi ]
     - role: docker-uptime-kuma
-      tags: [ uptime-kuma, monitoring]
+      tags: [ uptime-kuma, monitoring ]
     - role: docker-smokeping
-      tags: [ smokeping, monitoring]
+      tags: [ smokeping, monitoring ]
     - role: docker-prowlarr
-      tags: [ prowlarr, arr]
+      tags: [ prowlarr, arr ]
     - role: docker-overseerr
-      tags: [ overseerr, arr]
+      tags: [ overseerr, arr ]
     - role: docker-sonarr
       tags: [ sonarr,arr ]
     - role: docker-radarr
