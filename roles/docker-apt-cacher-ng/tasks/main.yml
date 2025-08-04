@@ -64,6 +64,8 @@
     networks_cli_compatible: false
     networks:
       - name: theways
+    dns_search_domains: "{{ dns_domains }}"
+    dns_servers: "{{ dns_servers }}"
     env:
       TZ: "America/Chicago"
       PUID: '1000'

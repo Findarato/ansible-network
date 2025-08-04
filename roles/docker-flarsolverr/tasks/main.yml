@@ -1,0 +1,49 @@
+---
+# tasks file for docker-sonarr
+
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: theways
+
+- name: Recreate flaresolverr container
+  community.docker.docker_container:
+    name: flaresolverr
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    exposed_ports:
+      - '8191'
+    volumes:
+      - /etc/localtime:/ect/localtime:ro
+    networks_cli_compatible: false
+    networks:
+      - name: theways
+    env:
+      LOG_LEVEL: info
+  tags:
+    - prowlarr
+
+# - name: Download SWAG Config
+#   ansible.builtin.get_url:
+#     url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/flaresolverr.subdomain.conf.sample
+#     dest: "{{ docker_proxy_config_storage }}/flaresolverr.subdomain.conf"
+#     mode: '0440'
+#   notify:
+#     - Restart SWAG
+
+- name: Download SWAG Config - beta configs
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/Findarato/reverse-proxy-confs/flaresolverr/flaresolverr.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/flaresolverr.subdomain.conf"
+    mode: '0440'
+  notify:
+    - Restart SWAG
+

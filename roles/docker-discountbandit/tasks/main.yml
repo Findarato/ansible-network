@@ -60,14 +60,13 @@
     networks_cli_compatible: false
     networks:
       - name: theways
+    dns_search_domains: "{{ dns_domains }}"
+    dns_servers: "{{ dns_servers }}"
     container_default_behavior: no_defaults
     log_driver: "{{ docker_log_driver }}"
     log_options: "{{ docker_log_options}}"
   tags:
     - discountbandit
-
-
-
 
 - name: Download SWAG Config
   ansible.builtin.get_url:

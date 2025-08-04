@@ -23,27 +23,23 @@
   become: true
   remote_user: ansible
   roles:
-    # - role: docker-semaphore
-    #   tags: [ semaphore, docker-semaphore ]
-    # - role: findarato.docker-semaphore
-    #   tags: [ semaphore, docker-semaphore ]
-    - role: docker-dashy
-      tags: [ dashy ]
+    # - role: docker-dashy
+    #   tags: [ dashy ]
     - role: docker-homepage
       tags: [ homepage ]
     - role: docker-audiobookshelf
       tags: [ audiobookshelf ]
     - role: docker-speedtest-tracker
       tags: [ speedtest-tracker ]
-    # - role: docker-apt-cacher-ng
-    #   tags: [ apt-cacher-ng ]
+    - role: docker-apt-cacher-ng
+      tags: [ apt-cacher-ng ]
     - role: docker-piHole
       tags: [ pihole ]
-    # - role: docker-changedetection
-    #   tags: [ changedetection ]
-    # - role: docker-discountbandit
-    #   tags: [ discountbandit ]
-    # - docker-gatus
+    - role: docker-changedetection
+      tags: [ changedetection ]
+    - role: docker-discountbandit
+      tags: [ discountbandit ]
+    - docker-gatus
     - role: docker-unifi
       tags: [ unifi ]
     - role: docker-uptime-kuma
@@ -60,8 +56,10 @@
       tags: [ radarr,arr ]
     - role: docker-lidarr
       tags: [ lidarr,arr ]
-    - docker-vaultwarden
-    - docker-grafana
+    - role: docker-vaultwarden
+      tags: [ vaultwarden, docker-vaultwarden ]
+    - role: docker-grafana
+      tags: [ grafana, docker-grafana ]
     # - docker-syncthing
     # - docker-minecraft
     - role: docker-swag
@@ -73,21 +71,21 @@
     - vars/main.vault.yml
     - vars/main.yml
 
-# - hosts: torrents
-#   become: true
-#   remote_user: ansible
-#   roles:
-#     - role: docker-swag
-#       tags: [ setup, proxy, docker-swag ]
-#     - role: docker-deluge
-#       tags: [ deluge, docker-deluge]
-#   tags:
-#     - torrents
-#   vars:
-#     ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
-#   vars_files:
-#     - vars/main.vault.yml
-#     - vars/main.yml
+- hosts: torrents
+  become: true
+  remote_user: ansible
+  roles:
+    - role: docker-swag
+      tags: [ setup, proxy, docker-swag ]
+    - role: docker-deluge
+      tags: [ deluge, docker-deluge]
+  tags:
+    - torrents
+  vars:
+    ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
+  vars_files:
+    - vars/main.vault.yml
+    - vars/main.yml
 
 # - hosts: v-docker04.mcharryville.space
 #   become: true

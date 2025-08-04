@@ -9,7 +9,7 @@
 
 - name: Grow the Ways
   community.docker.docker_network:
-    name: "{{ docker_network }}"
+    name: "ipv6proxy"
 
 - name: Create Docker paths
   file:
@@ -43,12 +43,9 @@
       PGID: "1000"
       PUID: "1000"
       TZ: "America/Chicago"
-      HOMEPAGE_ALLOWED_HOSTS: homepage.mcharryville.space
     networks_cli_compatible: false
     networks:
       - name: theways
-    dns_search_domains: "{{ dns_domains }}"
-    dns_servers: "{{ dns_servers }}"
     container_default_behavior: no_defaults
     log_driver: "{{ docker_log_driver }}"
     log_options: "{{ docker_log_options}}"
@@ -57,7 +54,8 @@
 
 - name: Download SWAG Config
   ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/homepage.subdomain.conf.sample
+    # url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/homepage.subdomain.conf.sample
+    url: https://raw.githubusercontent.com/Findarato/reverse-proxy-confs/homepage/homepage.subdomain.conf.sample
     dest: "{{ docker_proxy_config_storage }}/homepage.subdomain.conf"
     mode: '0440'
   notify:
