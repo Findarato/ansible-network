@@ -39,7 +39,8 @@
       tags: [ changedetection ]
     - role: docker-discountbandit
       tags: [ discountbandit ]
-    - docker-gatus
+    - role: docker-gatus
+      tags: [ gatus ]
     - role: docker-unifi
       tags: [ unifi ]
     - role: docker-uptime-kuma
@@ -78,7 +79,7 @@
     - role: docker-swag
       tags: [ setup, proxy, docker-swag ]
     - role: docker-deluge
-      tags: [ deluge, docker-deluge]
+      tags: [ deluge, docker-deluge ]
   tags:
     - torrents
   vars:
@@ -87,16 +88,16 @@
     - vars/main.vault.yml
     - vars/main.yml
 
-# - hosts: v-docker04.mcharryville.space
-#   become: true
-#   remote_user: root
-#   roles:
-#     - role: docker-minecraft
-#       tags: [ minecraft]
-#   tags:
-#     - minecraft
-#   vars:
-#     ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
-#   vars_files:
-#     - vars/main.vault.yml
-#     - vars/main.yml
+- hosts: v-docker04.mcharryville.space
+  become: true
+  remote_user: root
+  roles:
+    - role: docker-minecraft
+      tags: [ minecraft]
+  tags:
+    - minecraft
+  vars:
+    ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
+  vars_files:
+    - vars/main.vault.yml
+    - vars/main.yml

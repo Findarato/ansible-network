@@ -1,23 +1,23 @@
 ---
-# - name: Setup the servers basic
-#   hosts: all
-#   become: true
-#   remote_user: joe
-#   roles:
-#     # - geerlingguy.docker
-#     - basic-server
-#     # - zsh
-#     # - geerlingguy.pip
-#     # - role: docker-common
-#     #   tags: [setup, docker-common]
-#   vars_files:
-#     - vars/main.vault.yml
-#     - vars/setup.vault.yml
-#     - vars/main.yml
-#   vars:
-#     ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
-#   tags:
-#     setup
+- name: Setup the servers basic
+  hosts: all
+  become: true
+  remote_user: joe
+  roles:
+    # - geerlingguy.docker
+    - basic-server
+    # - zsh
+    # - geerlingguy.pip
+    # - role: docker-common
+    #   tags: [setup, docker-common]
+  vars_files:
+    - vars/main.vault.yml
+    - vars/setup.vault.yml
+    - vars/main.yml
+  vars:
+    ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
+  tags:
+    setup
 
 - hosts: rk1-cluster02.mcharryville.space
   become: true
@@ -31,8 +31,8 @@
     #   tags: [ semaphore, docker-semaphore ]
     # - role: docker-dashy
     #   tags: [ dashy ]
-    # - role: docker-homepage
-    #   tags: [ homepage ]
+    - role: docker-homepage
+      tags: [ homepage ]
     # - role: docker-audiobookshelf
     #   tags: [ audiobookshelf ]
     # - role: docker-speedtest-tracker
@@ -67,6 +67,9 @@
   vars:
     ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
     using_swag: true
+  tags:
+    - rk1
+    - deploy
   vars_files:
     - vars/main.vault.yml
     - vars/main.yml

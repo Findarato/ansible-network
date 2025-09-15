@@ -1,7 +1,7 @@
 ---
 # run a bunch of things with things
 
-# - ansible.builtin.include_tasks: "{{ansible_os_family}}/main.yml"
+- ansible.builtin.include_tasks: "{{ansible_os_family}}/main.yml"
 
 - ansible.builtin.include_tasks: users.yml
   tags:
@@ -10,6 +10,11 @@
 - name: Install Python Packages
   ansible.builtin.pip:
     state: present
-    name: passlib
+    name: "{{ item }}"
     extra_args: --user
+  with_items:
+    - passlib
+    - packaging
+
+
 

@@ -1,43 +1,6 @@
 ---
 all:
-  vars:
-    ansible_python_interpreter: "/usr/bin/python3"
   children:
-    blink:
-      hosts:
-        rpi-docker01.mcharryville.space:
-          ansible_host: rpi-docker01.mcharryville.space #raspberry pi os
-          serial: BS036976-3.0
-        rpi-docker02.mcharryville.space:
-          ansible_host: rpi-docker01.mcharryville.space #raspberry pi os
-          serial: BS036976-3.0
-        rpi-docker03.mcharryville.space:
-          ansible_host: rpi-docker01.mcharryville.space #raspberry pi os
-          serial: BS036976-3.0
-    rpi:
-      hosts:
-        rpi-docker01.mcharryville.space: #raspberry pi os
-        rpi-docker03.mcharryville.space: #raspberry pi os
-      vars:
-        ansible_user: pi
-        ansible_python_interpreter: "/usr/bin/python3"
-    new_rpi:
-      hosts:
-        rpi-docker02.mcharryville.space: #raspberry pi os
-      vars:
-        ansible_user: joe
-        ansible_python_interpreter: "/usr/bin/python3"
-    piGetting:
-      hosts:
-        rpi-docker01.mcharryville.space: #raspberry pi os
-        rpi-docker02.mcharryville.space: #raspberry pi os
-        rpi-docker03.mcharryville.space: #raspberry pi os
-    piBlocks:
-      hosts:
-        rpi-docker02.mcharryville.space: #raspberry pi os
-        rpi-docker03.mcharryville.space: #raspberry pi os
-        pihole.mcharryville.space: #RHEL 8.8
-        10.1.1.6: #RHEL 8.8
     getting:
       hosts:
         v-docker03.mcharryville.space: # Rocky Linux 8
@@ -46,7 +9,9 @@ all:
         v-docker03.mcharryville.space: # Rocky Linux 8
     minecraft:
       hosts:
-        v-docker04.mcharryville.space: # Debian 12 Container
+        v-docker04.mcharryville.space: # Rocky Linux 10
+          vars:
+            proxmox: true
     stats:
       hosts:
         v-docker03.mcharryville.space: # Rocky Linux 8
@@ -54,3 +19,5 @@ all:
       hosts:
         # v-torrents.mcharryville.space: #
         v-torrents.mcharryville.space: #
+    vars:
+      ansible_python_interpreter: "/usr/bin/python3"

@@ -4,7 +4,7 @@
     name: epel-release
     state: present
   when:
-    - ansible_distribution == 'CentOS'
+    - ansible_os_family == 'RedHat'
 
 - name: Remove Packages
   package:
@@ -25,6 +25,20 @@
     - nfs-utils
     - rsync
     - tmux
-    - python3-passlib
     - stow
+    - python3-packaging
+    - python3-pip
+    - open-vm-tools
   ignore_errors: true
+
+- name: Start open-vm-tools
+  service:
+    name: vmtoolsd.service
+    state: started
+    enabled: true
+
+- name: Start vgauthd.service
+  service:
+    name: vgauthd.service
+    state: started
+    enabled: true
