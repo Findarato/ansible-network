@@ -1,20 +1,23 @@
 ---
 # run a bunch of things with things
 
+# - name: Install Python Packages
+#   ansible.builtin.pip:
+#     state: present
+#     name: "{{ item }}"
+#     extra_args: --user
+#   with_items:
+#     - passlib
+#     - packaging
+#     - python3-dnf
+
 - ansible.builtin.include_tasks: "{{ansible_os_family}}/main.yml"
 
 - ansible.builtin.include_tasks: users.yml
   tags:
     - users
 
-- name: Install Python Packages
-  ansible.builtin.pip:
-    state: present
-    name: "{{ item }}"
-    extra_args: --user
-  with_items:
-    - passlib
-    - packaging
+
 
 
 

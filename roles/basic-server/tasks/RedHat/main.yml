@@ -29,6 +29,7 @@
     - python3-packaging
     - python3-pip
     - open-vm-tools
+    - gpg
   ignore_errors: true
 
 - name: Start open-vm-tools

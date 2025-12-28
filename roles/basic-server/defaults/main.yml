@@ -6,7 +6,7 @@ sudo_group: wheel
 
 ansible_password: "{{ vault_ansible_user_password }}"
 ansible_become_pass: "{{ vault_ansible_user_password }}"
-ansible_ssh_pass: "{{ vault_ansible_password }}"
+ansible_ssh_pass: "{{ vault_ansible_user_password }}"
 ## Some translations to make sure vault passwords are not required in the playbook
 
 # Password for the remote user

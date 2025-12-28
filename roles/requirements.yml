@@ -8,11 +8,7 @@ roles:
   - name: geerlingguy.docker
     version: "7.0.1"
   - name: geerlingguy.pip
-  # - name: acimadamore.raspberry_pi
-  # - name: gregnrobinson.blinkstick
-  #   src: https://github.com/gregnrobinson/blinkstick-ansible.git
-  # - name: findarato.blinkstick
-  #   src: https://github.com/Findarato/blinkstick-ansible.git
+  - name: artis3n.tailscale
   - name: findarato.docker-semaphore
     src: https://github.com/Findarato/docker-semaphore.git
 

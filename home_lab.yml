@@ -2,20 +2,17 @@
 # - name: Setup the servers basic
 #   hosts: all
 #   become: true
-#   remote_user: joe
+#   remote_user: ansible
 #   roles:
-#     # - geerlingguy.docker
 #     - basic-server
 #     # - zsh
 #     # - geerlingguy.pip
-#     # - role: docker-common
-#     #   tags: [setup, docker-common]
+#     - role: docker-common
+#       tags: [setup, docker-common]
 #   vars_files:
 #     - vars/main.vault.yml
 #     - vars/setup.vault.yml
 #     - vars/main.yml
-#   vars:
-#     ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
 #   tags:
 #     setup
 
@@ -25,38 +22,27 @@
   roles:
     # - role: docker-dashy
     #   tags: [ dashy ]
-    - role: docker-homepage
-      tags: [ homepage ]
+    # - role: docker-homepage
+    #   tags: [ homepage ]
     - role: docker-audiobookshelf
       tags: [ audiobookshelf ]
-    - role: docker-speedtest-tracker
-      tags: [ speedtest-tracker ]
-    - role: docker-apt-cacher-ng
-      tags: [ apt-cacher-ng ]
+
+    # - role: docker-apt-cacher-ng
+    #   tags: [ apt-cacher-ng ]
     - role: docker-piHole
       tags: [ pihole ]
-    - role: docker-changedetection
-      tags: [ changedetection ]
-    - role: docker-discountbandit
-      tags: [ discountbandit ]
+    # - role: docker-changedetection
+    #   tags: [ changedetection ]
+    # - role: docker-discountbandit
+    #   tags: [ discountbandit ]
     - role: docker-gatus
       tags: [ gatus ]
     - role: docker-unifi
       tags: [ unifi ]
     - role: docker-uptime-kuma
       tags: [ uptime-kuma, monitoring ]
-    - role: docker-smokeping
-      tags: [ smokeping, monitoring ]
-    - role: docker-prowlarr
-      tags: [ prowlarr, arr ]
-    - role: docker-overseerr
-      tags: [ overseerr, arr ]
-    - role: docker-sonarr
-      tags: [ sonarr,arr ]
-    - role: docker-radarr
-      tags: [ radarr,arr ]
-    - role: docker-lidarr
-      tags: [ lidarr,arr ]
+    # - role: docker-smokeping
+    #   tags: [ smokeping, monitoring ]
     - role: docker-vaultwarden
       tags: [ vaultwarden, docker-vaultwarden ]
     - role: docker-grafana
@@ -72,32 +58,66 @@
     - vars/main.vault.yml
     - vars/main.yml
 
-- hosts: torrents
+- hosts: pirate
   become: true
   remote_user: ansible
   roles:
     - role: docker-swag
-      tags: [ setup, proxy, docker-swag ]
-    - role: docker-deluge
-      tags: [ deluge, docker-deluge ]
-  tags:
-    - torrents
+      tags: [ setup, proxy ]
+    - role: arr/docker-deluge
+      tags: [ deluge, torrent, arr ]
+    - role: arr/docker-prowlarr
+      tags: [ prowlarr, arr ]
+    - role: arr/docker-overseerr
+      tags: [ overseerr, arr ]
+    - role: arr/docker-sonarr
+      tags: [ sonarr,arr ]
+    - role: arr/docker-radarr
+      tags: [ radarr,arr ]
+    - role: arr/docker-lidarr
+      tags: [ lidarr,arr ]
+  post_tasks:
+    - name: clean up temp ansible
+      ansible.builtin.file:
+        path: /tmp/ansible
+        state: absent
   vars:
-    ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
+    - ansible_python_interpreter: "/usr/bin/python3"
   vars_files:
-    - vars/main.vault.yml
     - vars/main.yml
+    - vars/main.vault.yml
 
-- hosts: v-docker04.mcharryville.space
-  become: true
-  remote_user: root
-  roles:
-    - role: docker-minecraft
-      tags: [ minecraft]
-  tags:
-    - minecraft
-  vars:
-    ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
-  vars_files:
-    - vars/main.vault.yml
-    - vars/main.yml
+# - hosts: torrents
+#   become: true
+#   remote_user: ansible
+#   roles:
+#     - role: docker-swag
+#       tags: [ setup, proxy, docker-swag ]
+#     - role: docker-deluge
+#       tags: [ deluge, docker-deluge ]
+#   tags:
+#     - torrents
+#   vars:
+#     ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
+#   vars_files:
+#     - vars/main.vault.yml
+#     - vars/main.yml
+
+# - hosts: docker-cluster
+#   become: true
+#   remote_user: ansible
+#   roles:
+#     - geerlingguy.docker
+#     - role: docker-swag
+#       tags: [ setup, proxy, docker-swag ]
+#     - role: docker-speedtest-tracker
+#       tags: [ speedtest-tracker ]
+#     - role: docker-unifi
+#       tags: [ unifi ]
+#     - role: docker-uptime-kuma
+#       tags: [ uptime-kuma, monitoring ]
+#   tags:
+#     - v-docker04
+#   vars_files:
+#     - vars/main.vault.yml
+#     - vars/main.yml

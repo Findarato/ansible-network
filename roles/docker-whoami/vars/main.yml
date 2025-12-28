@@ -1,0 +1,7 @@
+---
+# vars file for docker-whoami
+
+docker_transmission_blacklist: "http://john.bitsurge.net/public/biglist.p2p.gz"
+docker_transmission_blocklist_enabled: true
+docker_transmission_folders:
+    - download_dir: "/downloads/complete"

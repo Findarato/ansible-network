@@ -2,17 +2,20 @@
 default:
     just --list
 
+install_roles:
+    ansible-galaxy install -r roles/requirements.yml -p roles/
+
 update:
     distrobox-enter -H ansible -- ansible-playbook home_lab.yml -i hosts/production.yml
 
 update_all:
     distrobox-enter -H ansible -- ansible-playbook home_lab.yml -i hosts/production.yml
 
-update_homepage:
-    distrobox-enter -H ansible -- ansible-playbook home_lab.yml -i hosts/production.yml --tags homepage
+deploy tag:
+    distrobox-enter -H ansible -- ansible-playbook home_lab.yml -i hosts/production.yml --tags {{tag}}
 
-update_torrents:
-    distrobox-enter -H ansible -- ansible-playbook home_lab.yml -i hosts/production.yml --tags torrents
+deploy_vps_all:
+    distrobox-enter -H ansible -- ansible-playbook vps.yml -i hosts/vps.yml
 
-update_rk1:
-    distrobox-enter -H ansible -- ansible-playbook rk1.yml -i hosts/rk1.yml --tags homepage
+deploy_vps tag:
+    distrobox-enter -H ansible -- ansible-playbook vps.yml -i hosts/vps.yml --tags {{tag}}

@@ -7,6 +7,11 @@ all:
     watching:
       hosts:
         v-docker03.mcharryville.space: # Rocky Linux 8
+    docker-cluster:
+      hosts:
+        v-docker04.mcharryville.space: # Rocky Linux 10
+          vars:
+            proxmox: true
     minecraft:
       hosts:
         v-docker04.mcharryville.space: # Rocky Linux 10
@@ -19,5 +24,8 @@ all:
       hosts:
         # v-torrents.mcharryville.space: #
         v-torrents.mcharryville.space: #
-    vars:
-      ansible_python_interpreter: "/usr/bin/python3"
+        pirate.mcharryville.space: #
+          vars:
+            proxmox: true
+      vars:
+        ansible_python_interpreter: "/usr/bin/python3"

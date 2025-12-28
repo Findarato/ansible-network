@@ -1,10 +1,10 @@
 ---
 
-## Title: ansible-network/basic_server.yml
-## Description: Setup Server from scratch with Just my user
+## Title: ~/Documents/src/Ansible/ansible-network/roles/docker-whoami/tasks/main.yml
+## Description: Setup simeple whoami web server in docker
 ## Author: Joseph Harry <findarato@gmail.com>
 ## Copyright: Joseph Harry <findarato@gmail.com>
-## Date: 2025-12-08 10:11:35
+## Date: 2025-09-25 10:18:38
 ## 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -19,21 +19,29 @@
 ## 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-# Apply common configuration to all hosts
-- hosts: pirate.mcharryville.space
-  become: true
-  remote_user: joe
-  roles:
-    - basic-server
-    - ansible-update
-    - geerlingguy.pip
-    - geerlingguy.docker
-  vars:
-    ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
-    using_swag: true
-  vars_files:
-    - vars/main.vault.yml
-    - vars/main.yml
-    - vars/setup.vault.yml
-    - vars/setup.yml
+# tasks file for docker-transmission
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: "{{ docker_network }}"
 
+
+- name: Create and Update whoami Container
+  community.docker.docker_container:
+    name: whoami
+    image: traefik/whoami
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    dns_servers:
+      - 1.1.1.1
+      - 1.0.0.1
+    networks_cli_compatible: false
+    networks:
+      - name: theways
+    container_default_behavior: no_defaults
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
+  tags:
+    - whoami

@@ -13,24 +13,20 @@
         - python3-docker
       loop_control:
         loop_var: 'package_name'
-
   roles:
-    # - geerlingguy.pip
-    # - geerlingguy.docker
-    # - role: docker-tailscale
     - role: docker-npm
       tags: [ npm ]
     - docker-uptime-kuma
     - docker-ntfy
     - docker-website
+    - role: docker-whoami
+      tags: [ whoami ]
     - role: docker-xmrigproxy
       tags: [ xmrigproxy ]
-    - role: artis3n.tailscale
-      tags: [ tailscale ]
-      vars:
-        tailscale_up_skip: true
-        # tailscale_tags: "vps"
-        # tailscale_authkey: "{{ vault_tailscale_auth_key }}"
+    # - role: artis3n.tailscale
+    #   tags: [ tailscale ]
+    #   vars:
+    #     tailscale_up_skip: true
   vars:
     ansible_python_interpreter: "/usr/bin/python3"
     using_swag: false

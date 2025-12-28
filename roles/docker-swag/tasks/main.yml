@@ -1,22 +1,22 @@
 ---
-# - name: Install Python tools for docker
-#   pip:
-#     name: docker
-#     state: latest
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
 
-# - name: Grow the Ways
-#   community.docker.docker_network:
-#     name: theways
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: theways
 
-# - name: Create Docker paths
-#   file:
-#     path: "{{docker_proxy_storage}}/{{ item }}"
-#     state: directory
-#     mode: "0775"
-#     group: "1000"
-#     owner: "1000"
-#   with_items:
-#     - le/config
+- name: Create Docker paths
+  file:
+    path: "{{docker_proxy_storage}}/{{ item }}"
+    state: directory
+    mode: "0775"
+    group: "1000"
+    owner: "1000"
+  with_items:
+    - le/config
 
 - name: Create SWAG
   community.docker.docker_container:
