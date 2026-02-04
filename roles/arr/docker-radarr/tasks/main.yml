@@ -5,27 +5,38 @@
   pip:
     name: docker
     state: latest
+  tags:
+    - radarr
+    - arr
 
-- name: Grow the Ways
+- name: Private Arr network
   community.docker.docker_network:
-    name: theways
+    name: "{{ arr_network_name }}"
+    internal: true
+    labels:
+      arr: "true"
+  tags:
+    - radarr
+    - arr
 
 - name: Create Docker paths
   file:
-    path: "/docker/containers/radarr/{{ item }}"
+    path: "{{ docker_radarr_storage }}{{ item }}"
     state: directory
-    mode: "0775"
-    owner: "1000"
-    group: docker
   with_items:
     - config
+  tags:
+    - radarr
+    - arr
 
 - name: 🛑 Stop Radarr container
   community.docker.docker_container:
     name: radarr
+    image: "lscr.io/linuxserver/radarr:{{ radarr_version }}"
     state: stopped
   tags:
     - radarr
+    - arr
 
 - name: 🔥 Remove Radarr container
   community.docker.docker_container:
@@ -33,6 +44,7 @@
     state: absent
   tags:
     - radarr
+    - arr
 
 - name: 🎥 Create NFS mount movies
   community.docker.docker_volume:
@@ -41,14 +53,12 @@
     driver: local
     recreate: options-changed
     driver_options:
-      type: nfs
-      o: "addr=10.1.1.7,rw"
-      device: :/mnt/Dedicated/Storage/Movies/
-
-- name: Remove Old Download
-  community.docker.docker_volume:
-    name: radarr-downloads
-    state: absent
+      type: "{{ vault_arr_movies_mount.type }}"
+      o: "{{ vault_arr_movies_mount.opts }}"
+      device: "{{ vault_arr_movies_mount.device }}"
+  tags:
+    - radarr
+    - arr
 
 - name: Create NFS mount downloads
   community.docker.docker_volume:
@@ -57,21 +67,24 @@
     driver: local
     recreate: options-changed
     driver_options:
-      type: nfs
-      o: "addr=10.1.1.5,rw"
-      device: :/volume2/ssd.docker/torrents/downloads/complete/
+      type: "{{ vault_arr_downloads_mount.type }}"
+      o: "{{ vault_arr_downloads_mount.opts }}"
+      device: "{{ vault_arr_downloads_mount.device }}"
+  tags:
+    - radarr
+    - arr
 
 - name: Recreate Radarr container
   community.docker.docker_container:
     name: radarr
-    image: lscr.io/linuxserver/radarr
+    image: lscr.io/linuxserver/radarr:{{ radarr_version }}
     state: started
     restart_policy: unless-stopped
     recreate: yes
     restart: yes
     pull: true
-    exposed_ports:
-      - '7878'
+    # exposed_ports:
+    #   - '7878'
     volumes:
       - /etc/localtime:/ect/localtime:ro
       - arr-downloads:/downloads
@@ -81,7 +94,14 @@
     dns_servers: "{{ dns_servers }}"
     networks_cli_compatible: false
     networks:
-      - name: theways
+      - name: "{{ arr_network_name }}"
+        aliases:
+          - radarr.mcharryville.space
+          - radarr.arr.mcharryville.space
+          - radarr
+      - name: "{{ traefik_proxy_network }}"
+        aliases:
+          - radarr.mcharryville.space
     env:
       TZ: "America/Chicago"
       PUID: '1000'
@@ -89,14 +109,4 @@
       VERSION: latest
   tags:
     - radarr
-
-- name: Download SWAG Config
-  ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/radarr.subdomain.conf.sample
-    dest: "{{ docker_proxy_config_storage }}/radarr.subdomain.conf"
-    mode: '0440'
-  notify:
-    - Restart SWAG
-  tags:
-    - radarr
-    - SWAG
+    - arr

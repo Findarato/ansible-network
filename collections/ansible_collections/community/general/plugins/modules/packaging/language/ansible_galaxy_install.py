@@ -34,7 +34,7 @@ options:
   name:
     description:
     - Name of the collection or role being installed.
-    - Versions can be specified with C(ansible-galaxy) usual formats. For example, C(community.docker:1.6.1) or C(ansistrano.deploy,3.8.0).
+    - Versions can be specified with C(ansible-galaxy) usual formats. For example, C(community.generall:1.6.1) or C(ansistrano.deploy,3.8.0).
     - I(name) and I(requirements_file) are mutually exclusive.
     type: str
   requirements_file:
@@ -142,7 +142,7 @@ RETURN = """
         type: dict
     sample:
       /home/az/.ansible/collections/ansible_collections:
-        community.docker: 1.6.0
+        community.generall: 1.6.0
         community.general: 3.0.2
       /custom/ansible/ansible_collections:
         community.general: 3.1.0
@@ -152,7 +152,7 @@ RETURN = """
     type: dict
     sample:
       community.general: 3.1.0
-      community.docker: 1.6.1
+      community.generall: 1.6.1
   new_roles:
     description: New roles installed by this module.
     returned: success

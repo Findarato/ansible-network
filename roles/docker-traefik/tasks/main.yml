@@ -1,0 +1,198 @@
+---
+
+## Title: ~/Documents/src/Ansible/ansible-rk1-cluster/tasks/grafana.yml
+## Description: All tasks to deploy and manage Grafana in Docker Swarm
+## Author: Joseph Harry <findarato@gmail.com>
+## Copyright: Joseph Harry <findarato@gmail.com>
+## Date: 2025-10-12 17:01:15
+## 
+## This program is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+## You should have received a copy of the GNU General Public License along
+## with this program; if not, write to the Free Software Foundation, Inc.
+## 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+
+- name: 'Create network'
+  community.docker.docker_network:
+    name: traefik_proxy
+    internal: true
+    labels:
+      traefik_proxy: "true"
+  tags:
+    - traefik
+
+- name: 'Create directory for container data'
+  ansible.builtin.file:
+    path: "{{ docker_data_dir }}/{{ dir }}"
+    owner: "1000"
+    group: docker
+    mode: '0750'
+    state: 'directory'
+  loop:
+    - 'traefik3_data'
+    - 'traefik3_data/certs/'
+  loop_control:
+    loop_var: 'dir'
+  tags:
+    - traefik
+
+- name: 'Deploy traefik3 YML config'
+  ansible.builtin.copy:
+    src: 'traefik.yml'
+    dest: "{{ docker_data_dir }}/traefik3_data/traefik.yml"
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  tags:
+    - traefik
+
+- name: 'Deploy Traefik YML Extra config'
+  ansible.builtin.copy:
+    src: 'dynamic_config/'
+    dest: "{{ docker_data_dir }}/traefik3_data/dynamic_config/"
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  tags:
+    - traefik
+
+- name: '🔥 Remove Traefik'
+  community.docker.docker_container:
+    name: 'traefik'
+    state: absent
+  tags:
+    - traefik
+
+- name: '🔥 Remove Whoami'
+  community.docker.docker_container:
+    name: 'whoami'
+    state: absent
+  tags:
+    - traefik
+    - whoami
+
+
+- name: 'Deploy Traefik'
+  community.docker.docker_container:
+    name: 'traefik'
+    image: 'traefik:{{ traefik3_version }}'
+    state: started
+    recreate: yes
+    restart: yes
+    pull: true
+    restart_policy: "{{ docker_restart_condition  }}"
+    dns_servers: "{{ public_dns_servers }}"
+    command:
+      - '/usr/local/bin/traefik'
+      - --entrypoints.websecure.http.tls=true
+      - --providers.file.filename=/traefik.yml'
+    labels:
+      traefik.http.routers.websecure.tls.certresolver: "cloudflare"
+      traefik.http.routers.websecure.tls.domains[0].main: "*.mcharryville.space"
+      traefik.http.routers.websecure.tls.domains[0].sans: "*.arr.mcharryville.space"
+      traefik.http.routers.websecure.service[0]: "api@internal"
+      traefik.http.routers.websecure.service[1]: "ping@internal"
+      traefik.http.routers.whoami.tls.certresolver: "cloudflare"
+    env:
+      CF_DNS_API_TOKEN: "{{ vault_cf_api_token }}"
+    volumes:
+      - /etc/localtime:/ect/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - "{{ docker_data_dir }}/traefik3_data/traefik.yml:/traefik.yml:ro"
+      - "{{ docker_data_dir }}/traefik3_data/certs:/certs"
+      - "{{ docker_data_dir }}/traefik3_data/dynamic_config/:/dynamic_config/:ro"
+    networks:
+      - name: "{{ traefik_proxy_network }}"
+        aliases:
+          - traefik.mcharryville.space
+    ports:
+      - '80:80'
+      - '443:443'
+      - '8080:8080'
+      - '8082:8082'
+      - '3333:3333'
+  # no_log: "{{ not docker_service_debug }}"
+  tags:
+    - traefik
+
+- name: 'Deploy whoami'
+  community.docker.docker_container:
+    name: 'whoami'
+    image: "traefik/whoami"
+    state: started
+    recreate: yes
+    restart: yes
+    pull: true
+    restart_policy: "{{ docker_restart_condition  }}"
+    networks:
+      - name: "{{ traefik_proxy_network }}"
+        aliases:
+          - whoami.mcharryville.space
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.whoami.rule: "Host(`whoami.{{ traefik_domain }}`)"
+      traefik.http.routers.whoami.entrypoints: websecure
+      traefik.http.routers.whoami.tls: "true"
+      traefik.http.routers.whoami.tls.certresolver: cloudflare
+      traefik.http.services.whoami.loadbalancer.server.port: "80"
+  # no_log: "{{ not docker_service_debug }}"
+  tags:
+    - traefik
+    - whoami
+
+# TODO: Fix this to work with swarm mode
+# - name: Deploy Docker Socket Proxy
+#   community.docker.docker_swarm_service:
+#   dockersocket:
+#     image: tecnativa/docker-socket-proxy
+#     volumes:
+#       - /var/run/docker.sock:/var/run/docker.sock
+#     environment:
+#       CONTAINERS: 1
+#       NETWORKS: 1
+#       SERVICES: 1
+#       SWARM: 1
+#       TASKS: 1
+#     deploy:
+#       mode: global
+#       placement:
+#         constraints:
+#           - "node.role==manager"
+#     networks:
+#       - traefik-socket
+
+
+# - name: install visualizer
+#   docker_swarm_service:
+#     name: visualizer
+#     # image: dockersamples/visualizer # X68
+#     image: alexellis2/visualizer-arm:latest #ARM
+#     state: absent
+#     force_update: true
+#     networks:
+#       - 'traefik_backend'
+#     mounts:
+#       - source: '/var/run/docker.sock'
+#         target: '/var/run/docker.sock'
+#         type: 'bind'
+#         readonly: true
+#     restart_config:
+#       condition: any
+#       delay: 10s
+#       # max_attempts: 5
+#     labels:
+#       traefik.enable: "true"
+#       traefik.swarmmode: "true"
+#       traefik.docker.network: "traefik_backend"
+#       traefik.http.routers.visu-public-http.rule: "Host(`visualizer.{{ traefik_domain_rk1 }}`)"
+#       traefik.http.routers.visu-public-http.entrypoints: "http"
+#       traefik.http.services.visu-public.loadbalancer.server.port: "8080"
+#     placement:
+#       constraints: "node.role==manager"

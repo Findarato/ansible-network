@@ -62,7 +62,7 @@
   become: true
   remote_user: ansible
   roles:
-    - role: docker-swag
+    - role: docker-telegraf
       tags: [ setup, proxy ]
     - role: arr/docker-deluge
       tags: [ deluge, torrent, arr ]
@@ -83,6 +83,7 @@
         state: absent
   vars:
     - ansible_python_interpreter: "/usr/bin/python3"
+    - arr_docker_network: "tortuga"
   vars_files:
     - vars/main.yml
     - vars/main.vault.yml

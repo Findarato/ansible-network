@@ -1,0 +1,33 @@
+---
+
+## Title: /roles/arr/pirate-server-setup/tasks/main.yml
+## Description: Setup Pirate Server
+## Author: Joseph Harry <findarato@gmail.com>
+## Copyright: Joseph Harry <findarato@gmail.com>
+## Date: 2025-12-28 11:22:29
+## 
+## This program is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+## You should have received a copy of the GNU General Public License along
+## with this program; if not, write to the Free Software Foundation, Inc.
+## 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+
+
+- name: Install Python tools for docker
+  ansible.builtin.pip:
+    name: docker
+    state: latest
+
+- name: Create mount points for pirate services
+  ansible.builtin.file:
+    state: directory
+    path: "{{ item.destination }}"
+  with_items:
+    - "{{ nfs_mounts }}"

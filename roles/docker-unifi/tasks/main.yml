@@ -1,0 +1,119 @@
+---
+# tasks file for docker-dns
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+
+- name: Grow the Ways
+  community.docker.docker_network:
+    name: theways
+
+- name: Create Unifi Network
+  community.docker.docker_network:
+    name: unifi
+
+- name: Create Docker paths
+  file:
+    path: "{{ docker_unifi_storage }}/{{ item }}"
+    state: directory
+    mode: 0775
+  with_items:
+    - /config
+    - /config/mongo
+  tags:
+    - unifi
+
+- name: Download SWAG Config
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/unifi-controller.subdomain.conf.sample
+    dest: "{{ docker_proxy_config_storage }}/unifi-controller.subdomain.conf"
+    mode: '0440'
+  tags:
+    - unifi
+    - SWAG
+  notify:
+    - restart SWAG
+
+- name: Copy mongo init script
+  ansible.builtin.copy:
+    src: init-mongo.sh
+    dest: "{{ docker_unifi_storage }}/config/mongo/init-mongo.sh"
+    backup: yes
+
+- name: Recreate unifi-db
+  community.docker.docker_container:
+    name: unifi-db
+    image: docker.io/mongo:8.0
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    dns_search_domains: "{{ dns_domains }}"
+    dns_servers: "{{ dns_servers }}"
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
+    volumes:
+      - "{{ docker_unifi_storage }}/config/mongo:/data/db"
+      - "{{ docker_unifi_storage }}/config/mongo/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro"
+    networks_cli_compatible: false
+    networks:
+      - name: unifi
+    env:
+      TZ: America/Chicago
+      PUID: "1000"
+      PGID: "1000"
+      MONGO_INITDB_ROOT_USERNAME: "root"
+      MONGO_INITDB_ROOT_PASSWORD: "{{ vault_unifi_db_root_password }}"
+      MONGO_USER: "unifi"
+      MONGO_PASS: "{{ vault_unifi_db_password }}"
+      MONGO_DBNAME: "unifi"
+      MONGO_AUTHSOURCE: admin
+  tags:
+    - unifi
+
+- name: Recreate Unifi container
+  community.docker.docker_container:
+    name: unifi-controller
+    image: lscr.io/linuxserver/unifi-network-application:{{ docker_unifi_version  }} #9.0.114
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    exposed_ports:
+      - "8443"
+      - "8080"
+      - "3478/udp"
+    published_ports:
+      - "3478:3478/udp"
+      - "10001:10001/udp"
+      - "1900:1900/udp"
+      - "8080:8080/tcp"
+      - "8443:8443/tcp"
+    dns_search_domains: "{{ dns_domains }}"
+    dns_servers: "{{ dns_servers }}"
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
+    volumes:
+      - "{{ docker_unifi_storage }}/config:/config"
+    networks_cli_compatible: false
+    networks:
+      - name: theways
+      - name: unifi
+    env:
+      # TZ: America/Chicago
+      PUID: "1000"
+      PGID: "1000"
+      MONGO_USER: "unifi"
+      MONGO_PASS: "{{ vault_unifi_db_password }}"
+      MONGO_HOST: "unifi-db"
+      MONGO_PORT: "27017"
+      MONGO_DBNAME: "unifi"
+      MONGO_AUTHSOURCE: "admin"
+      MEM_LIMIT: "1024" #optional
+      MEM_STARTUP: "1024" #optional
+      #MONGO_TLS: "false" #optional
+  tags:
+    - unifi

@@ -1,11 +1,57 @@
 ---
-- hosts: pirate
+# - hosts: pirate.mcharryville.space
+#   become: true
+#   remote_user: joe
+#   roles:
+#     - basic-server
+#     - geerlingguy.pip
+#     - geerlingguy.docker
+#   post_tasks:
+#     - name: clean up temp ansible
+#       ansible.builtin.file:
+#         path: /tmp/ansible
+#         state: absent
+#   vars:
+#     - ansible_python_interpreter: "/usr/bin/python3"
+#   vars_files:
+#     - vars/main.yml
+#     - vars/main.vault.yml
+#     - vars/setup.vault.yml
+
+
+# - hosts: pirate.mcharryville.space
+#   gather_facts: false
+#   remote_user: joe
+#   become: true
+#   roles:
+#     - arr/pirate-server-setup
+#   vars:
+#     - ansible_python_interpreter: "/usr/bin/python3"
+#   vars_files:
+#     - vars/main.yml
+#     - vars/main.vault.yml
+#     - vars/setup.vault.yml
+
+- hosts: pirate.mcharryville.space
   become: true
-  remote_user: joe
+  remote_user: ansible
   roles:
-    - basic-server
-    - geerlingguy.pip
-    - geerlingguy.docker
+    - role: docker-traefik
+      tags: [ proxy,traefik ]
+    - role: arr/docker-sonarr
+      tags: [ sonarr,arr ]
+    - role: arr/docker-radarr
+      tags: [ radarr,arr ]
+    - role: arr/docker-gluetun
+      tags: [ vpn,gluetun,arr ]
+    - role: arr/docker-deluge
+      tags: [ deluge,torrent,arr ]
+    # - role: arr/docker-prowlarr
+    #   tags: [ prowlarr, arr ]
+    # - role: arr/docker-overseerr
+    #   tags: [ overseerr, arr ]
+    # - role: arr/docker-lidarr
+    #   tags: [ lidarr,arr ]
   post_tasks:
     - name: clean up temp ansible
       ansible.builtin.file:
@@ -17,32 +63,3 @@
     - vars/main.yml
     - vars/main.vault.yml
     - vars/setup.vault.yml
-
-- hosts: pirate
-  become: true
-  remote_user: ansible
-  roles:
-    - role: docker-swag
-      tags: [ setup, proxy ]
-    - role: docker-deluge
-      tags: [ deluge, torrent, arr ]
-    - role: docker-prowlarr
-      tags: [ prowlarr, arr ]
-    - role: docker-overseerr
-      tags: [ overseerr, arr ]
-    - role: docker-sonarr
-      tags: [ sonarr,arr ]
-    - role: docker-radarr
-      tags: [ radarr,arr ]
-    - role: docker-lidarr
-      tags: [ lidarr,arr ]
-  post_tasks:
-    - name: clean up temp ansible
-      ansible.builtin.file:
-        path: /tmp/ansible
-        state: absent
-  vars:
-    - ansible_python_interpreter: "/usr/bin/python3"
-  vars_files:
-    - vars/main.yml
-    - vars/main.vault.yml

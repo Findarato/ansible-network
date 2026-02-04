@@ -1,0 +1,9 @@
+---
+# defaults file for docker-unifi
+docker_log_driver: "json-file"
+docker_log_options:
+  max-file: "3"   # number of files or file count
+  max-size: "10m" # file size
+
+docker_unifi_storage: "/some/path/you/should/change"
+docker_unifi_version: "1.1.1.1"

@@ -5,10 +5,19 @@
   pip:
     name: docker
     state: latest
+  tags:
+    - sonarr
+    - arr
 
-- name: Grow the Ways
+- name: Private Arr network
   community.docker.docker_network:
-    name: theways
+    name: "{{ arr_network_name }}"
+    internal: true
+    labels:
+      arr: "true"
+  tags:
+    - sonarr
+    - arr
 
 - name: Create Docker paths
   file:
@@ -16,13 +25,18 @@
     state: directory
   with_items:
     - config
+  tags:
+    - sonarr
+    - arr
 
 - name: 🛑 Stop Sonarr container
   community.docker.docker_container:
     name: sonarr
+    image: "lscr.io/linuxserver/sonarr:{{ sonarr_version }}"
     state: stopped
   tags:
     - sonarr
+    - arr
 
 - name: 🔥 Remove Sonarr container
   community.docker.docker_container:
@@ -30,6 +44,7 @@
     state: absent
   tags:
     - sonarr
+    - arr
 
 - name: 📺 Create NFS mount TV
   community.docker.docker_volume:
@@ -38,9 +53,12 @@
     driver: local
     recreate: options-changed
     driver_options:
-      type: nfs
-      o: "addr=10.1.1.7,rw"
-      device: :/mnt/Dedicated/Storage/TV/
+      type: "{{ vault_arr_tv_mount.type }}"
+      o: "{{ vault_arr_tv_mount.opts }}"
+      device: "{{ vault_arr_tv_mount.device }}"
+  tags:
+    - sonarr
+    - arr
 
 - name: Create NFS mount downloads
   community.docker.docker_volume:
@@ -49,21 +67,19 @@
     driver: local
     recreate: options-changed
     driver_options:
-      type: nfs
-      o: "addr=10.1.1.5,rw"
-      device: :/volume2/ssd.docker/torrents/downloads/complete/
-
-- name: Remove Old Download
-  community.docker.docker_volume:
-    name: sonarr-downloads
-    state: absent
+      type: "{{ vault_arr_downloads_mount.type }}"
+      o: "{{ vault_arr_downloads_mount.opts }}"
+      device: "{{ vault_arr_downloads_mount.device }}"
+  tags:
+    - sonarr
+    - arr
 
 - name: Recreate Sonarr container
   community.docker.docker_container:
-    name: sonarr
-    image: lscr.io/linuxserver/sonarr:latest
+    name: "{{ sonarr_app_name }}"
+    image: "lscr.io/linuxserver/sonarr:{{ sonarr_version }}"
     state: started
-    restart_policy: unless-stopped
+    restart_policy: "{{ docker_restart_condition }}"
     recreate: yes
     restart: yes
     pull: true
@@ -74,11 +90,24 @@
       - arr-downloads:/downloads
       - "nfs-tv:/tv"
       - "{{ docker_sonarr_storage }}/config:/config"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.sonarr.rule: Host(`{{ sonarr_app_name }}.{{ traefik_domain }}`)
+      traefik.http.routers.sonarr.tls: "true"
+      traefik.http.routers.sonarr.entrypoints: websecure
+      traefik.http.services.sonarr.loadbalancer.server.port: "8989"
     dns_search_domains: "{{ dns_domains }}"
     dns_servers: "{{ dns_servers }}"
     networks_cli_compatible: false
     networks:
-      - name: theways
+      - name: "{{ arr_network_name }}"
+        aliases:
+          - sonarr.mcharryville.space
+          - sonarr.arr.mcharryville.space
+          - sonarr
+      - name: "{{ traefik_proxy_network }}"
+        aliases:
+          - sonarr.mcharryville.space
     env:
       TZ: "America/Chicago"
       PUID: '1000'
@@ -86,11 +115,4 @@
       VERSION: latest
   tags:
     - sonarr
-
-- name: Download SWAG Config
-  ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/sonarr.subdomain.conf.sample
-    dest: "{{ docker_proxy_config_storage }}/sonarr.subdomain.conf"
-    mode: '0440'
-  notify:
-    - Restart SWAG
+    - arr

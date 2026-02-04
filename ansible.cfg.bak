@@ -1,0 +1,8 @@
+[defaults]
+inventory=./hosts/production.yml
+vault_password_file = ${HOME}/bin/ansiblePass.sh
+private_key_file = ~/.ssh/ansible
+
+
+[inventory]
+enable_plugins=yaml

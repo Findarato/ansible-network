@@ -5,11 +5,19 @@
   pip:
     name: docker
     state: latest
+  tags:
+    - deluge
+    - arr
 
-
-- name: Grow the Ways
+- name: Private Arr network
   community.docker.docker_network:
-    name: "{{ docker_network }}"
+    name: "{{ arr_network_name }}"
+    internal: true
+    labels:
+      arr: "true"
+  tags:
+    - deluge
+    - arr
 
 - name: Create Docker paths
   file:
@@ -20,36 +28,50 @@
     recurse: yes
   with_items:
     - config
-    - downloads
   tags:
     - deluge
-    # - data/downloads/incomplete
+    - arr
+
+- name: Create NFS mount downloads
+  community.docker.docker_volume:
+    name: arr-downloads
+    state: present
+    driver: local
+    recreate: options-changed
+    driver_options:
+      type: "{{ vault_arr_downloads_mount.type }}"
+      o: "{{ vault_arr_downloads_mount.opts }}"
+      device: "{{ vault_arr_downloads_mount.device }}"
+  tags:
+    - radarr
+    - arr
+
 
 - name: Create and Update Deluge Container
   community.docker.docker_container:
     name: deluge
-    image: lscr.io/linuxserver/deluge:latest
+    image: "lscr.io/linuxserver/deluge:{{ deuluge_version }}"
     state: started
     restart_policy: unless-stopped
     recreate: yes
     restart: yes
     pull: true
     container_default_behavior: no_defaults
-    exposed_ports:
-      - "8112"
-      - "58846"
-      - "27975"
-    published_ports:
-      - 8112:8112
-      - 27975:27975
-      - 27975:27975/udp
-      - 58846:58846
-      - 58846:58846/udp
-      - 6881:6881
-      - 6881:6881/udp
+    # exposed_ports:
+    #   - "8112"
+    #   - "58846"
+    #   - "27975"
+    # published_ports:
+    #   - 8112:8112
+    #   - 27975:27975
+    #   - 27975:27975/udp
+    #   - 58846:58846
+    #   - 58846:58846/udp
+    #   - 6881:6881
+    #   - 6881:6881/udp
     volumes:
       - "/docker/containers/deluge/config:/config"
-      - "/docker/containers/deluge/downloads:/downloads"
+      - arr-downloads:/downloads
     env:
       PGID: "1000"
       PUID: "1000"
@@ -57,20 +79,9 @@
       DELUGE_LOGLEVEL: error
     log_driver: "{{ docker_log_driver }}"
     log_options: "{{ docker_log_options}}"
-    dns_search_domains: "{{ dns_domains }}"
-    dns_servers: "{{ dns_servers }}"
-    networks:
-      - name: theways
+    # dns_search_domains: "{{ dns_domains }}"
+    # dns_servers: "{{ dns_servers }}"
+    network_mode: "container:gluetun"
   tags:
     - deluge
-
-- name: Download SWAG Config
-  ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/deluge.subdomain.conf.sample
-    dest: "{{ docker_proxy_config_storage }}/deluge.subdomain.conf.sample"
-    mode: '0440'
-  notify:
-    - Restart SWAG
-  tags:
-    - deluge
-    - SWAG
+    - arr

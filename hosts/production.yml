@@ -7,7 +7,7 @@ all:
     watching:
       hosts:
         v-docker03.mcharryville.space: # Rocky Linux 8
-    docker-cluster:
+    docker_cluster:
       hosts:
         v-docker04.mcharryville.space: # Rocky Linux 10
           vars:

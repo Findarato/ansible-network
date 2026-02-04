@@ -17,6 +17,10 @@ docker_log_options:
   max-file: "3"   # number of files or file count
   max-size: "10m" # file size
 
+docker_restart_condition: 'on-failure'
+dns_servers: ['10.1.1.1', '10.1.1.6']
+public_dns_servers: ['1.1.1.1', '8.8.8.8']
+dns_domains: ['mcharryville.space', 'arr.mcharryville.space']
 
 docker_users:
   - joe
@@ -24,6 +28,11 @@ docker_users:
 
 # Storage Paths
 docker_storage_path: "/docker/containers"
+
+# Added for compatibility with some roles Should be the same as docker_storage_path
+# All new roles shoudl use docker_data_dir variable
+docker_data_dir: "{{ docker_storage_path }}" 
+
 
 docker_piHole_storage: "{{ docker_storage_path }}/pihole/"
 docker_proxy_storage: "{{ docker_storage_path }}/proxy/"
@@ -35,17 +44,6 @@ docker_gatus_storage: "{{ docker_storage_path }}/gatus/"
 docker_homepage_storage: "{{ docker_storage_path }}/homepage/"
 docker_ntfy_storage: "{{ docker_storage_path }}/ntfy/"
 
-# ARR variables
-
-# Sonar Variables
-docker_sonarr_storage: "{{ docker_storage_path }}/sonarr/"
-docker_sonarr_storage_tv: "/mnt/storage/TV/"
-
-docker_prowlarr_storage: "{{ docker_storage_path }}/prowlarr/"
-docker_radarr_storage: "{{ docker_storage_path }}/radarr/"
-docker_lidarr_storage: "{{ docker_storage_path }}/lidarr/"
-
-
 docker_signal_storage: "{{ docker_storage_path }}/signal/"
 docker_audiobookshelf_storage: "{{ docker_storage_path }}/audiobookshelf/"
 docker_website_storage: "{{ docker_storage_path }}/website/"
@@ -56,7 +54,8 @@ docker_xmrig_proxy_storage: "{{ docker_storage_path }}/xmrig_proxy/"
 
 # Unifi Storage
 docker_unifi_storage: "{{ docker_storage_path }}/unifi/"
-docker_unifi_version: "9.0.114"
+docker_unifi_version: "latest"
+# docker_unifi_version: "9.0.114"
 
 # semaphore
 
@@ -69,10 +68,6 @@ docker_semaphore_db_dialect: mysql # for postgres, change to: postgres
 docker_semaphore_db_user: semaphore
 docker_semaphore_db_host: 10.1.1.5
 docker_semaphore_db_pass: "{{ vault_docker_semaphore_db_pass }}"
-
-# DNS stuff
-dns_servers: ['10.1.1.1','10.1.1.21','10.1.1.6']
-dns_domains: mcharryville.space
 
 smokeping_dns_domains: "{{ dns_domains }}"
 smokeping_dns_servers: "{{ dns_servers }}"
@@ -89,3 +84,55 @@ groups_to_make:
     state: present
 
 default_users: "{{ vault_default_users }}"
+
+#    ▄▄▄█████▓ ██▀███   ▄▄▄      ▓█████   █████▒██▓ ██ ▄█▀    ██▒   █▓ ▄▄▄       ██▀███    ██████ 
+#    ▓  ██▒ ▓▒▓██ ▒ ██▒▒████▄    ▓█   ▀ ▓██   ▒▓██▒ ██▄█▒    ▓██░   █▒▒████▄    ▓██ ▒ ██▒▒██    ▒ 
+#    ▒ ▓██░ ▒░▓██ ░▄█ ▒▒██  ▀█▄  ▒███   ▒████ ░▒██▒▓███▄░     ▓██  █▒░▒██  ▀█▄  ▓██ ░▄█ ▒░ ▓██▄   
+#    ░ ▓██▓ ░ ▒██▀▀█▄  ░██▄▄▄▄██ ▒▓█  ▄ ░▓█▒  ░░██░▓██ █▄      ▒██ █░░░██▄▄▄▄██ ▒██▀▀█▄    ▒   ██▒
+#      ▒██▒ ░ ░██▓ ▒██▒ ▓█   ▓██▒░▒████▒░▒█░   ░██░▒██▒ █▄      ▒▀█░   ▓█   ▓██▒░██▓ ▒██▒▒██████▒▒
+#      ▒ ░░   ░ ▒▓ ░▒▓░ ▒▒   ▓▒█░░░ ▒░ ░ ▒ ░   ░▓  ▒ ▒▒ ▓▒      ░ ▐░   ▒▒   ▓▒█░░ ▒▓ ░▒▓░▒ ▒▓▒ ▒ ░
+#        ░      ░▒ ░ ▒░  ▒   ▒▒ ░ ░ ░  ░ ░      ▒ ░░ ░▒ ▒░      ░ ░░    ▒   ▒▒ ░  ░▒ ░ ▒░░ ░▒  ░ ░
+#      ░        ░░   ░   ░   ▒      ░    ░ ░    ▒ ░░ ░░ ░         ░░    ░   ▒     ░░   ░ ░  ░  ░  
+#                ░           ░  ░   ░  ░        ░  ░  ░            ░        ░  ░   ░           ░  
+#       
+
+traefik_domain: "mcharryville.space"
+traefik3_version: "latest"
+traefik_proxy_network: "traefik_proxy"
+
+
+arr_network_name: "tortuga"
+sonarr_app_name: "sonarr"
+sonarr_version: "latest"
+
+radarr_app_name: "radarr"
+radarr_version: "latest"
+
+lidarr_app_name: "lidarr"
+deluge_app_name: "deluge"
+deuluge_version: "latest"
+
+
+docker_sonarr_storage: "{{ docker_data_dir }}/sonarr/"
+docker_sonarr_storage_tv: "/mnt/storage/TV/"
+
+docker_prowlarr_storage: "{{ docker_data_dir }}/prowlarr/"
+docker_radarr_storage: "{{ docker_data_dir }}/radarr/"
+docker_lidarr_storage: "{{ docker_data_dir }}/lidarr/"
+
+#      ▄████  ██▓     █    ██ ▓█████▄▄▄█████▓ █    ██  ███▄    █ 
+#     ██▒ ▀█▒▓██▒     ██  ▓██▒▓█   ▀▓  ██▒ ▓▒ ██  ▓██▒ ██ ▀█   █ 
+#    ▒██░▄▄▄░▒██░    ▓██  ▒██░▒███  ▒ ▓██░ ▒░▓██  ▒██░▓██  ▀█ ██▒
+#    ░▓█  ██▓▒██░    ▓▓█  ░██░▒▓█  ▄░ ▓██▓ ░ ▓▓█  ░██░▓██▒  ▐▌██▒
+#    ░▒▓███▀▒░██████▒▒▒█████▓ ░▒████▒ ▒██▒ ░ ▒▒█████▓ ▒██░   ▓██░
+#     ░▒   ▒ ░ ▒░▓  ░░▒▓▒ ▒ ▒ ░░ ▒░ ░ ▒ ░░   ░▒▓▒ ▒ ▒ ░ ▒░   ▒ ▒ 
+#      ░   ░ ░ ░ ▒  ░░░▒░ ░ ░  ░ ░  ░   ░    ░░▒░ ░ ░ ░ ░░   ░ ▒░
+#    ░ ░   ░   ░ ░    ░░░ ░ ░    ░    ░       ░░░ ░ ░    ░   ░ ░ 
+#          ░     ░  ░   ░        ░  ░           ░              ░ 
+
+gluetun_release: 'latest'                               # What version of the container to use
+gluetun_private_key: "{{ vault_gluetun_private_key }}"  # Wireguard private key from vault
+gluetun_addresses: "{{ vault_gluetun_addresses }}"      # Wireguard addresses from vault
+gluetun_countries: "{{ vault_gluetun_countries }}"      # Wireguard countries from vault
+gluetun_cities: "{{ vault_gluetun_cities }}"            # Wireguard cities from vault
+docker_gluetun_storage: "{{ docker_data_dir }}/gluetun/"
