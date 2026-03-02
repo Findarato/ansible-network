@@ -21,9 +21,7 @@
     recreate: no
     restart: yes
     pull: true
-    dns_servers:
-      - 10.1.1.171
-      - 10.1.1.175
+    dns_servers: "{{ dns_servers }}"
     exposed_ports:
       - 53
       - 10000

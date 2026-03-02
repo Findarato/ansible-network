@@ -29,6 +29,9 @@ docker_users:
 # Storage Paths
 docker_storage_path: "/docker/containers"
 
+# Telegraf
+docker_telegraf_storage: "{{ docker_storage_path }}/telegraf/"
+
 # Added for compatibility with some roles Should be the same as docker_storage_path
 # All new roles shoudl use docker_data_dir variable
 docker_data_dir: "{{ docker_storage_path }}" 
@@ -41,7 +44,10 @@ docker_dashy_storage: "{{ docker_storage_path }}/dashy"
 docker_smokeping_storage: "{{ docker_storage_path }}/smokeping/"
 docker_syncthing_storage: "{{ docker_storage_path }}/syncthing/"
 docker_gatus_storage: "{{ docker_storage_path }}/gatus/"
+
 docker_homepage_storage: "{{ docker_storage_path }}/homepage/"
+docker_homepage_version: "{{ docker_storage_path }}/homepage/"
+
 docker_ntfy_storage: "{{ docker_storage_path }}/ntfy/"
 
 docker_signal_storage: "{{ docker_storage_path }}/signal/"
@@ -96,8 +102,10 @@ default_users: "{{ vault_default_users }}"
 #                ░           ░  ░   ░  ░        ░  ░  ░            ░        ░  ░   ░           ░  
 #       
 
-traefik_domain: "mcharryville.space"
-traefik3_version: "latest"
+
+traefik_domain: 'mcharryville.space'               # Subdomain to put all services under
+traefik3_selfsign: false                           # Selfsign the used SSL certificate
+traefik3_version: '3.6'
 traefik_proxy_network: "traefik_proxy"
 
 
@@ -136,3 +144,10 @@ gluetun_addresses: "{{ vault_gluetun_addresses }}"      # Wireguard addresses fr
 gluetun_countries: "{{ vault_gluetun_countries }}"      # Wireguard countries from vault
 gluetun_cities: "{{ vault_gluetun_cities }}"            # Wireguard cities from vault
 docker_gluetun_storage: "{{ docker_data_dir }}/gluetun/"
+
+
+# Uptime Kuma
+
+docker_uptime_kuma_storage: "{{ docker_data_dir }}/uptime-kuma/"
+uptime_kuma_release: '2.1.3'
+uptime_kuma_app_name: uptime-kuma

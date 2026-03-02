@@ -1,4 +1,24 @@
 ---
+
+## Title: /arr/docker-deluge/tasks/main.yml
+## Description: Deploy Deluge in a docker container
+## Author: Joseph Harry <findarato@gmail.com>
+## Copyright: Joseph Harry <findarato@gmail.com>
+## Date: 2026-03-01 15:03:02
+## 
+## This program is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+## You should have received a copy of the GNU General Public License along
+## with this program; if not, write to the Free Software Foundation, Inc.
+## 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+
 # tasks file for docker-deluge
 
 - name: Install Python tools for docker
@@ -19,15 +39,18 @@
     - deluge
     - arr
 
-- name: Create Docker paths
-  file:
-    path: "/docker/containers/deluge/{{ item }}"
-    state: directory
-    owner: "1000"
-    group: "1000"
-    recurse: yes
-  with_items:
-    - config
+- name: 'Create directory for container data'
+  ansible.builtin.file:
+    path: "{{ docker_data_dir }}/{{ dir }}"
+    owner: 'docker'
+    group: 'docker'
+    mode: '0750'
+    state: 'directory'
+  loop:
+    - 'deluge_data'
+    - 'deluge_config'
+  loop_control:
+    loop_var: 'dir'
   tags:
     - deluge
     - arr
@@ -43,7 +66,7 @@
       o: "{{ vault_arr_downloads_mount.opts }}"
       device: "{{ vault_arr_downloads_mount.device }}"
   tags:
-    - radarr
+    - deluge
     - arr
 
 
@@ -70,10 +93,10 @@
     #   - 6881:6881
     #   - 6881:6881/udp
     volumes:
-      - "/docker/containers/deluge/config:/config"
+      - "{{ docker_data_dir }}deluge_config:/config"
       - arr-downloads:/downloads
     env:
-      PGID: "1000"
+      PGID: "1000002" #docker user
       PUID: "1000"
       TZ: "America/Chicago"
       DELUGE_LOGLEVEL: error

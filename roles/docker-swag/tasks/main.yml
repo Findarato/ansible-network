@@ -45,7 +45,7 @@
       VALIDATION: "dns"
       EMAIL: "findarato@gmail.com"
       STAGING: "false"
-      EXTRA_DOMAINS: "*.wled.mcharryville.space"
+      EXTRA_DOMAINS: "*.wled.mcharryville.space,*.arr.mcharryville.space"
 
 - name: Wait for container to start
   ansible.builtin.wait_for:

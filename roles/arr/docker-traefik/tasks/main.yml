@@ -19,36 +19,25 @@
 ## 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-- name: 'Create network'
-  community.docker.docker_network:
-    name: traefik_proxy
-    driver: 'overlay'
-    internal: false
-    attachable: true
-  tags:
-    - traefik
-
 - name: Create Proxy Network
   community.docker.docker_network:
-    name: "{{ arr_network_name }}"
+    name: "traefik_proxy"
     internal: true
     labels:
-      arr: "true"
+      traefik: "true"
   tags:
-    - deluge
-    - arr
-
-
+    - traefik
 
 - name: 'Create directory for container data'
   ansible.builtin.file:
     path: "{{ docker_data_dir }}/{{ dir }}"
-    owner: 'ubuntu'
-    group: 'ubuntu'
+    owner: 'docker'
+    group: 'docker'
     mode: '0750'
     state: 'directory'
   loop:
     - 'traefik3_data'
+    - 'traefik3_config'
     - 'traefik3_data/certs/'
   loop_control:
     loop_var: 'dir'
@@ -57,8 +46,8 @@
 
 - name: 'Deploy traefik3 YML config'
   ansible.builtin.copy:
-    src: 'files/traefik3/traefik.yml'
-    dest: "{{ docker_data_dir }}/traefik3_data/traefik.yml"
+    src: 'files/traefik.yml'
+    dest: "{{ docker_data_dir }}/traefik3_config/traefik.yml"
     owner: 'root'
     group: 'root'
     mode: '0644'
@@ -67,8 +56,8 @@
 
 - name: 'Deploy Traefik YML Extra config'
   ansible.builtin.copy:
-    src: 'files/traefik3/dynamic_config/'
-    dest: "{{ docker_data_dir }}/traefik3_data/dynamic_config/"
+    src: 'files/dynamic_config/'
+    dest: "{{ docker_data_dir }}/traefik3_config/dynamic_config/"
     owner: 'root'
     group: 'root'
     mode: '0644'
@@ -76,14 +65,14 @@
     - traefik
 
 - name: '🔥 Remove Traefik'
-  community.docker.docker_container::
+  community.docker.docker_container:
     name: 'traefik'
     state: absent
   tags:
     - traefik
 
 - name: '🔥 Remove Whoami'
-  community.docker.docker_container::
+  community.docker.docker_container:
     name: 'whoami'
     state: absent
   tags:
@@ -116,9 +105,9 @@
     volumes:
       - /etc/localtime:/ect/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - "{{ docker_data_dir }}/traefik3_data/traefik.yml:/traefik.yml:ro"
+      - "{{ docker_data_dir }}/traefik3_config/traefik.yml:/traefik.yml:ro"
       - "{{ docker_data_dir }}/traefik3_data/certs:/certs"
-      - "{{ docker_data_dir }}/traefik3_data/dynamic_config/:/dynamic_config/:ro"
+      - "{{ docker_data_dir }}/traefik3_config/dynamic_config/:/dynamic_config/:ro"
     networks:
       - name: "{{ traefik_proxy_network }}"
         aliases:

@@ -25,11 +25,11 @@
 
 - name: Create docker User
   ansible.builtin.user:
-    name: dockerUser
+    name: docker
     comment: Account for doing Docker things
     uid: "1000002"
     createhome: yes        # Defaults to yes
-    home: /home/dockerUser
+    home: /home/docker
     password: "{{ docker_password | password_hash('sha512') }}"
     generate_ssh_key: yes
     ssh_key_bits: 4096
