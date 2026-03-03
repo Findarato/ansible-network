@@ -6,9 +6,12 @@
     name: docker
     state: latest
 
-- name: Grow the Ways
+- name: Add lidarr to Arr network
   community.docker.docker_network:
-    name: theways
+    name: "{{ arr_network_name }}"
+  tags:
+    - lidarr
+    - arr
 
 - name: Create Docker paths
   file:
@@ -41,6 +44,13 @@
     networks_cli_compatible: false
     networks:
       - name: theways
+      - name: "{{ traefik_proxy_network }}"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.lidarr.rule: Host(`{{ lidarr_app_name }}.{{ traefik_domain }}`)
+      traefik.http.routers.lidarr.tls: "true"
+      traefik.http.routers.lidarr.entrypoints: websecure
+      traefik.http.services.lidarr.loadbalancer.server.port: "8686"
     env:
       TZ: "America/Chicago"
       PUID: '1000'
@@ -56,6 +66,7 @@
     mode: '0440'
   notify:
     - Restart SWAG
+  when: swag_enabled == "true"
   tags:
     - lidarr
     - SWAG

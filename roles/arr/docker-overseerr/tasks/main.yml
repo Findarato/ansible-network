@@ -5,20 +5,31 @@
   pip:
     name: docker
     state: latest
+  tags:
+    - overseerr
+    - arr
 
-- name: Grow the Ways
+- name: Add overseerr to Arr network
   community.docker.docker_network:
-    name: theways
+    name: "{{ arr_network_name }}"
+  tags:
+    - overseerr
+    - arr
 
-- name: Create Docker paths
-  file:
-    path: "/docker/containers/overseerr/{{ item }}"
-    state: directory
-    mode: "0775"
-    owner: "1000"
-    group: docker
-  with_items:
-    - config
+- name: 'Create directory for container data'
+  ansible.builtin.file:
+    path: "{{ docker_data_dir }}/{{ dir }}"
+    owner: 'docker'
+    group: 'docker'
+    mode: '0750'
+    state: 'directory'
+  loop:
+    - 'overseerr_config'
+  loop_control:
+    loop_var: 'dir'
+  tags:
+    - overseerr
+    - arr
 
 - name: Recreate overseerr container
   community.docker.docker_container:
@@ -29,15 +40,14 @@
     recreate: yes
     restart: yes
     pull: true
-    exposed_ports:
-      - "5055"
     volumes:
       - /docker/containers/overseerr/config:/config
     dns_search_domains: "{{ dns_domains }}"
     dns_servers: "{{ dns_servers }}"
     networks_cli_compatible: false
     networks:
-      - name: theways
+      - name: "{{ arr_network_name }}"
+      - name: "{{ traefik_proxy_network }}"
     log_driver: "{{ docker_log_driver }}"
     log_options: "{{ docker_log_options}}"
     env:
@@ -45,16 +55,12 @@
       PUID: "1000"
       PGID: "1000"
       VERSION: latest
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.overseerr.rule: Host(`{{ overseerr_app_name }}.{{ traefik_domain }}`)
+      traefik.http.routers.overseerr.tls: "true"
+      traefik.http.routers.overseerr.entrypoints: websecure
+      traefik.http.services.overseerr.loadbalancer.server.port: "5055"
   tags:
     - overseerr
-
-- name: Download SWAG Config
-  ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/overseerr.subdomain.conf.sample
-    dest: "{{ docker_proxy_config_storage }}/overseerr.subdomain.conf"
-    mode: "0440"
-  notify:
-    - Restart SWAG
-  tags:
-    - overseerr
-    - SWAG
+    - arr

@@ -24,9 +24,6 @@ all:
       hosts:
         # v-torrents.mcharryville.space: #
         v-torrents.mcharryville.space: #
-        pirate.mcharryville.space: #
-          vars:
-            proxmox: true
     pirate:
       hosts:
         pirate.mcharryville.space: #

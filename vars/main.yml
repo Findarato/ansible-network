@@ -11,7 +11,9 @@ ansible_use:          ansible
 
 #General Docker stuff
 
+# Docker network
 docker_network:       theways
+
 docker_log_driver: "json-file"
 docker_log_options:
   max-file: "3"   # number of files or file count
@@ -46,7 +48,6 @@ docker_syncthing_storage: "{{ docker_storage_path }}/syncthing/"
 docker_gatus_storage: "{{ docker_storage_path }}/gatus/"
 
 docker_homepage_storage: "{{ docker_storage_path }}/homepage/"
-docker_homepage_version: "{{ docker_storage_path }}/homepage/"
 
 docker_ntfy_storage: "{{ docker_storage_path }}/ntfy/"
 

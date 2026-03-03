@@ -3,10 +3,14 @@
   pip:
     name: docker
     state: latest
+  tags:
+    - swag
 
 - name: Grow the Ways
   community.docker.docker_network:
     name: theways
+  tags:
+    - swag
 
 - name: Create Docker paths
   file:
@@ -17,6 +21,16 @@
     owner: "1000"
   with_items:
     - le/config
+  tags:
+    - swag
+
+- name: Remove SWAG
+  community.docker.docker_container:
+    name: swag
+    image: lscr.io/linuxserver/swag:latest
+    state: absent
+  tags:
+    - swag
 
 - name: Create SWAG
   community.docker.docker_container:
@@ -41,17 +55,21 @@
       PGID: "1000"
       URL: "mcharryville.space"
       SUBDOMAINS: "wildcard"
-      DNSPLUGIN: "cloudflare"
       VALIDATION: "dns"
+      DNSPLUGIN: "cloudflare"
       EMAIL: "findarato@gmail.com"
-      STAGING: "false"
+      STAGING: "true"
+      PROPAGATION: "60"
       EXTRA_DOMAINS: "*.wled.mcharryville.space,*.arr.mcharryville.space"
+  tags:
+    - swag
 
 - name: Wait for container to start
   ansible.builtin.wait_for:
     path: "{{docker_proxy_storage}}/le/config/dns-conf/"
     state: present
-
+  tags:
+    - swag
 # - name: Copy in custom configs Digital Ocean
 #   template:
 #     src: digitalocean.ini.j2
@@ -65,3 +83,5 @@
     dest: "{{docker_proxy_storage}}/le/config/dns-conf/cloudflare.ini"
   notify:
     - Restart SWAG
+  tags:
+    - swag

@@ -1,21 +1,35 @@
 ---
-# tasks file for docker-sonarr
+# tasks file for docker-prowlarr
 
 - name: Install Python tools for docker
   pip:
     name: docker
     state: latest
+  tags:
+    - prowlarr
+    - arr
 
-- name: Grow the Ways
+- name: Add prowlarr to Arr network
   community.docker.docker_network:
-    name: theways
+    name: "{{ arr_network_name }}"
+  tags:
+    - prowlarr
+    - arr
 
-- name: Create Docker paths
-  file:
-    path: "{{ docker_prowlarr_storage }}{{ item }}"
-    state: directory
-  with_items:
-    - config
+- name: 'Create directory for container data'
+  ansible.builtin.file:
+    path: "{{ docker_data_dir }}/{{ dir }}"
+    owner: 'docker'
+    group: 'docker'
+    mode: '0750'
+    state: 'directory'
+  loop:
+    - 'prowlarr_config'
+  loop_control:
+    loop_var: 'dir'
+  tags:
+    - prowlarr
+    - arr
 
 - name: Recreate prowlarr container
   community.docker.docker_container:
@@ -30,10 +44,11 @@
       - '9696'
     volumes:
       - /etc/localtime:/ect/localtime:ro
-      - "{{ docker_prowlarr_storage }}/config:/config"
+      - "{{ docker_prowlarr_storage }}/prowlarr_config:/config"
     networks_cli_compatible: false
     networks:
-      - name: theways
+      - name: "{{ arr_network_name }}"
+      - name: "{{ traefik_proxy_network }}"
     env:
       TZ: "America/Chicago"
       PUID: '1000'
@@ -41,11 +56,4 @@
       VERSION: latest
   tags:
     - prowlarr
-
-- name: Download SWAG Config
-  ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/linuxserver/reverse-proxy-confs/master/prowlarr.subdomain.conf.sample
-    dest: "{{ docker_proxy_config_storage }}/prowlarr.subdomain.conf"
-    mode: '0440'
-  notify:
-    - Restart SWAG
+    - arr

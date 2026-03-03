@@ -4,3 +4,4 @@
 docker_ports:
   - 5055/tcp
 
+arr_network_name: "tortuga"
