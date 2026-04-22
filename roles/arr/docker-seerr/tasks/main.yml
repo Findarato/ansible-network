@@ -1,0 +1,74 @@
+---
+# tasks file for docker-seerr
+
+- name: Install Python tools for docker
+  pip:
+    name: docker
+    state: latest
+  tags:
+    - seerr
+    - arr
+
+- name: Add seerr to Arr network
+  community.docker.docker_network:
+    name: "{{ arr_network_name }}"
+  tags:
+    - seerr
+    - seerr
+    - arr
+
+- name: 'Create directory for container data'
+  ansible.builtin.file:
+    path: "{{ docker_data_dir }}/{{ dir }}"
+    owner: 'docker'
+    group: 'docker'
+    mode: '0770'
+    state: 'directory'
+  loop:
+    - 'seerr_config'
+  loop_control:
+    loop_var: 'dir'
+  tags:
+    - seerr
+    - arr
+
+- name: Recreate seerr container
+  community.docker.docker_container:
+    name: "{{ seerr_app_name }}"
+    image: "ghcr.io/seerr-team/seerr:{{ seerr_version }}"
+    # image: "ghcr.io/seerr-team/seerr:latest"
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    init: true
+    volumes:
+      - /docker/containers/seerr/config:/config
+    dns_search_domains: "{{ dns_domains }}"
+    dns_servers: "{{ dns_servers }}"
+    networks_cli_compatible: false
+    networks:
+      - name: "{{ arr_network_name }}"
+      - name: traefik_proxy
+        aliases:
+          - seerr
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
+    healthcheck:
+      test: ["CMD", "wget", "-f --no-verbose --tries=1 --spider", "http://localhost:5055/api/v1/status"] 
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    env:
+      TZ: "America/Chicago"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.seerr.rule: Host(`{{ seerr_app_name }}.{{ traefik_arr_domain }}`)
+      traefik.http.routers.seerr.tls: "true"
+      traefik.http.routers.seerr.entrypoints: websecure
+      traefik.http.services.seerr.loadbalancer.server.port: "5055"
+  tags:
+    - seerr
+    - arr

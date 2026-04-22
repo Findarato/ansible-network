@@ -47,7 +47,11 @@
     networks_cli_compatible: false
     networks:
       - name: "{{ arr_network_name }}"
-      - name: "{{ traefik_proxy_network }}"
+      - name: traefik_proxy
+        aliases:
+          - overseerr.mcharryville.space
+          - overseerr.arr.mcharryville.space
+          - overseerr
     log_driver: "{{ docker_log_driver }}"
     log_options: "{{ docker_log_options}}"
     env:

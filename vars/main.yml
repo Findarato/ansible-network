@@ -119,8 +119,13 @@ radarr_version: "latest"
 
 lidarr_app_name: "lidarr"
 deluge_app_name: "deluge"
-deuluge_version: "latest"
+deluge_version: "latest"
 
+seerr_app_name: "seerr"
+seerr_version: "latest"
+
+prowlarr_app_name: "prowlarr"
+prowlarr_version: "latest"
 
 docker_sonarr_storage: "{{ docker_data_dir }}/sonarr/"
 docker_sonarr_storage_tv: "/mnt/storage/TV/"

@@ -12,6 +12,8 @@
 - name: Add prowlarr to Arr network
   community.docker.docker_network:
     name: "{{ arr_network_name }}"
+    labels:
+      arr: "true"
   tags:
     - prowlarr
     - arr
@@ -40,8 +42,6 @@
     recreate: yes
     restart: yes
     pull: true
-    exposed_ports:
-      - '9696'
     volumes:
       - /etc/localtime:/ect/localtime:ro
       - "{{ docker_prowlarr_storage }}/prowlarr_config:/config"
@@ -49,6 +49,12 @@
     networks:
       - name: "{{ arr_network_name }}"
       - name: "{{ traefik_proxy_network }}"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.prowlarr.rule: Host(`{{ prowlarr_app_name }}.{{ traefik_arr_domain }}`)
+      traefik.http.routers.prowlarr.tls: "true"
+      traefik.http.routers.prowlarr.entrypoints: websecure
+      traefik.http.services.prowlarr.loadbalancer.server.port: "9696"
     env:
       TZ: "America/Chicago"
       PUID: '1000'
