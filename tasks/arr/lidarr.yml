@@ -1,10 +1,10 @@
 ---
 
-## Title: /arr/docker-deluge/tasks/main.yml
-## Description: Deploy Deluge in a docker container
+## Title: /tasks/arr/lidarr.yml
+## Description: Deploy Lidarr
 ## Author: Joseph Harry <findarato@gmail.com>
 ## Copyright: Joseph Harry <findarato@gmail.com>
-## Date: 2026-03-01 15:03:02
+## Date: 2026-04-28 13:35:20
 ## 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -19,41 +19,29 @@
 ## 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-# tasks file for docker-deluge
 
 - name: Install Python tools for docker
   pip:
     name: docker
     state: latest
-  tags:
-    - deluge
-    - arr
 
-- name: Private Arr network
+- name: Add lidarr to Arr network
   community.docker.docker_network:
     name: "{{ arr_network_name }}"
-    internal: true
-    labels:
-      arr: "true"
   tags:
-    - deluge
+    - lidarr
     - arr
 
-- name: 'Create directory for container data'
-  ansible.builtin.file:
-    path: "{{ docker_data_dir }}/{{ dir }}"
-    owner: 'docker'
-    group: 'docker'
-    mode: '0750'
-    state: 'directory'
-  loop:
-    - 'deluge_data'
-    - 'deluge_config'
-  loop_control:
-    loop_var: 'dir'
-  tags:
-    - deluge
-    - arr
+- name: Create Docker paths
+  file:
+    path: "{{ docker_data_dir }}/{{ item }}"
+    state: directory
+    mode: "0775"
+    owner: "1000"
+    group: docker
+  with_items:
+    - downloads
+    - config
 
 - name: Create NFS mount downloads
   community.docker.docker_volume:
@@ -69,42 +57,52 @@
     - deluge
     - arr
 
+- name: 🎥 Create NFS mount Music
+  community.docker.docker_volume:
+    name: nfs-music
+    state: present
+    driver: local
+    recreate: options-changed
+    driver_options:
+      type: "{{ vault_arr_music_mount.type }}"
+      o: "{{ vault_arr_music_mount.opts }}"
+      device: "{{ vault_arr_music_mount.device }}"
+  tags:
+    - radarr
+    - arr
 
-- name: Create and Update Deluge Container
+
+- name: Recreate lidarr container
   community.docker.docker_container:
-    name: deluge
-    image: "lscr.io/linuxserver/deluge:{{ deluge_version }}"
+    name: lidarr
+    image: lscr.io/linuxserver/lidarr
     state: started
     restart_policy: unless-stopped
     recreate: yes
     restart: yes
     pull: true
-    container_default_behavior: no_defaults
+    exposed_ports:
+      - '8686'
     volumes:
-      - arr-downloads:/downloads
-      - "{{ docker_data_dir }}/deluge_config:/config"
+      - "arr-downloads:/downloads"
+      - "nfs-music:/music"
+      - "{{ docker_lidarr_storage }}/config:/config"
+    dns_search_domains: "{{ dns_domains }}"
+    dns_servers: "{{ dns_servers }}"
+    networks_cli_compatible: false
+    networks:
+      - name: theways
+      - name: "{{ traefik_proxy_network }}"
     labels:
       traefik.enable: "true"
-      traefik.http.routers.deluge.rule: Host(`{{ deluge_app_name }}.{{ traefik_arr_domain }}`)
-      traefik.http.routers.deluge.tls: "true"
-      traefik.http.routers.deluge.entrypoints: websecure
-      traefik.http.services.deluge.loadbalancer.server.port: "8112"
+      traefik.http.routers.lidarr.rule: Host(`{{ lidarr_app_name }}.{{ traefik_arr_domain }}`)
+      traefik.http.routers.lidarr.tls: "true"
+      traefik.http.routers.lidarr.entrypoints: websecure
+      traefik.http.services.lidarr.loadbalancer.server.port: "8686"
     env:
-      PGID: "1000002" #docker user
-      PUID: "1000"
       TZ: "America/Chicago"
-      DELUGE_LOGLEVEL: error
-    log_driver: "{{ docker_log_driver }}"
-    log_options: "{{ docker_log_options}}"
-    networks:
-      - name: "{{ arr_network_name }}"
-        aliases:
-          - deluge.mcharryville.space
-          - deluge.arr.mcharryville.space
-          - deluge
-      - name: traefik_proxy
-        aliases:
-          - deluge.mcharryville.space
+      PUID: '1000'
+      PGID: '1000'
+      VERSION: latest
   tags:
-    - deluge
-    - arr
+    - lidarr

@@ -21,10 +21,10 @@
 
 - name: Create Docker paths
   file:
-    path: "{{ docker_radarr_storage }}{{ item }}"
+    path: "{{ docker_data_dir }}{{ item }}"
     state: directory
   with_items:
-    - config
+    - radarr_config
   tags:
     - radarr
     - arr
@@ -85,9 +85,9 @@
     pull: true
     volumes:
       - /etc/localtime:/ect/localtime:ro
-      - arr-downloads:/downloads
+      - "arr-downloads:/downloads"
       - "nfs-movies:/movies"
-      - "{{ docker_radarr_storage }}/config:/config"
+      - "{{ docker_data_dir }}/radarr_config:/config"
     dns_search_domains: "{{ dns_domains }}"
     dns_servers: "{{ dns_servers }}"
     labels:

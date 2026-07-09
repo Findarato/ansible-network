@@ -14,7 +14,6 @@
     name: "{{ arr_network_name }}"
   tags:
     - seerr
-    - seerr
     - arr
 
 - name: 'Create directory for container data'
@@ -36,7 +35,6 @@
   community.docker.docker_container:
     name: "{{ seerr_app_name }}"
     image: "ghcr.io/seerr-team/seerr:{{ seerr_version }}"
-    # image: "ghcr.io/seerr-team/seerr:latest"
     state: started
     restart_policy: unless-stopped
     recreate: yes
@@ -44,7 +42,7 @@
     pull: true
     init: true
     volumes:
-      - /docker/containers/seerr/config:/config
+      - "{{ docker_data_dir }}/seerr_config:/config"
     dns_search_domains: "{{ dns_domains }}"
     dns_servers: "{{ dns_servers }}"
     networks_cli_compatible: false

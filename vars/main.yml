@@ -109,7 +109,7 @@ traefik3_selfsign: false                           # Selfsign the used SSL certi
 traefik3_version: '3.6'
 traefik_proxy_network: "traefik_proxy"
 
-
+traefik_arr_domain: 'arr.mcharryville.space'
 arr_network_name: "tortuga"
 sonarr_app_name: "sonarr"
 sonarr_version: "latest"

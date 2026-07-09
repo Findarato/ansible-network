@@ -21,7 +21,7 @@
 
 - name: Create Docker paths
   file:
-    path: "{{ docker_sonarr_storage }}{{ item }}"
+    path: "{{ docker_data_dir }}{{ item }}"
     state: directory
   with_items:
     - sonarr_config
@@ -108,9 +108,9 @@
     pull: true
     volumes:
       - /etc/localtime:/ect/localtime:ro
-      # - arr-downloads:/downloads
+      - "arr-downloads:/downloads"
       - "nfs-tv:/tv"
-      - "{{ docker_sonarr_storage }}/config:/config"
+      - "{{ docker_data_dir }}/sonarr_config:/config"
     labels:
       traefik.enable: "true"
       traefik.http.routers.sonarr.rule: Host(`{{ sonarr_app_name }}.{{ traefik_arr_domain }}`)

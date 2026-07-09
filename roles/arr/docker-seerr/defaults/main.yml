@@ -1,5 +1,0 @@
----
-# defaults file for docker-seerr
-
-seerr_app_name: "seerr"
-seerr_version: "latest"

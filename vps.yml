@@ -14,13 +14,13 @@
       loop_control:
         loop_var: 'package_name'
   roles:
-    - role: docker-npm
-      tags: [ npm ]
-    - docker-uptime-kuma
-    - docker-ntfy
-    - docker-website
-    - role: docker-whoami
-      tags: [ whoami ]
+    # - role: docker-npm
+    #   tags: [ npm ]
+    # - docker-uptime-kuma
+    # - docker-ntfy
+    # - docker-website
+    # - role: docker-whoami
+    #   tags: [ whoami ]
     - role: docker-xmrigproxy
       tags: [ xmrigproxy ]
     # - role: artis3n.tailscale

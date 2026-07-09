@@ -15,7 +15,7 @@
 
 - name: Create Docker paths
   file:
-    path: "{{ docker_lidarr_storage }}/{{ item }}"
+    path: "{{ docker_data_dir }}/{{ item }}"
     state: directory
     mode: "0775"
     owner: "1000"
