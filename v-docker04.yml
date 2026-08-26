@@ -2,28 +2,25 @@
 - name: Setup the servers basic
   hosts: v-docker04.mcharryville.space
   become: true
-  remote_user: joe
+  remote_user: ansible
   roles:
+    - role: basic-server
+      tags: [ setup, basic-server ]
     - geerlingguy.pip
-  
+    - role: janitor
+      tags: [ janitor ]
+    - role: docker_traefik
+      tags: [ proxy, traefik ]
+  tasks:
+    - name: Start Uptime Kuma Container
+      ansible.builtin.include_tasks: tasks/uptime-kuma.yml
+      tags: [ uptime-kuma ]
+
   vars_files:
-    - vars/main.vault.yml
-    - vars/setup.vault.yml
     - vars/main.yml
+    - vars/main.vault.yml
+    # - vars/setup.vault.yml
   # vars:
   #   ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
   tags: [ setup ]
 
-- hosts: v-docker04.mcharryville.space
-  become: true
-  remote_user: joe
-  roles:
-    - role: docker-minecraft
-      tags: [ minecraft]
-  tags:
-    - minecraft
-  # vars:
-  #   ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
-  vars_files:
-    - vars/main.vault.yml
-    - vars/main.yml

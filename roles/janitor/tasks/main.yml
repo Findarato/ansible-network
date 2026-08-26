@@ -1,0 +1,54 @@
+---
+
+## Title: ansible-arr/roles/janitor/tasks/main.yml
+## Description: Deploy the janitor container to maintain the docker environment
+## Author: Joseph Harry <findarato@gmail.com>
+## Copyright: Joseph Harry <findarato@gmail.com>
+## Date: 2026-04-28 15:52:12
+##
+## This program is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+## You should have received a copy of the GNU General Public License along
+## with this program; if not, write to the Free Software Foundation, Inc.
+## 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+
+- name: 'Create directory for container data'
+  ansible.builtin.file:
+    path: "{{ docker_data_dir }}/{{ dir }}"
+    state: 'directory'
+    owner: 'docker'
+    group: 'docker'
+    mode: '0755'
+  loop:
+    - 'janitor_data'
+  loop_control:
+    loop_var: 'dir'
+  tags: janitor
+
+- name: 'Place files for Janitor'
+  ansible.builtin.copy:
+    src: 'clean_docker.sh'
+    dest: "{{ docker_data_dir }}/janitor_data/clean_docker.sh"
+    owner: 'docker'
+    group: 'docker'
+    mode: '0755'
+  tags: janitor
+
+- name: 'Deploy Docker Janitor'
+  community.docker.docker_container:
+    name: 'janitor'
+    command: '/clean_docker.sh'
+    image: 'docker'
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+      - "{{ docker_data_dir }}/janitor_data/clean_docker.sh:/clean_docker.sh:ro"
+    restart_policy: unless-stopped
+    user: null
+  tags: janitor

@@ -1,7 +1,0 @@
-- name: "Install Docker helpers {{ansible_os_family}}"
-  yum:
-    name:
-      - python3-pip
-      - nfs-utils
-    state: present
-

@@ -20,29 +20,29 @@
   become: true
   remote_user: ansible
   roles:
-    - role: docker-audiobookshelf
-      tags: [ audiobookshelf ]
-    # - role: docker-apt-cacher-ng
-    #   tags: [ apt-cacher-ng ]
-    - role: docker-piHole
-      tags: [ pihole ]
-    # - role: docker-changedetection
-    #   tags: [ changedetection ]
-    # - role: docker-discountbandit
-    #   tags: [ discountbandit ]
-    - role: docker-gatus
-      tags: [ gatus ]
-    - role: docker-unifi
-      tags: [ unifi ]
-    - role: docker-uptime-kuma
-      tags: [ uptime-kuma, monitoring ]
-    - role: docker-vaultwarden
-      tags: [ vaultwarden, docker-vaultwarden ]
-    - role: docker-grafana
-      tags: [ grafana, docker-grafana ]
-    # - docker-syncthing
-    - role: docker-swag
-      tags: [ setup, proxy ]
+    # - role: docker-audiobookshelf
+    #   tags: [ audiobookshelf ]
+    # # - role: docker-apt-cacher-ng
+    # #   tags: [ apt-cacher-ng ]
+    # - role: docker-piHole
+    #   tags: [ pihole ]
+    # # - role: docker-changedetection
+    # #   tags: [ changedetection ]
+    # # - role: docker-discountbandit
+    # #   tags: [ discountbandit ]
+    # - role: docker-gatus
+    #   tags: [ gatus ]
+    # - role: docker-unifi
+    #   tags: [ unifi ]
+    # - role: docker-uptime-kuma
+    #   tags: [ uptime-kuma, monitoring ]
+    # - role: docker-vaultwarden
+    #   tags: [ vaultwarden, docker-vaultwarden ]
+    # - role: docker-grafana
+    #   tags: [ grafana, docker-grafana ]
+    # # - docker-syncthing
+    # - role: docker-swag
+    #   tags: [ setup, proxy ]
   vars:
     ansible_become_pass: "{{ vault_ansible_remote_user_password }}"
     using_swag: true

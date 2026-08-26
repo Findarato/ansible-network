@@ -1,42 +1,40 @@
 ---
 
-ntp_enabled:          true
-ntp_timezone:         "America/Chicago"
-ntp_manage_config:    true
+python_docker_version: "7.1.0"
 
-ansible_become_password:  "{{ vault_ansible_become_pass  }}"
-ansible_ssh_pass:     "{{ vault_ansible_ssh_pass  }}"
-ansible_use:          ansible
+ntp_enabled: true
+ntp_timezone: "America/Chicago"
+ntp_manage_config: true
 
-
-#General Docker stuff
+ansible_become_password: "{{ vault_ansible_become_pass }}"
+ansible_ssh_pass: "{{ vault_ansible_ssh_pass }}"
+ansible_use: ansible
 
 # Docker network
-docker_network:       theways
+docker_network: theways
 
 docker_log_driver: "json-file"
 docker_log_options:
   max-file: "3"   # number of files or file count
   max-size: "10m" # file size
 
-docker_restart_condition: 'on-failure'
-dns_servers: ['10.1.1.1', '10.1.1.6']
+docker_restart_condition: 'unless-stopped'
+dns_servers: ['10.1.1.6', '10.1.1.21']
 public_dns_servers: ['1.1.1.1', '8.8.8.8']
 dns_domains: ['mcharryville.space', 'arr.mcharryville.space']
 
-docker_users:
-  - joe
-
 
 # Storage Paths
-docker_storage_path: "/docker/containers"
+docker_storage_path: "/docker/volumes"
+docker_data_dir: "{{ docker_storage_path }}"  # Older compatibility variable, will be removed in the future
+
 
 # Telegraf
 docker_telegraf_storage: "{{ docker_storage_path }}/telegraf/"
 
 # Added for compatibility with some roles Should be the same as docker_storage_path
 # All new roles shoudl use docker_data_dir variable
-docker_data_dir: "{{ docker_storage_path }}" 
+
 
 
 docker_piHole_storage: "{{ docker_storage_path }}/pihole/"
