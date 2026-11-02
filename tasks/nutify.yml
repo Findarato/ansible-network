@@ -1,0 +1,141 @@
+---
+
+## Title: ~/Documents/src/Ansible/ansible-network/tasks/nutify.yml
+## Description: Deploy nutify# 
+## Author: Joseph Harry <findarato@gmail.com>
+## Copyright: Joseph Harry <findarato@gmail.com>
+## Date: 2026-10-04 22:34:31
+##
+## This program is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+## You should have received a copy of the GNU General Public License along
+## with this program; if not, write to the Free Software Foundation, Inc.
+## 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+# https://github.com/DartSteven/Nutify
+
+- name: Grow the Traefik Proxy Network
+  community.docker.docker_network:
+    name: traefik_proxy
+  tags:
+    - nutify
+
+- name: 'Create directory for container data'
+  ansible.builtin.file:
+    path: "{{ docker_data_dir }}/{{ dir }}"
+    state: 'directory'
+    owner: 'docker'
+    group: 'docker'
+    mode: '0755'
+  loop:
+    - nutify_data
+    - nutify_data/logs
+    - nutify_data/instance
+    - nutify_data/ssl
+    - nutify_data/etc/nut
+
+
+
+#       - ./Nutify/logs:/app/nutify/logs
+#       - ./Nutify/instance:/app/nutify/instance
+#       - ./Nutify/ssl:/app/ssl
+#       - ./Nutify/etc/nut:/etc/nut
+  loop_control:
+    loop_var: 'dir'
+  tags:
+    - nutify
+
+- name: Recreate nutify container
+  community.docker.docker_container:
+    name: nutify
+    hostname: nutify
+    image: dartsteven/nutify:latest-amd64
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - KILL
+      - SETGID
+      - SETUID
+    security_opt:
+      - no-new-privileges:true
+    device_cgroup_rules:
+      - "c 189:* rwm"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.nutify.rule: "Host(`nutify.{{ traefik_domain }}`)"
+      traefik.http.routers.nutify.entrypoints: websecure
+      traefik.http.routers.nutify.tls: "true"
+      traefik.http.services.nutify.loadbalancer.server.port: "443"
+    volumes:
+      - "{{docker_data_dir}}/nutify_data/logs:/app/nutify/logs"
+      - "{{docker_data_dir}}/nutify_data/instance:/app/nutify/instance"
+      - "{{docker_data_dir}}/nutify_data/ssl:/app/ssl"
+      - "{{docker_data_dir}}/nutify_data/etc/nut:/etc/nut"
+      - "/dev/bus/usb:/dev/bus/usb:rw"
+      - "/run/udev:/run/udev:ro"
+    networks_cli_compatible: false
+    networks:
+      - name: traefik_proxy
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
+    env:
+      TZ: "America/Chicago"
+      nutify_CONFIG_PATH: "/config"
+  tags:
+    - nutify
+
+
+
+# services:
+#   nut:
+#     image: dartsteven/nutify:latest-amd64
+#     container_name: Nutify
+#     cap_drop:
+#       - ALL
+#     cap_add:
+#       - CHOWN
+#       - DAC_OVERRIDE
+#       - FOWNER
+#       - KILL
+#       - SETGID
+#       - SETUID
+#     security_opt:
+#       - no-new-privileges:true
+#     device_cgroup_rules:
+#       - "c 189:* rwm"
+#     volumes:
+#       - ./Nutify/logs:/app/nutify/logs
+#       - ./Nutify/instance:/app/nutify/instance
+#       - ./Nutify/ssl:/app/ssl
+#       - ./Nutify/etc/nut:/etc/nut
+#       - /dev/bus/usb:/dev/bus/usb:rw
+#       - /run/udev:/run/udev:ro
+#     environment:
+#       SECRET_KEY: ${SECRET_KEY:?Set SECRET_KEY in .env}
+#       NUTIFY_WEB_USER: nut
+#       NUT_SERVICE_USER: nut
+#       UDEV: "1"
+#       SKIP_PERMCHECK: "true"
+#       NUTIFY_USB_GID: ${NUTIFY_USB_GID:-}
+#       SSL_ENABLED: "false"
+#     ports:
+#       - "3493:3493"
+#       - "5050:5050"
+#       - "443:443"
+#     restart: always
+
+...

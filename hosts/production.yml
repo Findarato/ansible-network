@@ -1,12 +1,6 @@
 ---
 all:
   children:
-    getting:
-      hosts:
-        v-docker03.mcharryville.space: # Rocky Linux 8
-    watching:
-      hosts:
-        v-docker03.mcharryville.space: # Rocky Linux 8
     docker_cluster:
       hosts:
         v-docker04.mcharryville.space: # Rocky Linux 10
@@ -20,9 +14,13 @@ all:
     stats:
       hosts:
         v-docker03.mcharryville.space: # Rocky Linux 8
+    pi:
+      hosts:
+        rpi-utility.mcharryville.space: # Rocky Linux 8
+      vars:
+        sudo_group: sudo
     torrents:
       hosts:
-        # v-torrents.mcharryville.space: #
         v-torrents.mcharryville.space: #
     pirate:
       hosts:

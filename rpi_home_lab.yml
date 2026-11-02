@@ -1,54 +1,19 @@
 ---
 
-# - hosts: piBlocks
-#   become: true
-#   remote_user: pi
-#   roles:
-#     - role: docker-piHole
-#       vars:
-#         pihole_virtual_hostname: "pihole"
-#         pihole_virtual_host: "pihole.mcharryville.space"
-#       tags: [ pihole, dns ]
-#     - role: docker-swag
-#       tags: [ setup, proxy ]
-#   vars_files:
-#     - vars/main.yml
-#     - vars/main.vault.yml
-#   tags:
-#     - rpi
-
-# - hosts: rpi-docker01.mcharryville.space
-#   become: true
-#   remote_user: pi
-#   roles:
-#     - docker-uptime-kuma
-#   vars_files:
-#     - vars/main.yml
-#     - vars/main.vault.yml
-#   tags:
-#     - rpi
-
-# - hosts: rpi-docker02.mcharryville.space
-#   become: true
-#   remote_user: joe
-#   roles:
-#     # - docker-signal-messager
-#     # - docker-swag
-#     # - docker-piHole
-#   vars_files:
-#     - vars/main.yml
-#     - vars/main.vault.yml
-#   tags:
-#     - rpi
-
-# - hosts: rpi-docker03.mcharryville.space
-#   become: true
-#   remote_user: pi
-#   roles:
-#     # - docker-swag
-#     # - docker-piHole
-#   vars_files:
-#     - vars/main.yml
-#     - vars/main.vault.yml
-#   tags:
-#     - rpi
+- hosts: rpi-utility.mcharryville.space
+  become: true
+  remote_user: joe
+  roles:
+      - role: basic-server
+        tags: [ setup, basic-server ]
+      - role: docker_traefik
+        tags: [ proxy, traefik ]
+  tasks:
+    - name: Start Pi-Hole Container
+      ansible.builtin.include_tasks: tasks/pihole.yml
+      tags: [ pihole ]
+  vars_files:
+    - vars/main.yml
+    - vars/main.vault.yml
+  tags:
+    - rpi

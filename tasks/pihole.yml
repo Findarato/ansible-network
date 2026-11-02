@@ -1,0 +1,75 @@
+---
+
+## Title: ansible-vps/tasks/gatus.yml
+## Description: Deploy the Gatus Container
+## Author: Joseph Harry <findarato@gmail.com>
+## Copyright: Joseph Harry <findarato@gmail.com>
+## Date: 2026-08-27 14:01:17
+##
+## This program is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+## You should have received a copy of the GNU General Public License along
+## with this program; if not, write to the Free Software Foundation, Inc.
+## 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+
+
+- name: Grow the Traefik Proxy Network
+  community.docker.docker_network:
+    name: traefik_proxy
+  tags:
+    - pihole
+
+- name: 'Create directory for container data'
+  ansible.builtin.file:
+    path: "{{ docker_data_dir }}/{{ dir }}"
+    state: 'directory'
+    owner: 'docker'
+    group: 'docker'
+    mode: '0755'
+  loop:
+    - pihole_data
+    - pihole_data/etc
+    - pihole_data/dnsmasq.d
+  loop_control:
+    loop_var: 'dir'
+  tags:
+    - pihole
+
+- name: Recreate pihole container
+  community.docker.docker_container:
+    name: pihole
+    hostname: pihole
+    image: twinproduction/pihole
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    shm_size: 500MB
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.pihole.rule: "Host(`pihole02.{{ traefik_domain }}`)"
+      traefik.http.routers.pihole.entrypoints: websecure
+      traefik.http.routers.pihole.tls: "true"
+      traefik.http.services.pihole.loadbalancer.server.port: "80"
+    volumes:
+      - "{{docker_data_dir}}/pihole_data/etc:/etc/pihole/"
+      - "{{docker_data_dir}}/pihole_data/dnsmasq.d:/etc/dnsmasq.d/"
+    networks_cli_compatible: false
+    networks:
+      - name: traefik_proxy
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
+    env:
+      TZ: "America/Chicago"
+  tags:
+    - pihole
+
+...

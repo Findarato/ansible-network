@@ -1,0 +1,76 @@
+---
+
+## Title: ansible-vps/tasks/gatus.yml
+## Description: Deploy the Gatus Container
+## Author: Joseph Harry <findarato@gmail.com>
+## Copyright: Joseph Harry <findarato@gmail.com>
+## Date: 2026-08-27 14:01:17
+##
+## This program is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+## You should have received a copy of the GNU General Public License along
+## with this program; if not, write to the Free Software Foundation, Inc.
+## 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+
+
+- name: Grow the Traefik Proxy Network
+  community.docker.docker_network:
+    name: traefik_proxy
+  tags:
+    - gatus
+
+- name: 'Create directory for container data'
+  ansible.builtin.file:
+    path: "{{ docker_data_dir }}/{{ dir }}"
+    state: 'directory'
+    owner: 'docker'
+    group: 'docker'
+    mode: '0755'
+  loop:
+    - gatus_data
+    - gatus_config
+  loop_control:
+    loop_var: 'dir'
+  tags:
+    - gatus
+
+- name: Recreate gatus container
+  community.docker.docker_container:
+    name: gatus
+    hostname: gatus
+    image: twinproduction/gatus
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    restart: yes
+    pull: true
+    shm_size: 500MB
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.gatus.rule: "Host(`gatus.{{ traefik_domain }}`)"
+      traefik.http.routers.gatus.entrypoints: websecure
+      traefik.http.routers.gatus.tls: "true"
+      traefik.http.routers.gatus.tls.certresolver: cloudflare
+      traefik.http.services.gatus.loadbalancer.server.port: "8080"
+    volumes:
+      - "{{docker_data_dir}}/gatus_config:/config"
+      - "{{docker_data_dir}}/gatus_data:/data"
+    networks_cli_compatible: false
+    networks:
+      - name: traefik_proxy
+    log_driver: "{{ docker_log_driver }}"
+    log_options: "{{ docker_log_options}}"
+    env:
+      TZ: "America/Chicago"
+      GATUS_CONFIG_PATH: "/config"
+  tags:
+    - gatus
+
+...

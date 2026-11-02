@@ -132,6 +132,20 @@ docker_prowlarr_storage: "{{ docker_data_dir }}/prowlarr/"
 docker_radarr_storage: "{{ docker_data_dir }}/radarr/"
 docker_lidarr_storage: "{{ docker_data_dir }}/lidarr/"
 
+
+# Uptime Kuma
+
+uptime_kuma_db_hostname: "sql.mcharryville.space"
+uptime_kuma_db_port: "3306"
+uptime_kuma_db_username: "uptimekuma"
+uptime_kuma_db_name: "uptimekuma"
+uptime_kuma_db_password: "{{ vault_uptime_kuma_db_password }}"
+
+uptime_kuma_release: '2.5.3'
+# uptime_kuma_release: 'latest'
+uptime_kuma_app_name: uptime-kuma
+
+
 #      ▄████  ██▓     █    ██ ▓█████▄▄▄█████▓ █    ██  ███▄    █ 
 #     ██▒ ▀█▒▓██▒     ██  ▓██▒▓█   ▀▓  ██▒ ▓▒ ██  ▓██▒ ██ ▀█   █ 
 #    ▒██░▄▄▄░▒██░    ▓██  ▒██░▒███  ▒ ▓██░ ▒░▓██  ▒██░▓██  ▀█ ██▒
@@ -150,8 +164,3 @@ gluetun_cities: "{{ vault_gluetun_cities }}"            # Wireguard cities from 
 docker_gluetun_storage: "{{ docker_data_dir }}/gluetun/"
 
 
-# Uptime Kuma
-
-docker_uptime_kuma_storage: "{{ docker_data_dir }}/uptime-kuma/"
-uptime_kuma_release: '2.1.3'
-uptime_kuma_app_name: uptime-kuma

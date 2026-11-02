@@ -19,25 +19,26 @@
 ## 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
-- name: Install Python tools for docker
-  ansible.builtin.pip:
-    name: docker=={{ python_docker_version }}
+- name: Grow the Traefik Proxy Network
+  community.docker.docker_network:
+    name: traefik_proxy
   tags:
     - uptime-kuma
 
 - name: 'Create directory for container data'
   ansible.builtin.file:
     path: "{{ docker_data_dir }}/{{ dir }}"
-    state: directory
-    owner: docker
-    group: docker
+    state: 'directory'
+    owner: 'docker'
+    group: 'docker'
     mode: '0755'
   loop:
-    - 'uptime-kuma_data'
+    - uptime-kuma_data
   loop_control:
     loop_var: 'dir'
   tags:
     - uptime-kuma
+
 
 - name: Recreate uptime-kuma container
   community.docker.docker_container:
@@ -65,7 +66,13 @@
     log_driver: "{{ docker_log_driver }}"
     log_options: "{{ docker_log_options}}"
     env:
-      TZ: America/Chicago
+      TZ: "America/Chicago"
+      UPTIME_KUMA_DB_TYPE: "mariadb"
+      UPTIME_KUMA_DB_NAME: "{{ uptime_kuma_db_name }}"
+      UPTIME_KUMA_DB_HOSTNAME: "{{ uptime_kuma_db_hostname }}"
+      UPTIME_KUMA_DB_PORT: "{{ uptime_kuma_db_port }}"
+      UPTIME_KUMA_DB_USERNAME: "{{ uptime_kuma_db_username }}"
+      UPTIME_KUMA_DB_PASSWORD: "{{ uptime_kuma_db_password }}"
     dns_search_domains: "{{ dns_domains }}"
     dns_servers: "{{ dns_servers }}"
   tags:
